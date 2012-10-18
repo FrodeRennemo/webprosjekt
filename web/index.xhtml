@@ -9,51 +9,53 @@
     </h:head>
     <h:body>
         <ui:composition template ="newTemplate.xhtml">
-            <h:form>
-                <p><h:commandLink action="#{Spraak.setEng()}"><h:graphicImage value = "resources/en.png"/> </h:commandLink> <h:commandLink action="#{Spraak.setNo()}" ><h:graphicImage value = "resources/no.png"/></h:commandLink></p>
-                <ui:define name= "top">
-                    <h3>#{tekster.Overskrift}</h3>
-                </ui:define>
-                <ui:define name ="content">
-                    <table>
 
-                        <tr>
-                            <td>#{tekster.Dato}</td>
-                            <td>
-                                <h:inputText value="#{Okter.dato}"><f:convertDateTime pattern ="dd/MM/yyyy"/>
-                                </h:inputText>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#{tekster.Varighet}</td>
-                            <td><h:inputText value="#{Okter.varighet}"/></td>
-                        </tr>
+            <p><h:commandLink action="#{Spraak.setEng()}"><h:graphicImage value = "resources/en.png"/> </h:commandLink> <h:commandLink action="#{Spraak.setNo()}" ><h:graphicImage value = "resources/no.png"/></h:commandLink></p>
+            <ui:define name= "top">
+                <h3>#{tekster.Overskrift}</h3>
+            </ui:define>
+            <ui:define name ="content">
+                <table>
 
-                        <tr>
-                            <td>#{tekster.Beskrivelse}</td>
-                            <td><h:inputText value="#{Okter.beskrivelse}" maxlength = "30" size ="30"/></td>
-                        </tr>
-                        <tr>
-                            <td>#{tekster.Kategori}</td>
-                            <td>
+                    <tr>
+                        <td>#{tekster.Dato}</td>
+                        <td>
+                            <h:inputText value="#{Okter.dato}"><f:convertDateTime pattern ="dd/MM/yyyy"/>
+                            </h:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#{tekster.Varighet}</td>
+                        <td><h:inputText value="#{Okter.varighet}"/></td>
+                    </tr>
 
-                                <h:selectOneMenu value ="#{Okter.kategori}">
-                                    <f:selectItem  itemValue ="#{tekster.Utholdenhet}"/>
-                                    <f:selectItem  itemValue ="#{tekster.Styrke}" />
-                                </h:selectOneMenu>
+                    <tr>
+                        <td>#{tekster.Beskrivelse}</td>
+                        <td><h:inputText value="#{Okter.beskrivelse}" maxlength = "30" size ="30"/></td>
+                    </tr>
+                    <tr>
+                        <td>#{tekster.Kategori}</td>
+                        <td>
 
-                            </td>
-                        </tr>
+                            <h:selectOneMenu value ="#{Okter.kategori}">
+                                <f:selectItem  itemValue ="#{tekster.Utholdenhet}"/>
+                                <f:selectItem  itemValue ="#{tekster.Styrke}" />
+                            </h:selectOneMenu>
 
-
+                        </td>
+                    </tr>
 
 
-                    </table>
-                </ui:define>
+
+
+                </table>
 
                 <p><h:commandButton value="#{Okter.leggTil()}Send" action="nyokt"/></p>
+            </ui:define>
 
-            </h:form>
+
+
+
         </ui:composition>
     </h:body>
 </html>
