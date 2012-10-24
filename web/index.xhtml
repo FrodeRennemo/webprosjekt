@@ -5,57 +5,50 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>IGNORE</title>
+        <title>IGNORED</title>
     </h:head>
     <h:body>
         <ui:composition template ="newTemplate.xhtml">
-
-            <p><h:commandLink action="#{Spraak.setEng()}"><h:graphicImage value = "resources/en.png"/> </h:commandLink> <h:commandLink action="#{Spraak.setNo()}" ><h:graphicImage value = "resources/no.png"/></h:commandLink></p>
             <ui:define name= "top">
-                <h3>#{tekster.Overskrift}</h3>
+                <h:form>
+                    <p><h:commandLink action="#{Spraak.setEng()}"><h:graphicImage value = "resources/en.png"/> </h:commandLink> <h:commandLink action="#{Spraak.setNo()}" ><h:graphicImage value = "resources/no.png"/></h:commandLink></p>
+                    <h3>#{tekster.Overskrift}</h3>
+                </h:form>
             </ui:define>
-            <ui:define name ="content">
-                <table>
+            <ui:define name="content">
+                <h:form>
+                    <table>
+                        <tr>
+                            <td>#{tekster.Dato}</td>
+                            <td>
+                                <h:inputText value="#{Okter.dato}"><f:convertDateTime pattern ="dd/MM/yyyy"/>
+                                </h:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#{tekster.Varighet}</td>
+                            <td><h:inputText value="#{Okter.varighet}"/></td>
+                        </tr>
 
-                    <tr>
-                        <td>#{tekster.Dato}</td>
-                        <td>
-                            <h:inputText value="#{Okter.dato}"><f:convertDateTime pattern ="dd/MM/yyyy"/>
-                            </h:inputText>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#{tekster.Varighet}</td>
-                        <td><h:inputText value="#{Okter.varighet}"/></td>
-                    </tr>
+                        <tr>
+                            <td>#{tekster.Beskrivelse}</td>
+                            <td><h:inputText value="#{Okter.beskrivelse}" maxlength = "30" size ="30"/></td>
+                        </tr>
+                        <tr>
+                            <td>#{tekster.Kategori}</td>
+                            <td>
 
-                    <tr>
-                        <td>#{tekster.Beskrivelse}</td>
-                        <td><h:inputText value="#{Okter.beskrivelse}" maxlength = "30" size ="30"/></td>
-                    </tr>
-                    <tr>
-                        <td>#{tekster.Kategori}</td>
-                        <td>
+                                <h:selectOneMenu value ="#{Okter.kategori}">
+                                    <f:selectItem  itemValue ="#{tekster.Utholdenhet}"/>
+                                    <f:selectItem  itemValue ="#{tekster.Styrke}" />
+                                </h:selectOneMenu>
 
-                            <h:selectOneMenu value ="#{Okter.kategori}">
-                                <f:selectItem  itemValue ="#{tekster.Utholdenhet}"/>
-                                <f:selectItem  itemValue ="#{tekster.Styrke}" />
-                            </h:selectOneMenu>
-
-                        </td>
-                    </tr>
-
-
-
-
-                </table>
-
-                <p><h:commandButton value="#{Okter.leggTil()}Send" action="nyokt"/></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <p><h:commandButton value="#{Okter.leggTil()}Send" action="nyokt"/></p>
+                </h:form>
             </ui:define>
-
-
-
-
         </ui:composition>
     </h:body>
 </html>

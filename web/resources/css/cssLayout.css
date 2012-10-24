@@ -1,59 +1,58 @@
-
 #top {
     position: relative;
-    background-color: #036fab;
-    color: white;
+    background-color: white;
+    color: black;
     padding: 5px;
     margin: 0px 0px 10px 0px;
 }
 
 #bottom {
     position: relative;
-    background-color: #c2dfef;
+    background-color: blue;
     padding: 5px;
     margin: 10px 0px 0px 0px;
 }
 
 #left {
     float: left;
-    background-color: #ece3a5;
+    background-color: blueviolet;
     padding: 5px;
     width: 150px;
 }
 
 #right {
     float: right;
-    background-color: #ece3a5;
+    background-color: blueviolet;
     padding: 5px;
     width: 150px;
 }
 
 .center_content {
     position: relative;
-    background-color: #dddddd;
+    background-color: yellowgreen;
     padding: 5px;
 }
 
 .left_content {
-    background-color: #dddddd;
+    background-color: yellowgreen;
     padding: 5px;
     margin-left: 170px;
 }
 
 .right_content {
-    background-color: #dddddd;
+    background-color: yellowgreen;
     padding: 5px;
     margin: 0px 170px 0px 170px;
 }
 
 #top a:link, #top a:visited {
-  color: white;
+  color: blue;
   font-weight : bold;
   text-decoration: none;
 }
 
 #top a:link:hover, #top a:visited:hover  {
-  color: black;
+  color: blue;
   font-weight : bold;
   text-decoration : underline;
 }
