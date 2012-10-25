@@ -8,14 +8,13 @@ import javax.inject.Named;
 @SessionScoped
 public class Treningsokt implements Serializable {
 
-    private static int oktnummer = 0;
+    private static int oktnummer = 1;
     private Date dato = new Date();
     private int varighet;
     private String beskrivelse;
     private String kategori;
 
     public Treningsokt() {
-      
     }
     public void oppdatOktnummer(){
         oktnummer++;
