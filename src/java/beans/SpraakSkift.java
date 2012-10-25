@@ -1,13 +1,9 @@
 
 package beans;
 
-import java.io.Serializable;
 import java.util.Locale;
-import javax.el.PropertyNotFoundException;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
+import javax.faces.context.*;
 import javax.inject.Named;
 
 @Named("Spraak")
