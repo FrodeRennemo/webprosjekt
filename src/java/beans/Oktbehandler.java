@@ -61,9 +61,9 @@ public class Oktbehandler implements java.io.Serializable {
       Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(),
                                 tempTrans.getBeløp(), tempTrans.getTekst());
        nyTrans.setTransnr(Transaksjon.lagNyttTransnr());
-       oversikt.registrerNyOkt(nyOkt);   // lagrer i problemdomeneobjekt
+       oversikt.registrerNyOkt();   // lagrer i problemdomeneobjekt
        tabelldata.add(new TransaksjonStatus(nyTrans)); // lagrer i presentasjonsobjektet
-       tempTrans.nullstill();
+       tempOkt.nullstill();
     }
     /* Sletter alle transaksjoner som er merket for sletting */
     int indeks = tabelldata.size() - 1;

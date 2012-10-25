@@ -24,15 +24,15 @@ public class Treningsokt implements Serializable {
         this.kategori = kategori;
     }
     
-    public void oppdatOktnummer(){
+    public synchronized void oppdatOktnummer(){
         oktnummer++;
     }
 
-    public int getOktnummer() {
+    public synchronized int getOktnummer() {
         return oktnummer;
     }
 
-    public void setKategori(String kategori) {
+    public synchronized void setKategori(String kategori) {
         try {
             this.kategori = kategori;
         } catch (IllegalArgumentException e) {
@@ -40,19 +40,19 @@ public class Treningsokt implements Serializable {
         }
     }
 
-    public String getKategori() {
+    public synchronized String getKategori() {
         return kategori;
     }
 
-    public Date getDato() {
+    public synchronized Date getDato() {
         return dato;
     }
 
-    public String getBeskrivelse() {
+    public synchronized String getBeskrivelse() {
         return beskrivelse;
     }
 
-    public void setBeskrivelse(String beskrivelse) {
+    public synchronized void setBeskrivelse(String beskrivelse) {
         try {
             this.beskrivelse = beskrivelse;
         } catch (IllegalArgumentException e) {
@@ -60,20 +60,26 @@ public class Treningsokt implements Serializable {
         }
     }
 
-    public int getVarighet() {
+    public synchronized int getVarighet() {
         return varighet;
     }
 
-    public void setDato(Date dato) {
+    public synchronized void setDato(Date dato) {
 
         this.dato = dato;
     }
 
-    public void setVarighet(int varighet) {
+    public synchronized void setVarighet(int varighet) {
         try {
             this.varighet = varighet;
         } catch (NumberFormatException e) {
             System.out.println("Må skrive inn heltall!");
         }
+    }
+    public synchronized void nullstill(){
+        dato = null;
+        varighet = 0;
+        beskrivelse = null;
+        kategori = null;
     }
 }
