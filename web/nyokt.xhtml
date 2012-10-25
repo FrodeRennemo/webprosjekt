@@ -9,15 +9,8 @@
     </h:head>
     <h:body>
         <ui:composition template ="newTemplate.xhtml">
-            <ui:define name= "top">
-                <h:form>
-                    <h3>#{tekster.Registrert} </h3>
-                </h:form>
-            </ui:define>
             <ui:define name="content">
                 <h:form>
-
-                    <!--
                      <table>
                          <tr>
                              <td>#{tekster.Øktnr}: </td>
@@ -41,10 +34,7 @@
                              <td><h:outputText value="#{Okter.kategori}" escape="false"/></td>
                          </tr>
                      </table>
-                     <p><h:commandButton value="#{tekster.reg}" action="index"/></p>
-                    -->
-                  
-                   
+                     <p><h:commandButton value="#{tekster.reg}" action="index"/></p>                 
                 </h:form>
             </ui:define>
         </ui:composition>

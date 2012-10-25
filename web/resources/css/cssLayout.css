@@ -8,7 +8,8 @@
 
 #bottom {
     position: relative;
-    background-color: blue;
+    background-color: whitesmoke;
+    color: black;
     padding: 5px;
     margin: 10px 0px 0px 0px;
 }
