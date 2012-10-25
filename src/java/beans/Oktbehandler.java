@@ -1,4 +1,3 @@
-
 package beans;
 
 import java.util.ArrayList;
@@ -10,71 +9,75 @@ import javax.inject.Named;
 
 @Named
 @SessionScoped
-
 public class Oktbehandler implements java.io.Serializable {
 
     private Treningsokter oversikt = new Treningsokter();
     private List<OktStatus> tabelldata = Collections.synchronizedList(new ArrayList<OktStatus>());
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon
 
-    public synchronized boolean getDatafins() {  
+    public synchronized boolean getDatafins() {
         return (tabelldata.size() > 0);
     }
 
     public synchronized List<OktStatus> getTabelldata() {
         return tabelldata;
     }
-    public synchronized Date getDato(){
-        return oversikt.getDato();
+
+    public synchronized Date getDato() {
+        return tempOkt.getDato();
     }
-    public synchronized void setDato(Date nyDato){
-        oversikt.setDato(nyDato);
+
+    public synchronized void setDato(Date nyDato) {
+        tempOkt.setDato(nyDato);
     }
-    public synchronized String getKategori(){
-        return oversikt.getKategori();
+
+    public synchronized String getKategori() {
+        return tempOkt.getKategori();
     }
-    public synchronized void setKategori(String kategori){
-        oversikt.setKategori(kategori);
+
+    public synchronized void setKategori(String kategori) {
+        tempOkt.setKategori(kategori);
     }
-    public synchronized String getBeskrivelse(){
-        return oversikt.getBeskrivelse();
+
+    public synchronized String getBeskrivelse() {
+        return tempOkt.getBeskrivelse();
     }
-    public synchronized void setBeskrivelse(String beskrivelse){
-        oversikt.setBeskrivelse(beskrivelse);
+
+    public synchronized void setBeskrivelse(String beskrivelse) {
+        tempOkt.setBeskrivelse(beskrivelse);
     }
-    public synchronized int getVarighet(){
-        return oversikt.getVarighet();
+
+    public synchronized int getVarighet() {
+        return tempOkt.getVarighet();
     }
-    public synchronized void setVarighet(int varighet){
-        oversikt.setVarighet(varighet);
+
+    public synchronized void setVarighet(int varighet) {
+        tempOkt.setVarighet(varighet);
     }
-    public synchronized Treningsokt getTempOkt(){
+
+    public synchronized Treningsokt getTempOkt() {
         return tempOkt;
     }
-    public synchronized void setTempOkt(Treningsokt nyOkt){
+
+    public synchronized void setTempOkt(Treningsokt nyOkt) {
         tempOkt = nyOkt;
     }
-      public synchronized void oppdater() {
-    /* Ny transaksjon er midlertidig lagret i tempTrans */
-    if (!tempOkt.getKategori().trim().equals("")) {
-      /* Lagrer data om ny transaksjon permanent */
-      Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(),
-                                tempTrans.getBeløp(), tempTrans.getTekst());
-       nyTrans.setTransnr(Transaksjon.lagNyttTransnr());
-       oversikt.registrerNyOkt();   // lagrer i problemdomeneobjekt
-       tabelldata.add(new TransaksjonStatus(nyTrans)); // lagrer i presentasjonsobjektet
-       tempOkt.nullstill();
+
+    public synchronized void oppdater() {
+        if (!tempOkt.getKategori().trim().equals("")) {
+            Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
+            oversikt.registrerNyOkt(nyOkt);
+            tabelldata.add(new OktStatus(nyOkt));
+            tempOkt.nullstill();
+        }
+        int indeks = tabelldata.size() - 1;
+        while (indeks >= 0) {
+            OktStatus ts = tabelldata.get(indeks);
+            if (ts.getSkalSlettes()) {
+                oversikt.slettTransaksjon(ts.getTransaksjonen());
+                tabelldata.remove(indeks);
+            }
+            indeks--;
+        }
     }
-    /* Sletter alle transaksjoner som er merket for sletting */
-    int indeks = tabelldata.size() - 1;
-    while (indeks >= 0) {
-      TransaksjonStatus ts = tabelldata.get(indeks);
-      if (ts.getSkalSlettes()) {
-        oversikt.slettTransaksjon(ts.getTransaksjonen()); // sletter i problemdomeneobjekt
-        tabelldata.remove(indeks);  // sletter i presentasjonsobjektet
-      }
-      indeks--;
-    }
-  }
-    
 }

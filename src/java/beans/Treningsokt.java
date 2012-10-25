@@ -1,12 +1,8 @@
 package beans;
 
-import java.io.Serializable;
 import java.util.Date;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-@Named("Okt")
-@SessionScoped
-public class Treningsokt implements Serializable {
+
+public class Treningsokt {
 
     private static int oktnummer = 1;
     private Date dato = new Date();
@@ -17,14 +13,14 @@ public class Treningsokt implements Serializable {
     public Treningsokt() {
     }
 
-    public Treningsokt(Date dato,int varighet, String beskrivelse, String kategori) {
+    public Treningsokt(Date dato, int varighet, String beskrivelse, String kategori) {
         this.dato = dato;
         this.varighet = varighet;
         this.beskrivelse = beskrivelse;
         this.kategori = kategori;
     }
-    
-    public synchronized void oppdatOktnummer(){
+
+    public synchronized void oppdatOktnummer() {
         oktnummer++;
     }
 
@@ -76,7 +72,8 @@ public class Treningsokt implements Serializable {
             System.out.println("Må skrive inn heltall!");
         }
     }
-    public synchronized void nullstill(){
+
+    public synchronized void nullstill() {
         dato = null;
         varighet = 0;
         beskrivelse = null;

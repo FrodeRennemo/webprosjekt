@@ -7,78 +7,29 @@ package beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
 
-@Named("Okter")
-@SessionScoped
 public class Treningsokter implements Serializable {
 
     private String bruker = null;
     private int antOkter = 0;
     private ArrayList<Treningsokt> tabell = new ArrayList();
-    private Treningsokt nyOkt = new Treningsokt();
-
-    public Treningsokter() {
-    }
 
     public Treningsokter(String bruker) {
         this.bruker = bruker;
     }
 
-    public String getBruker() {
-        return bruker;
+    public Treningsokter() {
     }
 
-    public ArrayList<Treningsokt> getTabell() {
+    public ArrayList<Treningsokt> getAlleOkter() {
         return tabell;
     }
 
-    public void setDato(Date dato) {
-        nyOkt.setDato(dato);
-    }
-
-    public Treningsokt getNyOkt() {
-        return nyOkt;
-    }
-
-    public void setNyOkt(Treningsokt nyOkt) {
-        this.nyOkt = nyOkt;
-    }
-
-    public Date getDato() {
-        return nyOkt.getDato();
-    }
-
-    public String getKategori() {
-        return nyOkt.getKategori();
-    }
-
-    public int getOktnummer() {
-        return nyOkt.getOktnummer();
-    }
-
-    public void setVarighet(int varighet) {
-        nyOkt.setVarighet(varighet);
-    }
-
-    public int getVarighet() {
-        return nyOkt.getVarighet();
-    }
-
-    public void setBeskrivelse(String beskrivelse) {
-        nyOkt.setBeskrivelse(beskrivelse);
-    }
-
-    public String getBeskrivelse() {
-        return nyOkt.getBeskrivelse();
-    }
-
-    public void registrerNyOkt() {
-        if (nyOkt.getVarighet() > 0) {
+    public void registrerNyOkt(Treningsokt okt) {
+        if (okt != null) {
             antOkter++;
-            tabell.add(nyOkt);
-            nyOkt.oppdatOktnummer();
+            tabell.add(okt);
+            okt.oppdatOktnummer();
         }
 
     }
@@ -106,19 +57,15 @@ public class Treningsokter implements Serializable {
         return false;
     }
 
-    public void setKategori(String nyKat) {
-        nyOkt.setKategori(nyKat);
-    }
-
     public int getAntOkter() {
         return antOkter;
     }
-    public int getSnittVarighet(){
+
+    public int getSnittVarighet() {
         int total = 0;
-        for(int i = 0;i<tabell.size();i++){
-            total+=tabell.get(i).getVarighet();
+        for (int i = 0; i < tabell.size(); i++) {
+            total += tabell.get(i).getVarighet();
         }
-        return (total/antOkter);
+        return (total / antOkter);
     }
-    
 }
