@@ -1,7 +1,8 @@
 body {
     font-size: 12px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    color: blue;  
+    color: blue;
+    background-color: black;
     margin: 10px;
 }
 

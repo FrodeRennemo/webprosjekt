@@ -47,7 +47,6 @@ public class Treningsokter implements Serializable {
 
     public void slettOkt(Treningsokt okten) {
         tabell.remove(okten);
- 
     }
 
     public int getAntOkter() {

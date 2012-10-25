@@ -70,7 +70,6 @@ public class Oktbehandler implements java.io.Serializable {
             tabelldata.add(new OktStatus(nyOkt));
             tempOkt.nullstill();
         }
-
     }
 
     public synchronized void slett() {
@@ -83,5 +82,8 @@ public class Oktbehandler implements java.io.Serializable {
             }
             indeks--;
         }
+    }
+    public synchronized void endre() {
+        
     }
 }
