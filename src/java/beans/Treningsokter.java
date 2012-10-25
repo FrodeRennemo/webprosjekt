@@ -45,16 +45,9 @@ public class Treningsokter implements Serializable {
 
     }
 
-    public boolean slettOkt(int oektnr) {
-        for (int i = 0; i < tabell.size(); i++) {
-            if (tabell.get(i).getOktnummer() == oektnr) {
-                tabell.remove(i);
-                antOkter--;
-                return true;
-            }
-
-        }
-        return false;
+    public void slettOkt(Treningsokt okten) {
+        tabell.remove(okten);
+ 
     }
 
     public int getAntOkter() {

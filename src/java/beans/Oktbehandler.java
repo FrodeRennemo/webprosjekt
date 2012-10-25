@@ -70,11 +70,15 @@ public class Oktbehandler implements java.io.Serializable {
             tabelldata.add(new OktStatus(nyOkt));
             tempOkt.nullstill();
         }
+
+    }
+
+    public synchronized void slett() {
         int indeks = tabelldata.size() - 1;
         while (indeks >= 0) {
             OktStatus ts = tabelldata.get(indeks);
             if (ts.getSkalSlettes()) {
-                oversikt.slettTransaksjon(ts.getTransaksjonen());
+                oversikt.slettOkt(ts.getOkten());
                 tabelldata.remove(indeks);
             }
             indeks--;

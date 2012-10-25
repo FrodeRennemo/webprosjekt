@@ -11,6 +11,113 @@
         <ui:composition template ="newTemplate.xhtml">
             <ui:define name="content">
                 <h:form>
+
+                    <p>
+                        <h:outputText value="#{tekster.ingenOkt}" 
+                                      rendered="#{not oktbehandler.getDatafins()}"/>
+                    </p>
+                    <h:dataTable value ="#{oktbehandler.tabelldata}" var="enOkt"
+                                 styleClass="standard" headerClass="hode"  
+                                 rowClasses="oddeRad, likeRad" footerClass="fot"
+                                 rendered="#{oktbehandler.getDatafins()}">
+                        
+                          <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{tekster.Øktnr}"/>
+                            </f:facet>
+                              <h:inputText value="#{enOkt.okten.oktnummer}" 
+                                         styleClass="venstrejustert">
+                                <f:convertDateTime pattern="dd.MM.yyyy"/>
+                            </h:inputText>
+                           
+                        </h:column>
+                        <!-- Kolonne: dato -->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{tekster.Dato}"/>
+                            </f:facet>
+                            <h:inputText value="#{enOkt.okten.dato}" 
+                                         styleClass="venstrejustert">
+                                <f:convertDateTime pattern="dd.MM.yyyy"/>
+                            </h:inputText>
+                           
+                        </h:column>
+                        <!-- Kolonne: kategori -->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{tekster.Kategori}"/>
+                            </f:facet>
+                            <h:inputText value="#{enOkt.okten.kategori}"  
+                                         styleClass="venstrejustert"/>
+                        </h:column>
+                        <!-- Kolonne: beskrivelse -->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{tekster.Beskrivelse}"/>
+                            </f:facet>
+                            <h:inputText value="#{enOkt.okten.beskrivelse}" 
+                                         styleClass="hoyrejustert">
+                                <f:convertNumber pattern="0.00"/>
+                            </h:inputText>
+
+                        </h:column>
+
+                        S
+                        <!-- Kolonne: varighet -->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{tekster.Varighet}"/>
+                            </f:facet>
+                            <h:inputText value="#{enOkt.okten.varighet}" 
+                                         styleClass="hoyrejustert">
+                                <f:convertNumber pattern="0.00"/>
+                            </h:inputText>
+
+                        </h:column>
+
+                        <!-- Kolonne: eventuell sletting -->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{tekster.slett}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{enOkt.skalSlettes}"/>
+                        </h:column>
+                    </h:dataTable>
+                    <!-- Registrere ny transaksjon  -->
+                    <br></br>
+                    <p>
+                        <h:outputText value="#{tekster.nyOkt}" styleClass ="overskrift"/>
+                    </p>
+                    <h:panelGrid columns="2" 
+                                 columnClasses="tallkolonne, tekstkolonne" rowClasses="likeRad">
+                        <h:outputText value="#{tekster.Dato}:  "/>
+                        <h:inputText value="#{oktbehandler.tempOkt.dato}">
+                            <f:convertDateTime pattern="dd.MM.yyyy"/>
+                        </h:inputText>
+                        <h:outputText value ="#{tekster.Kategori}:  "/>
+                        <h:selectOneMenu value ="#{oktbehandler.tempOkt.kategori}">
+                            <f:selectItem  itemValue ="#{tekster.Utholdenhet}"/>
+                            <f:selectItem  itemValue ="#{tekster.Styrke}" />
+                        </h:selectOneMenu>
+                        <h:outputText value="#{tekster.Beskrivelse}:  "/>
+                        <h:inputText value="#{oktbehandler.tempOkt.beskrivelse}">
+                        </h:inputText>
+                        <h:outputText value="#{tekster.Varighet}:  "/>
+                        <h:inputText value="#{oktbehandler.tempOkt.varighet}">
+                        </h:inputText>
+                    </h:panelGrid>
+
+                    <p>
+                        <h:commandButton value="#{tekster.Send}" 
+                                         action="#{oktbehandler.oppdater()}"/>
+                        
+                        <h:commandButton value="#{tekster.slett}" 
+                                         action="#{oktbehandler.slett()}"/>
+                        
+                    </p>
+
+
+                    <!--
                      <table>
                          <tr>
                              <td>#{tekster.Øktnr}: </td>
@@ -24,17 +131,18 @@
                              <td>#{tekster.Varighet}: </td>
                              <td><h:outputText value="#{Okter.varighet}" escape="false"/></td>
                          </tr>
- 
-                         <tr>
-                             <td>#{tekster.Beskrivelse}: </td>
-                             <td><h:outputText value="#{Okter.beskrivelse}" escape="false"/></td>
-                         </tr>
-                         <tr>
-                             <td>#{tekster.Kategori}: </td>
-                             <td><h:outputText value="#{Okter.kategori}" escape="false"/></td>
-                         </tr>
-                     </table>
-                     <p><h:commandButton value="#{tekster.reg}" action="index"/></p>                 
+
+            <tr>
+                <td>#{tekster.Beskrivelse}: </td>
+                <td><h:outputText value="#{Okter.beskrivelse}" escape="false"/></td>
+            </tr>
+            <tr>
+                <td>#{tekster.Kategori}: </td>
+                <td><h:outputText value="#{Okter.kategori}" escape="false"/></td>
+            </tr>
+        </table>
+        <p><h:commandButton value="#{tekster.reg}" action="index"/></p> 
+                    -->
                 </h:form>
             </ui:define>
         </ui:composition>
