@@ -20,45 +20,38 @@
                                  styleClass="standard" headerClass="hode"  
                                  rowClasses="oddeRad, likeRad" footerClass="fot"
                                  rendered="#{oktbehandler.getDatafins()}">
-                        
-                          <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{tekster.Øktnr}"/>
-                            </f:facet>
-                              <h:inputText value="#{enOkt.okten.oktnummer}" 
-                                         styleClass="venstrejustert">
-                                <f:convertDateTime pattern="dd.MM.yyyy"/>
-                            </h:inputText>
-                           
-                        </h:column>
+
                         <!-- Kolonne: dato -->
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{tekster.Dato}"/>
                             </f:facet>
                             <h:inputText value="#{enOkt.okten.dato}" 
+                                         rendered="#{enOkt.endre}"
                                          styleClass="venstrejustert">
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
                             </h:inputText>
-                           
+                            <h:outputText value="#{enOkt.okten.dato}" rendered="#{not enOkt.endre}" />
                         </h:column>
                         <!-- Kolonne: kategori -->
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{tekster.Kategori}"/>
                             </f:facet>
-                            <h:inputText value="#{enOkt.okten.kategori}"  
+                            <h:inputText value="#{enOkt.okten.kategori}"
+                                         rendered="#{enOkt.endre}"
                                          styleClass="venstrejustert"/>
+                            <h:outputText value="#{enOkt.okten.kategori}" rendered="#{not enOkt.endre}" />
                         </h:column>
                         <!-- Kolonne: beskrivelse -->
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{tekster.Beskrivelse}"/>
                             </f:facet>
-                            <h:inputText value="#{enOkt.okten.beskrivelse}" 
-                                         styleClass="hoyrejustert">
-                                <f:convertNumber pattern="0.00"/>
-                            </h:inputText>
+                            <h:inputText value="#{enOkt.okten.beskrivelse}"
+                                         rendered="#{enOkt.endre}"
+                                         styleClass="hoyrejustert" />
+                            <h:outputText value="#{enOkt.okten.beskrivelse}" rendered="#{not enOkt.endre}" />
 
                         </h:column>
 
@@ -69,10 +62,10 @@
                                 <h:outputText value="#{tekster.Varighet}"/>
                             </f:facet>
                             <h:inputText value="#{enOkt.okten.varighet}" 
+                                         rendered="#{enOkt.endre}"
                                          styleClass="hoyrejustert">
-                                <f:convertNumber pattern="0.00"/>
                             </h:inputText>
-
+                            <h:outputText value="#{enOkt.okten.varighet}" rendered="#{not enOkt.endre}" />
                         </h:column>
 
                         <!-- Kolonne: eventuell sletting -->
@@ -81,6 +74,13 @@
                                 <h:outputText value="#{tekster.slett}"/>
                             </f:facet>
                             <h:selectBooleanCheckbox value="#{enOkt.skalSlettes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&#160;" />
+                                <h:outputText value="#{tekster.Endre}"/>
+                            </f:facet>
+                            <h:commandButton value="#{tekster.Endre}" action="#{enOkt.endre}" />
                         </h:column>
                     </h:dataTable>
                     <!-- Registrere ny transaksjon  -->
@@ -110,10 +110,10 @@
                     <p>
                         <h:commandButton value="#{tekster.Send}" 
                                          action="#{oktbehandler.oppdater()}"/>
-                        
+
                         <h:commandButton value="#{tekster.slett}" 
                                          action="#{oktbehandler.slett()}"/>
-                        
+
                     </p>
 
 
