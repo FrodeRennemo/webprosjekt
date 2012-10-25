@@ -16,6 +16,14 @@ public class Treningsokt implements Serializable {
 
     public Treningsokt() {
     }
+
+    public Treningsokt(Date dato,int varighet, String beskrivelse, String kategori) {
+        this.dato = dato;
+        this.varighet = varighet;
+        this.beskrivelse = beskrivelse;
+        this.kategori = kategori;
+    }
+    
     public void oppdatOktnummer(){
         oktnummer++;
     }

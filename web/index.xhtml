@@ -8,12 +8,9 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
+        
         <ui:composition template ="newTemplate.xhtml">
             <ui:define name= "top">
-                <h:form>
-                    <p><h:commandLink action="#{Spraak.setEng()}"><h:graphicImage value = "resources/en.png"/> </h:commandLink> <h:commandLink action="#{Spraak.setNo()}" ><h:graphicImage value = "resources/no.png"/></h:commandLink></p>
-                    <h3>#{tekster.Overskrift}</h3>
-                </h:form>
             </ui:define>
             <ui:define name="content">
                 <h:form>
