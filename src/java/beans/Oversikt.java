@@ -8,17 +8,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Treningsokter implements Serializable {
+public class Oversikt implements Serializable {
 
     private String bruker = null;
     private int antOkter = 0;
     private ArrayList<Treningsokt> tabell = new ArrayList();
 
-    public Treningsokter(String bruker) {
+    public Oversikt(String bruker) {
         this.bruker = bruker;
     }
 
-    public Treningsokter() {
+    public Oversikt() {
     }
 
     public ArrayList<Treningsokt> getAlleOkter() {
@@ -59,5 +59,9 @@ public class Treningsokter implements Serializable {
             total += tabell.get(i).getVarighet();
         }
         return (total / antOkter);
+    }
+    
+    public void endreData(Date dato, int varighet, String beskrivelse, String kategori){
+        
     }
 }
