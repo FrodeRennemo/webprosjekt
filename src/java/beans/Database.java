@@ -2,6 +2,7 @@ package beans;
 
 import static javax.swing.JOptionPane.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date.*;
 
 class Database {
@@ -14,6 +15,35 @@ class Database {
    */
   public Database(String startDbNavn) {
     dbNavn = startDbNavn;
+  }
+  /*
+  public int finnAntOkter() throws SQLException{
+      int antOkter = 0;
+      åpneForbindelse();
+      Statement setning = forbindelse.createStatement();
+      ResultSet res = setning.executeQuery("select COUNT(*) FROM TRENING");
+      res.next();
+      antOkter = res.getInt(1);
+      lukkForbindelse();
+      return antOkter;
+  }
+  */
+  public ArrayList<Treningsokt>lesInn() throws SQLException{
+      ArrayList<Treningsokt>tab = new ArrayList<Treningsokt>();
+      åpneForbindelse();
+      Statement setning = forbindelse.createStatement();
+      ResultSet res = setning.executeQuery("Select * FROM TRENING");
+      while(res.next()){
+          Date dato = res.getDate("dato");
+          int varighet = res.getInt("varighet");
+          String kategori = res.getString("kategorinavn");
+          String beskrivelse = res.getString("tekst");
+          tab.add(new Treningsokt(dato,varighet,beskrivelse,kategori));
+      }
+      lukkForbindelse();
+      return tab;
+      
+      
   }
 
   private void åpneForbindelse() {
@@ -45,8 +75,8 @@ class Database {
       forbindelse.setAutoCommit(false);
 
       sqlRegNyOkt = forbindelse.prepareStatement("insert into trening values(?, ?, ?,?,?)");
-
-      /* Oppdaterer boktabellen */
+      ResultSet res = sqlRegNyOkt.getGeneratedKeys();
+      //sqlRegNyOkt.setInt(1, nyOkt.getOktnummer());
       sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
       sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
       sqlRegNyOkt.setString(3, nyOkt.getKategori());
@@ -67,7 +97,7 @@ class Database {
       String statusklasse = sqlStatus.substring(0, 2);
       if (statusklasse.equals("23")) { // standard kode for "integrity constraint violation"
         ok = false;  // bok med denne isbn er registrert fra før
-      } else Opprydder.skrivMelding(e, "regNyBok()");
+      } else Opprydder.skrivMelding(e, "regNyOkt()");
     } finally {
       Opprydder.settAutoCommit(forbindelse);
       Opprydder.lukkSetning(sqlRegNyOkt);
@@ -78,19 +108,20 @@ class Database {
 
 
 
-  public boolean endreData(int oktNr,Date dato,int varighet, String beskrivelse, String kategori) {
+  public boolean endreData(String brukernavn,int oktNr,Date dato,int varighet, String beskrivelse, String kategori) {
 
     boolean ok = false;
     PreparedStatement sqlUpdOkt = null;
     åpneForbindelse();
     try {
       //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
-      sqlUpdOkt = forbindelse.prepareStatement("update trening set dato = ?,varighet = ?,kategorinavn = ?, tekst = ? where oktnr = ?");
+      sqlUpdOkt = forbindelse.prepareStatement("update trening set dato = ?,varighet = ?,kategorinavn = ?, tekst = ? where oktnr = ? and brukernavn = ?");
       sqlUpdOkt.setDate(1, new java.sql.Date(dato.getTime()));
       sqlUpdOkt.setInt(2, varighet);
       sqlUpdOkt.setString(3, kategori);
       sqlUpdOkt.setString(4, beskrivelse);
       sqlUpdOkt.setInt(5, oktNr);
+      sqlUpdOkt.setString(6, brukernavn);
       int ant = sqlUpdOkt.executeUpdate();
       if (ant > 0) ok = true;
     } catch (SQLException e) {
@@ -100,6 +131,26 @@ class Database {
     }
     lukkForbindelse();
     return ok;
+  }
+  public static void main(String[]args) throws SQLException{
+         try {
+      Class.forName("org.apache.derby.jdbc.ClientDriver");
+    } catch (Exception e) {
+      System.out.println("Kan ikke laste databasedriveren. Avbryter.");
+      e.printStackTrace();
+      System.exit(0);
+    }
+    
+    String databasenavn = "jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj";
+    Database database = new Database(databasenavn);
+    boolean[] ok = new boolean[4];
+    ok[0] = database.endreData("anne", 3, new java.sql.Date(new java.util.Date().getTime()),60, null, "aerobics");
+    
+    //ok[1] = database.regNyOkt(new Treningsokt(new java.sql.Date(new java.util.Date().getTime()),30,"BEEEEF","styrke"),"anne");
+    //ok[2] = database.regnyOkt(new Treningsokt("0-07-241163-5", "C++ Program Design", "J. P. Cohoon, J. W. Davidson"));
+    //ok[3] = database.regNyOkt(new Treningsokt("0-596-00123-1", "Bulding Java Enterprise Applications", "Brett Mclaughlin"));
+    System.out.println(ok[0] + ", " + ok[1] + ", " + ok[2] + ", " + ok[3]); //utskrift: true, true, (exception) false, true
+     
   }
 }
 /*
