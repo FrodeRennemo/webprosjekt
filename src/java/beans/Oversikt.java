@@ -17,11 +17,15 @@ public class Oversikt implements Serializable {
     private Database database = new Database("jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj");
 
     public Oversikt(String bruker) throws SQLException {
+        
         this.bruker = bruker;
-        this.tabell = database.lesInn();
+        //if(database.lesInn(bruker)!=null){
+       //      this.tabell = database.lesInn(bruker);
+      //  }
     }
 
-    public Oversikt() {
+    public Oversikt() throws SQLException {
+        this.tabell = database.lesInn();
     }
 
     public ArrayList<Treningsokt> getAlleOkter() {
@@ -32,7 +36,7 @@ public class Oversikt implements Serializable {
         if (okt != null) {
             antOkter++;
             tabell.add(okt);
-            okt.oppdatOktnummer();
+            database.regNyOkt(okt, bruker);
         }
 
     }
@@ -50,6 +54,7 @@ public class Oversikt implements Serializable {
 
     public void slettOkt(Treningsokt okten) {
         tabell.remove(okten);
+       
     }
 
     public int getAntOkter() {
@@ -63,9 +68,8 @@ public class Oversikt implements Serializable {
         }
         return (total / antOkter);
     }
-    
-    public void endreData(Date dato, int varighet, String beskrivelse, String kategori){
-        
+
+    public void endreData(Date dato, int varighet, String beskrivelse, String kategori) {
     }
 
     public String getBruker() {
@@ -75,17 +79,18 @@ public class Oversikt implements Serializable {
     @Override
     public String toString() {
         String utskrift = "";
-        for(int i = 0;i<tabell.size();i++){
-            utskrift += tabell.get(i).getOktnummer() + " " + tabell.get(i).getDato() + " " + tabell.get(i).getVarighet() + tabell.get(i).getKategori() + " " + tabell.get(i).getBeskrivelse() + "\n";
+        for (int i = 0; i < tabell.size(); i++) {
+            utskrift += bruker + " "+ tabell.get(i).getDato() + " " + tabell.get(i).getVarighet() + " " + tabell.get(i).getKategori() + " " + tabell.get(i).getBeskrivelse() + "\n";
         }
         return utskrift;
     }
-    
-    public static void main(String[]args) throws SQLException{
-        Oversikt liste = new Oversikt("frode");
+
+    public static void main(String[] args) throws SQLException {
+        Oversikt liste = new Oversikt("anne");
+        
+
         System.out.println(liste.toString());
-        
-        
+
+
     }
-    
 }

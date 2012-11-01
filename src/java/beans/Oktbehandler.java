@@ -9,8 +9,8 @@ import javax.inject.Named;
 
 @Named
 @SessionScoped
-public class Oktbehandler implements java.io.Serializable {
-
+public class Oktbehandler implements java.io.Serializable  {
+    
     private Oversikt oversikt = new Oversikt();
     private List<OktStatus> tabelldata = Collections.synchronizedList(new ArrayList<OktStatus>());
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon

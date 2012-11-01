@@ -4,13 +4,14 @@ import java.util.Date;
 
 public class Treningsokt {
 
-    private static int oktnummer = 1;
+    private static int oktnummer = 0;
     private Date dato = new Date();
     private int varighet;
     private String beskrivelse;
     private String kategori;
 
     public Treningsokt() {
+        oppdatOktnummer();
     }
 
     public Treningsokt(Date dato, int varighet, String beskrivelse, String kategori) {
@@ -18,6 +19,7 @@ public class Treningsokt {
         this.varighet = varighet;
         this.beskrivelse = beskrivelse;
         this.kategori = kategori;
+        oppdatOktnummer();
     }
 
     public synchronized void oppdatOktnummer() {

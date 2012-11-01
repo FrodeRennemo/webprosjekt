@@ -9,39 +9,32 @@ class Database {
   private String dbNavn;
   private Connection forbindelse;
 
-  /*
-   * Hvis dette skal være en bean-klasse, må det eksistere en konstruktør med tom parameterliste.
-   * Da må databasenavnet settes på annen måte, f.eks. hardkodes i linje 46.
-   */
+  
   public Database(String startDbNavn) {
     dbNavn = startDbNavn;
   }
-  /*
-  public int finnAntOkter() throws SQLException{
-      int antOkter = 0;
-      åpneForbindelse();
-      Statement setning = forbindelse.createStatement();
-      ResultSet res = setning.executeQuery("select COUNT(*) FROM TRENING");
-      res.next();
-      antOkter = res.getInt(1);
-      lukkForbindelse();
-      return antOkter;
-  }
-  */
+
   public ArrayList<Treningsokt>lesInn() throws SQLException{
+ 
+      
       ArrayList<Treningsokt>tab = new ArrayList<Treningsokt>();
       åpneForbindelse();
       Statement setning = forbindelse.createStatement();
-      ResultSet res = setning.executeQuery("Select * FROM TRENING");
+     // ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE brukernavn= '"+brukernavn+"'");
+       ResultSet res = setning.executeQuery("Select * FROM TRENING");
+
       while(res.next()){
           Date dato = res.getDate("dato");
           int varighet = res.getInt("varighet");
           String kategori = res.getString("kategorinavn");
           String beskrivelse = res.getString("tekst");
-          tab.add(new Treningsokt(dato,varighet,beskrivelse,kategori));
+          Treningsokt okt = new Treningsokt(dato,varighet,beskrivelse,kategori);
+          tab.add(okt);
       }
       lukkForbindelse();
       return tab;
+    
+      
       
       
   }
@@ -61,10 +54,6 @@ class Database {
     Opprydder.lukkForbindelse(forbindelse);
   }
 
-  /*
-   * Metode som registrerer en ny tittel og 1.eksemplar av denne tittelen.
-   * Metoden returnerer false dersom tittel med denne ISBN er registrert fra før.
-   */
   public  boolean regNyOkt(Treningsokt nyOkt,String brukernavn) {
     System.out.println("regNyOkt(): " + nyOkt);
     PreparedStatement sqlRegNyOkt = null;
@@ -75,7 +64,6 @@ class Database {
       forbindelse.setAutoCommit(false);
 
       sqlRegNyOkt = forbindelse.prepareStatement("insert into trening values(?, ?, ?,?,?)");
-      ResultSet res = sqlRegNyOkt.getGeneratedKeys();
       //sqlRegNyOkt.setInt(1, nyOkt.getOktnummer());
       sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
       sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
@@ -105,6 +93,32 @@ class Database {
     lukkForbindelse();
     return ok;
   }
+  /*
+  public boolean slettOkt(Treningsokt okt){
+      boolean ok = false;
+    PreparedStatement sqlUpdOkt = null;
+    åpneForbindelse();
+    try {
+      //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
+      sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM trening WHERE dato = '"  ");
+      sqlUpdOkt.setDate(1, new java.sql.Date(dato.getTime()));
+      sqlUpdOkt.setInt(2, varighet);
+      sqlUpdOkt.setString(3, kategori);
+      sqlUpdOkt.setString(4, beskrivelse);
+      sqlUpdOkt.setInt(5, oktNr);
+      sqlUpdOkt.setString(6, brukernavn);
+      int ant = sqlUpdOkt.executeUpdate();
+      if (ant > 0) ok = true;
+    } catch (SQLException e) {
+      Opprydder.skrivMelding(e, "lånUtEksemplar()");
+    } finally {
+      Opprydder.lukkSetning(sqlUpdOkt);
+    }
+    lukkForbindelse();
+    return ok;
+      
+  }
+  */
 
 
 
@@ -145,94 +159,9 @@ class Database {
     Database database = new Database(databasenavn);
     boolean[] ok = new boolean[4];
     ok[0] = database.endreData("anne", 3, new java.sql.Date(new java.util.Date().getTime()),60, null, "aerobics");
-    
-    //ok[1] = database.regNyOkt(new Treningsokt(new java.sql.Date(new java.util.Date().getTime()),30,"BEEEEF","styrke"),"anne");
-    //ok[2] = database.regnyOkt(new Treningsokt("0-07-241163-5", "C++ Program Design", "J. P. Cohoon, J. W. Davidson"));
-    //ok[3] = database.regNyOkt(new Treningsokt("0-596-00123-1", "Bulding Java Enterprise Applications", "Brett Mclaughlin"));
     System.out.println(ok[0] + ", " + ok[1] + ", " + ok[2] + ", " + ok[3]); //utskrift: true, true, (exception) false, true
      
   }
 }
-/*
-class BibliotekForWeb {
-  public static void main(String[] args) throws Exception {
-    try {
-      Class.forName("org.apache.derby.jdbc.ClientDriver");
-    } catch (Exception e) {
-      System.out.println("Kan ikke laste databasedriveren. Avbryter.");
-      e.printStackTrace();
-      System.exit(0);
-    }
 
-    String databasenavn = "jdbc:derby://localhost:1527/ov5_vprg;user=vprg;password=vprg";
-
-    Database database = new Database(databasenavn);
-
-    /* Følgende er kun for testformål, forenklet frigjøring av databaseressurser */
-/*
-    Connection forbindelse = null;
-    try {
-      forbindelse = DriverManager.getConnection(databasenavn);
-      Statement st = forbindelse.createStatement();
-      int ant1 = st.executeUpdate("delete from eksemplar");
-      st.close();
-      st = forbindelse.createStatement();
-      int ant2 = st.executeUpdate("delete from boktittel");
-      st.close();
-      System.out.println("Har slettet " + ant1 + " rader fra eksemplar og " + ant2 + " rader fra boktittel");
-      forbindelse.close();
-
-    } catch (SQLException e) {
-      System.out.println("Problemer med å tømme databasen. Avslutter.");
-      e.printStackTrace();
-      forbindelse.close();
-      System.exit(0);
-    }
-
-    /* Her begynner testingen */
-/*
-    boolean[] ok = new boolean[4];
-    ok[0] = database.regNyBok(new Bok("0-201-50998-X", "The Unified Modeling Language Reference Manual", "J. Rumbaugh, I. Jacobson, G. Booch"));
-    ok[1] = database.regNyBok(new Bok("0-07-241163-5", "C++ Program Design", "J. P. Cohoon, J. W. Davidson"));
-    ok[2] = database.regNyBok(new Bok("0-07-241163-5", "C++ Program Design", "J. P. Cohoon, J. W. Davidson"));
-    ok[3] = database.regNyBok(new Bok("0-596-00123-1", "Bulding Java Enterprise Applications", "Brett Mclaughlin"));
-    System.out.println(ok[0] + ", " + ok[1] + ", " + ok[2] + ", " + ok[3]); //utskrift: true, true, (exception) false, true
-
-    int[] eksnr = new int[4];
-    eksnr[0] = database.regNyttEksemplar("0-201-50998-X");  // retur 2
-    eksnr[1] = database.regNyttEksemplar("0-201-50998-X");  // retur 3
-    eksnr[2] = database.regNyttEksemplar("0-07-241163-5");  // retur 2
-    eksnr[3] = database.regNyttEksemplar("0-201-50968-X");  // retur 0 (ugyldig isbn)
-    System.out.println(eksnr[0] + ", " + eksnr[1] + ", " + eksnr[2] + ", " + eksnr[3]); //utskrift: 2, 3, 2, 0
-
-    ok[0] = database.lånUtEksemplar("0-201-50998-X", "Anne Hansen", 3);
-    ok[1] = database.lånUtEksemplar("0-201-50968-X", "Per Hansen", 2); // ugyldig isbn
-    ok[2] = database.lånUtEksemplar("0-596-00123-1", "Inge Hansen", 3); // ugyldig eksnr
-    ok[3] = database.lånUtEksemplar("0-596-00123-1", "Inge Hansen", 1);
-    System.out.println(ok[0] + ", " + ok[1] + ", " + ok[2] + ", " + ok[3]); //utskrift: true, false, false, true
-  }
-}
-
-/* Utskrift:
-
-Databaseforbindelse opprettet
-Har slettet 6 rader fra eksemplar og 3 rader fra boktittel
-regNyBok(): 0-201-50998-X: J. Rumbaugh, I. Jacobson, G. Booch, The Unified Model
-ing Language Reference Manual
-regNyBok(): 0-07-241163-5: J. P. Cohoon, J. W. Davidson, C++ Program Design
-regNyBok(): 0-07-241163-5: J. P. Cohoon, J. W. Davidson, C++ Program Design
-regNyBok(): 0-596-00123-1: Brett Mclaughlin, Bulding Java Enterprise Applications
-true, true, false, true
-regNyttEksemplar(), isbn = 0-201-50998-X
-regNyttEksemplar(), isbn = 0-201-50998-X
-regNyttEksemplar(), isbn = 0-07-241163-5
-regNyttEksemplar(), isbn = 0-201-50968-X
-2, 3, 2, 0
-lånUtEksemplar(), isbn = 0-201-50998-X, navn = Anne Hansen, eksnr = 3
-lånUtEksemplar(), isbn = 0-201-50968-X, navn = Per Hansen, eksnr = 2
-lånUtEksemplar(), isbn = 0-596-00123-1, navn = Inge Hansen, eksnr = 3
-lånUtEksemplar(), isbn = 0-596-00123-1, navn = Inge Hansen, eksnr = 1
-true, false, false, true
-Lukker databaseforbindelsen
-*/
 
