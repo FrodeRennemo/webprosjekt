@@ -60,7 +60,6 @@ class Database {
     }
 
     public boolean regNyOkt(Treningsokt nyOkt, String brukernavn) {
-    
         PreparedStatement sqlRegNyOkt = null;
         åpneForbindelse();
         boolean ok = false;
@@ -69,8 +68,12 @@ class Database {
             forbindelse.setAutoCommit(false);
 
             sqlRegNyOkt = forbindelse.prepareStatement("insert into trening(dato,varighet,kategorinavn,tekst,brukernavn) values(?, ?, ?,?,?)");
-  
-            sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
+            try{
+                sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
+            }catch(NullPointerException e){
+                sqlRegNyOkt.setDate(1, new java.sql.Date(2012,11,2));
+            }
+            
             sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
             sqlRegNyOkt.setString(3, nyOkt.getKategori());
             sqlRegNyOkt.setString(4, nyOkt.getBeskrivelse());
