@@ -1,5 +1,6 @@
 package beans;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class Oktbehandler implements java.io.Serializable {
     public synchronized boolean getDatafins() {
         return (tabelldata.size() > 0);
     }
+ 
 
     public synchronized List<MaanedStatus> getMaaneddata() {
         return maaneddata;
@@ -81,6 +83,7 @@ public class Oktbehandler implements java.io.Serializable {
     }
 
     public synchronized void leggTil() {
+     
         if (!tempOkt.getKategori().trim().equals("")) {
             Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
             oversikt.registrerNyOkt(nyOkt);
@@ -91,6 +94,7 @@ public class Oktbehandler implements java.io.Serializable {
 
     public synchronized void slett() {
         int indeks = tabelldata.size() - 1;
+        
         while (indeks >= 0) {
             OktStatus ts = tabelldata.get(indeks);
             if (ts.getSkalSlettes()) {
@@ -102,6 +106,7 @@ public class Oktbehandler implements java.io.Serializable {
     }
 
     public synchronized double getSnittVarighet() {
+      
         return oversikt.getSnittVarighet();
     }
 

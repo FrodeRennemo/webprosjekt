@@ -14,15 +14,17 @@ class Database {
         dbNavn = startDbNavn;
     }
 
-    public ArrayList<Treningsokt> lesInn() throws SQLException {
+    public ArrayList<Treningsokt> lesInn()  {
 
-
+        
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+        
         åpneForbindelse();
+        try{
         Statement setning = forbindelse.createStatement();
         // ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE brukernavn= '"+brukernavn+"'");
         ResultSet res = setning.executeQuery("Select * FROM TRENING");
-
+        
         while (res.next()) {
             Date dato = res.getDate("dato");
             int varighet = res.getInt("varighet");
@@ -30,6 +32,9 @@ class Database {
             String beskrivelse = res.getString("tekst");
             Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
             tab.add(okt);
+        }
+        }catch(SQLException e){
+            
         }
         lukkForbindelse();
         return tab;
@@ -96,7 +101,7 @@ class Database {
         return ok;
     }
 
-    public boolean slettOkt(int indeks,String brukernavn) throws SQLException {
+    public boolean slettOkt(int indeks,String brukernavn) {
     
          boolean ok = false;
         PreparedStatement sqlUpdOkt = null;

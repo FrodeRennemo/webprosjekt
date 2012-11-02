@@ -15,17 +15,18 @@ public class Oversikt implements Serializable {
     private ArrayList<Treningsokt> tabell = new ArrayList();
     private Database database = new Database("jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj");
 
-    public Oversikt(String bruker) throws SQLException {
+    public Oversikt(String bruker) {
 
         this.bruker = bruker;
-        //if(database.lesInn(bruker)!=null){
-        //     this.tabell = database.lesInn(bruker);
-        //}
+       
         this.tabell = database.lesInn();
+       
     }
 
-    public Oversikt() throws SQLException {
+    public Oversikt()  {
+       
         this.tabell = database.lesInn();
+        
     }
 
     public ArrayList<Treningsokt> getAlleOkter() {
@@ -59,7 +60,7 @@ public class Oversikt implements Serializable {
     }
 
 
-    public boolean slettOkt(Treningsokt okten) throws SQLException {
+    public boolean slettOkt(Treningsokt okten)  {
         int indeks = 0;
         for (int i = 0; i < tabell.size(); i++) {
             if (tabell.get(i).equals(okten)) {
@@ -79,6 +80,9 @@ public class Oversikt implements Serializable {
         int total = 0;
         for (int i = 0; i < tabell.size(); i++) {
             total += tabell.get(i).getVarighet();
+        }
+        if(antOkter== 0){
+            return 0;
         }
         return (total / antOkter);
     }
@@ -103,7 +107,7 @@ public class Oversikt implements Serializable {
         return tabell;
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         Oversikt liste = new Oversikt("anne");
    
         System.out.println(liste.toString());
