@@ -9,18 +9,36 @@ import javax.inject.Named;
 
 @Named
 @SessionScoped
-public class Oktbehandler implements java.io.Serializable  {
-    
+public class Oktbehandler implements java.io.Serializable {
+
     private Oversikt oversikt = new Oversikt();
     private List<OktStatus> tabelldata = Collections.synchronizedList(new ArrayList<OktStatus>());
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon
+    private int maaned;
+    private List<MaanedStatus> maaneddata = Collections.synchronizedList(new ArrayList<MaanedStatus>());
 
     public synchronized boolean getDatafins() {
         return (tabelldata.size() > 0);
     }
 
+    public synchronized List<MaanedStatus> getMaaneddata() {
+        return maaneddata;
+    }
+
+    public synchronized boolean getDataMaanedfins() {
+        return (maaneddata.size() > 0);
+    }
+
     public synchronized List<OktStatus> getTabelldata() {
         return tabelldata;
+    }
+
+    public synchronized void setMaaned(int maaned) {
+        this.maaned = maaned;
+    }
+
+    public synchronized int getMaaned() {
+        return maaned;
     }
 
     public synchronized Date getDato() {
@@ -63,7 +81,7 @@ public class Oktbehandler implements java.io.Serializable  {
         tempOkt = nyOkt;
     }
 
-    public synchronized void oppdater() {
+    public synchronized void leggTil() {
         if (!tempOkt.getKategori().trim().equals("")) {
             Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
             oversikt.registrerNyOkt(nyOkt);
@@ -83,7 +101,14 @@ public class Oktbehandler implements java.io.Serializable  {
             indeks--;
         }
     }
-    public synchronized void endre() {
-        
+
+    public synchronized double getSnittVarighet() {
+        return oversikt.getSnittVarighet();
+    }
+
+    public synchronized void getAlleEnMnd() {
+        for (Treningsokt i : oversikt.getAlleOkterEnMnd(maaned)) {
+            maaneddata.add(new MaanedStatus(i));
+        }
     }
 }
