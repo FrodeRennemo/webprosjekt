@@ -34,7 +34,7 @@ class Database {
             tab.add(okt);
         }
         }catch(SQLException e){
-            
+            System.out.println(e.getMessage());
         }
         lukkForbindelse();
         return tab;
@@ -69,7 +69,7 @@ class Database {
             forbindelse.setAutoCommit(false);
 
             sqlRegNyOkt = forbindelse.prepareStatement("insert into trening(dato,varighet,kategorinavn,tekst,brukernavn) values(?, ?, ?,?,?)");
-            //sqlRegNyOkt.setInt(1, nyOkt.getOktnummer());
+  
             sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
             sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
             sqlRegNyOkt.setString(3, nyOkt.getKategori());
