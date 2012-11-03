@@ -11,15 +11,16 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class Oktbehandler implements java.io.Serializable {
-    private Oversikt oversikt = new Oversikt();
+
+    private Oversikt oversikt = new Oversikt("tore");
     private List<OktStatus> tabelldata = Collections.synchronizedList(new ArrayList<OktStatus>());
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon
     private int maaned;
     private List<MaanedStatus> maaneddata = Collections.synchronizedList(new ArrayList<MaanedStatus>());
-    
-    public Oktbehandler(){
-        if(oversikt.getTabell()!=null){
-            for(int i = 0;i<oversikt.getTabell().size();i++){
+
+    public Oktbehandler() {
+        if (oversikt.getTabell() != null) {
+            for (int i = 0; i < oversikt.getTabell().size(); i++) {
                 tabelldata.add(new OktStatus(oversikt.getTabell().get(i)));
             }
         }
@@ -32,8 +33,6 @@ public class Oktbehandler implements java.io.Serializable {
     public Oversikt getOversikt() {
         return oversikt;
     }
-    
- 
 
     public synchronized List<MaanedStatus> getMaaneddata() {
         return maaneddata;
@@ -96,30 +95,30 @@ public class Oktbehandler implements java.io.Serializable {
     }
 
     public synchronized void leggTil() {
-     
-        if (!tempOkt.getKategori().trim().equals("")) {
+
+        if (oversikt.registrerNyOkt(tempOkt)) {
             Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
             oversikt.registrerNyOkt(nyOkt);
             tabelldata.add(new OktStatus(nyOkt));
             tempOkt.nullstill();
-        }
+       }
     }
 
     public synchronized void slett() {
         int indeks = tabelldata.size() - 1;
-        
+
         while (indeks >= 0) {
             OktStatus ts = tabelldata.get(indeks);
-            if (ts.getSkalSlettes()) {
-                oversikt.slettOkt(ts.getOkten());
+            if (ts.getSkalSlettes() && oversikt.slettOkt(ts.getOkten())) {
                 tabelldata.remove(indeks);
+                
             }
             indeks--;
         }
     }
 
     public synchronized double getSnittVarighet() {
-      
+
         return oversikt.getSnittVarighet();
     }
 
@@ -129,4 +128,3 @@ public class Oktbehandler implements java.io.Serializable {
         }
     }
 }
-

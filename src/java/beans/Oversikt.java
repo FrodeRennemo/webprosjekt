@@ -27,6 +27,9 @@ public class Oversikt implements Serializable {
         this.tabell = database.lesInn();
         
     }
+    public void lesFraBruker(String bruker){
+        database.lesInnBruker(bruker);
+    }
 
     public ArrayList<Treningsokt> getAlleOkter() {
         return tabell;
@@ -34,7 +37,6 @@ public class Oversikt implements Serializable {
 
     public boolean registrerNyOkt(Treningsokt okt) {
         if (okt != null) {
-            System.out.println("ok");
             if(database.regNyOkt(okt, bruker)){
                 tabell.add(okt);
                 antOkter++;
@@ -106,11 +108,17 @@ public class Oversikt implements Serializable {
         return tabell;
     }
 
+    public void setBruker(String bruker) {
+        this.bruker = bruker;
+    }
+    
+
     public static void main(String[] args) {
-        Oversikt liste = new Oversikt("anne");
+        Oversikt liste = new Oversikt("tore");
    
         System.out.println(liste.toString());
         System.out.println(liste.registrerNyOkt(new Treningsokt(new java.util.Date(),45,"BEEF","aerobics")));
+        System.out.println(liste.toString());
         
 
 

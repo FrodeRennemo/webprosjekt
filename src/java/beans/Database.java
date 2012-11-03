@@ -42,6 +42,34 @@ class Database {
 
 
     }
+    public ArrayList<Treningsokt> lesInnBruker(String bruker)  {
+
+        
+        ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+        
+        åpneForbindelse();
+        try{
+        Statement setning = forbindelse.createStatement();
+         ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '"+bruker+"'");
+        
+        while (res.next()) {
+            Date dato = res.getDate("dato");
+            int varighet = res.getInt("varighet");
+            String kategori = res.getString("kategorinavn");
+            String beskrivelse = res.getString("tekst");
+            Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+            tab.add(okt);
+        }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        lukkForbindelse();
+        return tab;
+
+
+
+
+    }
 
     private void åpneForbindelse() {
         try {
