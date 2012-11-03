@@ -16,10 +16,23 @@ public class Oktbehandler implements java.io.Serializable {
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon
     private int maaned;
     private List<MaanedStatus> maaneddata = Collections.synchronizedList(new ArrayList<MaanedStatus>());
+    
+    public Oktbehandler(){
+        if(oversikt.getTabell()!=null){
+            for(int i = 0;i<oversikt.getTabell().size();i++){
+                tabelldata.add(new OktStatus(oversikt.getTabell().get(i)));
+            }
+        }
+    }
 
     public synchronized boolean getDatafins() {
         return (tabelldata.size() > 0);
     }
+
+    public Oversikt getOversikt() {
+        return oversikt;
+    }
+    
  
 
     public synchronized List<MaanedStatus> getMaaneddata() {

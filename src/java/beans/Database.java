@@ -22,8 +22,7 @@ class Database {
         åpneForbindelse();
         try{
         Statement setning = forbindelse.createStatement();
-        // ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE brukernavn= '"+brukernavn+"'");
-        ResultSet res = setning.executeQuery("Select * FROM TRENING");
+         ResultSet res = setning.executeQuery("Select * FROM TRENING");
         
         while (res.next()) {
             Date dato = res.getDate("dato");
@@ -64,14 +63,11 @@ class Database {
         åpneForbindelse();
         boolean ok = false;
         try {
-
-            forbindelse.setAutoCommit(false);
-
             sqlRegNyOkt = forbindelse.prepareStatement("insert into trening(dato,varighet,kategorinavn,tekst,brukernavn) values(?, ?, ?,?,?)");
             try{
                 sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
             }catch(NullPointerException e){
-                sqlRegNyOkt.setDate(1, new java.sql.Date(2012,11,2));
+                sqlRegNyOkt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
             }
             
             sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
@@ -88,14 +84,9 @@ class Database {
             ok = true;
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             Opprydder.rullTilbake(forbindelse);
-            String sqlStatus = e.getSQLState().trim();
-            String statusklasse = sqlStatus.substring(0, 2);
-            if (statusklasse.equals("23")) { // standard kode for "integrity constraint violation"
-                ok = false;  // bok med denne isbn er registrert fra før
-            } else {
-                Opprydder.skrivMelding(e, "regNyOkt()");
-            }
+          
         } finally {
             Opprydder.settAutoCommit(forbindelse);
             Opprydder.lukkSetning(sqlRegNyOkt);
@@ -168,9 +159,9 @@ class Database {
 
         String databasenavn = "jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj";
         Database database = new Database(databasenavn);
-        boolean[] ok = new boolean[4];
-        ok[0] = database.endreData("anne", 3, new java.sql.Date(new java.util.Date().getTime()), 60, null, "aerobics");
-        System.out.println(ok[0] + ", " + ok[1] + ", " + ok[2] + ", " + ok[3]); //utskrift: true, true, (exception) false, true
+       
+        boolean ok = database.regNyOkt(new Treningsokt(new java.util.Date(),45,"sdsd","styrke"),"anne");
+        System.out.println(ok);
 
     }
 }

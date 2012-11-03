@@ -110,7 +110,7 @@ public class Oversikt implements Serializable {
         Oversikt liste = new Oversikt("anne");
    
         System.out.println(liste.toString());
-        System.out.println(liste.registrerNyOkt(new Treningsokt(new java.util.Date(),45,"BEEF","BEEF")));
+        System.out.println(liste.registrerNyOkt(new Treningsokt(new java.util.Date(),45,"BEEF","aerobics")));
         
 
 
