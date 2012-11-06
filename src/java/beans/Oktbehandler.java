@@ -95,7 +95,6 @@ public class Oktbehandler implements java.io.Serializable {
     }
 
     public synchronized void leggTil() {
-
         if (oversikt.registrerNyOkt(tempOkt)) {
             Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
             oversikt.registrerNyOkt(nyOkt);
@@ -106,23 +105,21 @@ public class Oktbehandler implements java.io.Serializable {
 
     public synchronized void slett() {
         int indeks = tabelldata.size() - 1;
-
         while (indeks >= 0) {
             OktStatus ts = tabelldata.get(indeks);
             if (ts.getSkalSlettes() && oversikt.slettOkt(ts.getOkten())) {
                 tabelldata.remove(indeks);
-                
             }
             indeks--;
         }
     }
 
     public synchronized double getSnittVarighet() {
-
         return oversikt.getSnittVarighet();
     }
 
     public synchronized void getAlleEnMnd() {
+        maaneddata = Collections.synchronizedList(new ArrayList<MaanedStatus>());
         for (Treningsokt i : oversikt.getAlleOkterEnMnd(maaned)) {
             maaneddata.add(new MaanedStatus(i));
         }

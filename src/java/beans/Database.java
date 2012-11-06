@@ -15,15 +15,11 @@ class Database {
     }
 
     public ArrayList<Treningsokt> lesInn()  {
-
-        
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
-        
         åpneForbindelse();
         try{
         Statement setning = forbindelse.createStatement();
-         ResultSet res = setning.executeQuery("Select * FROM TRENING");
-        
+        ResultSet res = setning.executeQuery("Select * FROM TRENING");
         while (res.next()) {
             Date dato = res.getDate("dato");
             int varighet = res.getInt("varighet");
@@ -37,21 +33,14 @@ class Database {
         }
         lukkForbindelse();
         return tab;
-
-
-
-
     }
+    
     public ArrayList<Treningsokt> lesInnBruker(String bruker)  {
-
-        
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
-        
         åpneForbindelse();
         try{
         Statement setning = forbindelse.createStatement();
-         ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '"+bruker+"'");
-        
+        ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '"+bruker+"'");
         while (res.next()) {
             Date dato = res.getDate("dato");
             int varighet = res.getInt("varighet");
@@ -65,10 +54,6 @@ class Database {
         }
         lukkForbindelse();
         return tab;
-
-
-
-
     }
 
     private void åpneForbindelse() {
@@ -96,8 +81,7 @@ class Database {
                 sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
             }catch(NullPointerException e){
                 sqlRegNyOkt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
-            }
-            
+            }  
             sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
             sqlRegNyOkt.setString(3, nyOkt.getKategori());
             sqlRegNyOkt.setString(4, nyOkt.getBeskrivelse());
@@ -124,8 +108,7 @@ class Database {
     }
 
     public boolean slettOkt(int indeks,String brukernavn) {
-    
-         boolean ok = false;
+        boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
         åpneForbindelse();
         try {
@@ -150,7 +133,6 @@ class Database {
     }
 
     public boolean endreData(String brukernavn, int oktNr, Date dato, int varighet, String beskrivelse, String kategori) {
-
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
         åpneForbindelse();
@@ -190,6 +172,5 @@ class Database {
        
         boolean ok = database.regNyOkt(new Treningsokt(new java.util.Date(),45,"sdsd","styrke"),"anne");
         System.out.println(ok);
-
     }
 }

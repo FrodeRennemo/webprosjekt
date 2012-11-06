@@ -9,25 +9,22 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Oversikt implements Serializable {
+
     int antOkter = 0;
     private String bruker = null;
     private ArrayList<Treningsokt> tabell = new ArrayList();
     private Database database = new Database("jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj");
 
     public Oversikt(String bruker) {
-
         this.bruker = bruker;
-       
         this.tabell = database.lesInn();
-       
     }
 
-    public Oversikt()  {
-       
+    public Oversikt() {
         this.tabell = database.lesInn();
-        
     }
-    public void lesFraBruker(String bruker){
+
+    public void lesFraBruker(String bruker) {
         database.lesInnBruker(bruker);
     }
 
@@ -37,7 +34,8 @@ public class Oversikt implements Serializable {
 
     public boolean registrerNyOkt(Treningsokt okt) {
         if (okt != null) {
-            if(database.regNyOkt(okt, bruker)){
+            if (database.regNyOkt(okt, bruker)) {
+                                System.out.println("LOL");
                 tabell.add(okt);
                 antOkter++;
                 return true;
@@ -46,13 +44,11 @@ public class Oversikt implements Serializable {
         return false;
     }
 
-       
-
     public ArrayList<Treningsokt> getAlleOkterEnMnd(int maaned) {
         ArrayList<Treningsokt> Maaned = new ArrayList<Treningsokt>();
         for (int i = 0; i < tabell.size(); i++) {
             if (tabell.get(i).getDato() != null) {
-                if (tabell.get(i).getDato().getMonth()+1 == maaned) {
+                if (tabell.get(i).getDato().getMonth() + 1 == maaned) {
                     Maaned.add(tabell.get(i));
                 }
             }
@@ -60,8 +56,7 @@ public class Oversikt implements Serializable {
         return Maaned;
     }
 
-
-    public boolean slettOkt(Treningsokt okten)  {
+    public boolean slettOkt(Treningsokt okten) {
         int indeks = 0;
         for (int i = 0; i < tabell.size(); i++) {
             if (tabell.get(i).equals(okten)) {
@@ -69,20 +64,18 @@ public class Oversikt implements Serializable {
                 tabell.remove(okten);
             }
         }
-        if (database.slettOkt(indeks,bruker)) {
+        if (database.slettOkt(indeks, bruker)) {
             return true;
         }
         return false;
     }
-
-   
 
     public int getSnittVarighet() {
         int total = 0;
         for (int i = 0; i < tabell.size(); i++) {
             total += tabell.get(i).getVarighet();
         }
-        if(antOkter== 0){
+        if (antOkter == 0) {
             return 0;
         }
         return (total / antOkter);
@@ -111,28 +104,11 @@ public class Oversikt implements Serializable {
     public void setBruker(String bruker) {
         this.bruker = bruker;
     }
-    
 
     public static void main(String[] args) {
         Oversikt liste = new Oversikt("tore");
-   
         System.out.println(liste.toString());
-        System.out.println(liste.registrerNyOkt(new Treningsokt(new java.util.Date(),45,"BEEF","aerobics")));
+        System.out.println(liste.registrerNyOkt(new Treningsokt(new java.util.Date(), 45, "BEEF", "aerobics")));
         System.out.println(liste.toString());
-        
-
-
     }
 }
-
-
-
-
-    
-
-  
-
-
-    
-
-    
