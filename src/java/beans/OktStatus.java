@@ -51,9 +51,8 @@ public class OktStatus {
     }
 
     public void endre() {
-        if (endre) {
-            endre = false;
+        if (!endre) {
+            endre = true;
         }
-        else endre = true;
     }
 }

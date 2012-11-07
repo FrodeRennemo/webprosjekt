@@ -70,15 +70,20 @@ public class Oversikt implements Serializable {
         for (int i = 0; i < tabell.size(); i++) {
             total += tabell.get(i).getVarighet();
         }
-        if (tabell.size() == 0) {
+        if (tabell.isEmpty()) {
             return 0;
         }
         return (total / tabell.size());
     }
 
     public void endreData(Treningsokt okt) {
-        database.endreData(okt, bruker);
-        tabell.set(okt.getNummer(),okt);
+        
+        for(int i = 0;i<tabell.size();i++){
+            if(okt.getNummer() == tabell.get(i).getNummer() && database.endreData(okt, bruker)){
+                System.out.println(okt.getBeskrivelse());
+                tabell.set(i, okt);
+            }
+        }
     }
 
     public String getBruker() {

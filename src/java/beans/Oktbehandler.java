@@ -99,7 +99,7 @@ public class Oktbehandler implements java.io.Serializable {
         if (oversikt.registrerNyOkt(nyOkt)) {
             tabelldata.add(new OktStatus(nyOkt));
             tempOkt.nullstill();
-       }
+        }
     }
 
     public synchronized void slett() {
@@ -123,16 +123,13 @@ public class Oktbehandler implements java.io.Serializable {
             maaneddata.add(new MaanedStatus(i));
         }
     }
-    
-    public synchronized void endre(){
-        OktStatus ts = new OktStatus();
-        ts.endre();
+
+    public synchronized void endre() {
         int indeks = tabelldata.size() - 1;
         while (indeks >= 0) {
-            ts = tabelldata.get(indeks);
-            if (!ts.getEndre()) {
-                oversikt.endreData(ts.getOkten());
-            }
+            OktStatus ts = tabelldata.get(indeks);
+            ts.setEndre(false);
+            oversikt.endreData(ts.getOkten());
             indeks--;
         }
     }

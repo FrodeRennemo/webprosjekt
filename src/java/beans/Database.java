@@ -157,8 +157,9 @@ class Database {
 //      return primNokkel;
 //    }
 
-    public void endreData(Treningsokt okt, String brukernavn) {
+    public boolean endreData(Treningsokt okt, String brukernavn) {
         PreparedStatement sqlUpdOkt = null;
+        boolean ok = false;
         åpneForbindelse();
         try {
             //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
@@ -169,12 +170,16 @@ class Database {
             sqlUpdOkt.setString(4, okt.getBeskrivelse());
             sqlUpdOkt.setInt(5, okt.getNummer());
             sqlUpdOkt.setString(6, brukernavn);
+            ok = true;
+            sqlUpdOkt.executeUpdate();
+            forbindelse.commit();
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "endreData()");
         } finally {
             Opprydder.lukkSetning(sqlUpdOkt);
         }
         lukkForbindelse();
+        return ok;
     }
 
     public static void main(String[] args) throws SQLException {
