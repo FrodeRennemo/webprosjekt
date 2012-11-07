@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Oversikt implements Serializable {
-
-    int antOkter = 0;
     private String bruker = null;
     private ArrayList<Treningsokt> tabell = new ArrayList();
     private Database database = new Database("jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj");
@@ -32,15 +30,14 @@ public class Oversikt implements Serializable {
         return tabell;
     }
 
-    public int finnNokkel(Treningsokt Okt) {
-        return database.finnOktNr(Okt, bruker);
-    }
+//    public int finnNokkel(Treningsokt Okt) {
+//        return database.finnOktNr(Okt, bruker);
+//    }
 
     public boolean registrerNyOkt(Treningsokt okt) {
         if (okt != null) {
             if (database.regNyOkt(okt, bruker)) {
                 tabell.add(okt);
-                antOkter++;
                 return true;
             }
         }
@@ -60,10 +57,9 @@ public class Oversikt implements Serializable {
     }
 
     public boolean slettOkt(Treningsokt okten) {
-        int oktNr = database.finnOktNr(okten, bruker);
-        if (database.slettOkt(oktNr, bruker)) {
+//        int oktNr = database.finnOktNr(okten, bruker);
+        if (database.slettOkt(okten, bruker)) {
             tabell.remove(okten);
-
             return true;
         }
         return false;
@@ -74,10 +70,10 @@ public class Oversikt implements Serializable {
         for (int i = 0; i < tabell.size(); i++) {
             total += tabell.get(i).getVarighet();
         }
-        if (antOkter == 0) {
+        if (tabell.size() == 0) {
             return 0;
         }
-        return (total / antOkter);
+        return (total / tabell.size());
     }
 
     public void endreData(Date dato, int varighet, String beskrivelse, String kategori) {
@@ -110,6 +106,6 @@ public class Oversikt implements Serializable {
         Treningsokt a = new Treningsokt(new java.util.Date(), 45, "BEEF", "aerobics");
         System.out.println(liste.registrerNyOkt(a));
         System.out.println(liste.toString());
-        System.out.println(liste.finnNokkel(a));
+//        System.out.println(liste.finnNokkel(a));
     }
 }

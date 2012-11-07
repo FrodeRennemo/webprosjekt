@@ -21,11 +21,13 @@ class Database  {
         Statement setning = forbindelse.createStatement();
         ResultSet res = setning.executeQuery("Select * FROM TRENING");
         while (res.next()) {
+            int oktnummer = res.getInt("oktnr");
             Date dato = res.getDate("dato");
             int varighet = res.getInt("varighet");
             String kategori = res.getString("kategorinavn");
             String beskrivelse = res.getString("tekst");
             Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+            okt.setNummer(oktnummer);
             tab.add(okt);
         }
         }catch(SQLException e){
@@ -108,18 +110,12 @@ class Database  {
         return ok;
     }
 
-    public boolean slettOkt(int oektNr,String brukernavn) {
+    public boolean slettOkt(Treningsokt okt,String brukernavn) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
         åpneForbindelse();
         try {
-            //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
-            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = ? AND brukernavn = '"+brukernavn+"'");
-            sqlUpdOkt.setInt(1, oektNr);
-            int ant = sqlUpdOkt.executeUpdate();
-            if (ant > 0) {
-                ok = true;
-            }
+            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = "+okt.getNummer()+"");
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "slettOkt()");
         } finally {
@@ -131,29 +127,29 @@ class Database  {
 
 
     }
-    public int finnOktNr(Treningsokt okt, String brukernavn){
-        int primNokkel = -1;
-        try{
-        åpneForbindelse();
-      Statement setning = forbindelse.createStatement();
-      Statement setning2 = forbindelse.createStatement();
-      java.sql.Date jall = new java.sql.Date(okt.getDato().getTime());
-      ResultSet res2 = setning2.executeQuery("SELECT * FROM TRENING");
-      java.sql.Date dato = new java.sql.Date(okt.getDato().getTime());
-      while(res2.next()){
-          if(res2.getDate(2).equals(dato) && res2.getString(6).equals(brukernavn)){
-              res2 = setning.executeQuery("DELETE FROM TRENING WHERE brukernavn = '"+brukernavn+"'");
-          }
-      }
-      
-      ResultSet res = setning.executeQuery("select OKTNR FROM TRENING WHERE BRUKERNAVN = '"+brukernavn+"' AND DATO = ?" );
-      primNokkel = res.getInt(1);
-      lukkForbindelse();
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-      return primNokkel;
-    }
+//    public int finnOktNr(Treningsokt okt, String brukernavn){
+//        int primNokkel = -1;
+//        try{
+//        åpneForbindelse();
+//      Statement setning = forbindelse.createStatement();
+//      Statement setning2 = forbindelse.createStatement();
+//      java.sql.Date jall = new java.sql.Date(okt.getDato().getTime());
+//      ResultSet res2 = setning2.executeQuery("SELECT * FROM TRENING");
+//      java.sql.Date dato = new java.sql.Date(okt.getDato().getTime());
+//      while(res2.next()){
+//          if(res2.getDate(2).equals(dato) && res2.getString(6).equals(brukernavn)){
+//              res2 = setning.executeQuery("DELETE FROM TRENING WHERE brukernavn = '"+brukernavn+"'");
+//          }
+//      }
+//      
+//      ResultSet res = setning.executeQuery("select OKTNR FROM TRENING WHERE BRUKERNAVN = '"+brukernavn+"' AND DATO = ?" );
+//      primNokkel = res.getInt(1);
+//      lukkForbindelse();
+//        }catch(SQLException e){
+//            System.out.println(e.getMessage());
+//        }
+//      return primNokkel;
+//    }
 
     public boolean endreData(String brukernavn, int oktNr, Date dato, int varighet, String beskrivelse, String kategori) {
         boolean ok = false;
@@ -194,6 +190,6 @@ class Database  {
         Database database = new Database(databasenavn);
         Treningsokt okt = new Treningsokt(new java.util.Date(),45,"sdsd","styrke");
        database.regNyOkt(okt, "tore");
-        System.out.println(database.finnOktNr(okt, "tore"));
+//        System.out.println(database.finnOktNr(okt, "tore"));
     }
 }

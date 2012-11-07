@@ -3,7 +3,8 @@ package beans;
 import java.util.Date;
 
 public class Treningsokt {
-
+    
+    private int nummer = 0;
     private static int oktnummer = 0;
     private Date dato = new Date();
     private int varighet;
@@ -20,6 +21,14 @@ public class Treningsokt {
         this.beskrivelse = beskrivelse;
         this.kategori = kategori;
         oppdatOktnummer();
+    }
+    
+    public void setNummer(int nummer){
+        this.nummer = nummer;
+    }
+    
+    public synchronized int getNummer(){
+        return nummer;
     }
 
     public synchronized void oppdatOktnummer() {
