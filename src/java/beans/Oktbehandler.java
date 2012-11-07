@@ -123,4 +123,17 @@ public class Oktbehandler implements java.io.Serializable {
             maaneddata.add(new MaanedStatus(i));
         }
     }
+    
+    public synchronized void endre(){
+        OktStatus ts = new OktStatus();
+        ts.endre();
+        int indeks = tabelldata.size() - 1;
+        while (indeks >= 0) {
+            ts = tabelldata.get(indeks);
+            if (!ts.getEndre()) {
+                oversikt.endreData(ts.getOkten());
+            }
+            indeks--;
+        }
+    }
 }

@@ -83,7 +83,7 @@
                                 <h:outputText value="&#160;" />
                                 <h:outputText value="#{tekster.Endre}"/>
                             </f:facet>
-                            <h:commandButton value="#{tekster.Endre}" action="#{enOkt.endre}" />
+                            <h:commandButton value="#{tekster.Endre}" action="#{oktbehandler.endre()}" rendered="#{enOkt.endre}"/>
                         </h:column>
                     </h:dataTable>
                     <!-- For bruk ved implementering av databasen-->

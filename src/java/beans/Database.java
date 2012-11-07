@@ -157,30 +157,24 @@ class Database {
 //      return primNokkel;
 //    }
 
-    public boolean endreData(String brukernavn, int oktNr, Date dato, int varighet, String beskrivelse, String kategori) {
-        boolean ok = false;
+    public void endreData(Treningsokt okt, String brukernavn) {
         PreparedStatement sqlUpdOkt = null;
         åpneForbindelse();
         try {
             //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
             sqlUpdOkt = forbindelse.prepareStatement("update trening set dato = ?,varighet = ?,kategorinavn = ?, tekst = ? where oktnr = ? and brukernavn = ?");
-            sqlUpdOkt.setDate(1, new java.sql.Date(dato.getTime()));
-            sqlUpdOkt.setInt(2, varighet);
-            sqlUpdOkt.setString(3, kategori);
-            sqlUpdOkt.setString(4, beskrivelse);
-            sqlUpdOkt.setInt(5, oktNr);
+            sqlUpdOkt.setDate(1, new java.sql.Date(okt.getDato().getTime()));
+            sqlUpdOkt.setInt(2, okt.getVarighet());
+            sqlUpdOkt.setString(3, okt.getKategori());
+            sqlUpdOkt.setString(4, okt.getBeskrivelse());
+            sqlUpdOkt.setInt(5, okt.getNummer());
             sqlUpdOkt.setString(6, brukernavn);
-            int ant = sqlUpdOkt.executeUpdate();
-            if (ant > 0) {
-                ok = true;
-            }
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "endreData()");
         } finally {
             Opprydder.lukkSetning(sqlUpdOkt);
         }
         lukkForbindelse();
-        return ok;
     }
 
     public static void main(String[] args) throws SQLException {

@@ -76,7 +76,9 @@ public class Oversikt implements Serializable {
         return (total / tabell.size());
     }
 
-    public void endreData(Date dato, int varighet, String beskrivelse, String kategori) {
+    public void endreData(Treningsokt okt) {
+        database.endreData(okt, bruker);
+        tabell.set(okt.getNummer(),okt);
     }
 
     public String getBruker() {
