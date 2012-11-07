@@ -136,7 +136,17 @@ class Database  {
         try{
         åpneForbindelse();
       Statement setning = forbindelse.createStatement();
-      ResultSet res = setning.executeQuery("select OKTNR FROM TRENING WHERE BRUKERNAVN = '"+brukernavn+"' AND KATEGORINAVN = '"+okt.getKategori()+"' AND DATO = "+okt.getDato().getTime()+"" );
+      Statement setning2 = forbindelse.createStatement();
+      java.sql.Date jall = new java.sql.Date(okt.getDato().getTime());
+      ResultSet res2 = setning2.executeQuery("SELECT * FROM TRENING");
+      java.sql.Date dato = new java.sql.Date(okt.getDato().getTime());
+      while(res2.next()){
+          if(res2.getDate(2).equals(dato) && res2.getString(6).equals(brukernavn)){
+              res2 = setning.executeQuery("DELETE FROM TRENING WHERE brukernavn = '"+brukernavn+"'");
+          }
+      }
+      
+      ResultSet res = setning.executeQuery("select OKTNR FROM TRENING WHERE BRUKERNAVN = '"+brukernavn+"' AND DATO = ?" );
       primNokkel = res.getInt(1);
       lukkForbindelse();
         }catch(SQLException e){
@@ -182,8 +192,8 @@ class Database  {
 
         String databasenavn = "jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj";
         Database database = new Database(databasenavn);
-       
-        boolean ok = database.regNyOkt(new Treningsokt(new java.util.Date(),45,"sdsd","styrke"),"anne");
-        System.out.println(ok);
+        Treningsokt okt = new Treningsokt(new java.util.Date(),45,"sdsd","styrke");
+       database.regNyOkt(okt, "tore");
+        System.out.println(database.finnOktNr(okt, "tore"));
     }
 }
