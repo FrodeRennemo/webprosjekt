@@ -1,11 +1,10 @@
 package beans;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date.*;
 
-class Database  {
+class Database {
 
     private String dbNavn;
     private Connection forbindelse;
@@ -14,45 +13,45 @@ class Database  {
         dbNavn = startDbNavn;
     }
 
-    public ArrayList<Treningsokt> lesInn()  {
+    public ArrayList<Treningsokt> lesInn() {
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
         åpneForbindelse();
-        try{
-        Statement setning = forbindelse.createStatement();
-        ResultSet res = setning.executeQuery("Select * FROM TRENING");
-        while (res.next()) {
-            int oktnummer = res.getInt("oktnr");
-            Date dato = res.getDate("dato");
-            int varighet = res.getInt("varighet");
-            String kategori = res.getString("kategorinavn");
-            String beskrivelse = res.getString("tekst");
-            Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
-            okt.setNummer(oktnummer);
-            tab.add(okt);
-        }
-        }catch(SQLException e){
+        try {
+            Statement setning = forbindelse.createStatement();
+            ResultSet res = setning.executeQuery("Select * FROM TRENING");
+            while (res.next()) {
+                int oktnummer = res.getInt("oktnr");
+                Date dato = res.getDate("dato");
+                int varighet = res.getInt("varighet");
+                String kategori = res.getString("kategorinavn");
+                String beskrivelse = res.getString("tekst");
+                Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+                okt.setNummer(oktnummer);
+                tab.add(okt);
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         lukkForbindelse();
         return tab;
     }
-    
-    public ArrayList<Treningsokt> lesInnBruker(String bruker)  {
+
+    public ArrayList<Treningsokt> lesInnBruker(String bruker) {
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
         åpneForbindelse();
-        try{
-        Statement setning = forbindelse.createStatement();
-        ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '"+bruker+"'");
-        while (res.next()) {
-            int oktNr = res.getInt("oktnr");
-            Date dato = res.getDate("dato");
-            int varighet = res.getInt("varighet");
-            String kategori = res.getString("kategorinavn");
-            String beskrivelse = res.getString("tekst");
-            Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
-            tab.add(okt);
-        }
-        }catch(SQLException e){
+        try {
+            Statement setning = forbindelse.createStatement();
+            ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '" + bruker + "'");
+            while (res.next()) {
+                int oktNr = res.getInt("oktnr");
+                Date dato = res.getDate("dato");
+                int varighet = res.getInt("varighet");
+                String kategori = res.getString("kategorinavn");
+                String beskrivelse = res.getString("tekst");
+                Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+                tab.add(okt);
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         lukkForbindelse();
@@ -80,11 +79,11 @@ class Database  {
         boolean ok = false;
         try {
             sqlRegNyOkt = forbindelse.prepareStatement("insert into trening(dato,varighet,kategorinavn,tekst,brukernavn) values(?, ?, ?,?,?)");
-            try{
+            try {
                 sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
-            }catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 sqlRegNyOkt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
-            }  
+            }
             sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
             sqlRegNyOkt.setString(3, nyOkt.getKategori());
             sqlRegNyOkt.setString(4, nyOkt.getBeskrivelse());
@@ -101,7 +100,7 @@ class Database  {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             Opprydder.rullTilbake(forbindelse);
-          
+
         } finally {
             Opprydder.settAutoCommit(forbindelse);
             Opprydder.lukkSetning(sqlRegNyOkt);
@@ -110,20 +109,27 @@ class Database  {
         return ok;
     }
 
-    public boolean slettOkt(Treningsokt okt,String brukernavn) {
+    public boolean slettOkt(Treningsokt okt, String brukernavn) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
+        Statement setning = null;
+        System.out.println(okt.getNummer());
         åpneForbindelse();
         try {
-            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = "+okt.getNummer()+"");
+            setning = forbindelse.createStatement();
+            setning.executeUpdate("DELETE FROM TRENING WHERE oktnr = " + okt.getNummer() + "");
+            //sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = " + okt.getNummer() + "");
+            System.out.println(okt.getNummer());
+            ok = true;
+
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "slettOkt()");
         } finally {
-            Opprydder.lukkSetning(sqlUpdOkt);
+            Opprydder.lukkSetning(setning);
         }
         lukkForbindelse();
         return ok;
-    
+
 
 
     }
@@ -188,8 +194,8 @@ class Database  {
 
         String databasenavn = "jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj";
         Database database = new Database(databasenavn);
-        Treningsokt okt = new Treningsokt(new java.util.Date(),45,"sdsd","styrke");
-       database.regNyOkt(okt, "tore");
+        Treningsokt okt = new Treningsokt(new java.util.Date(), 45, "sdsd", "styrke");
+        database.regNyOkt(okt, "tore");
 //        System.out.println(database.finnOktNr(okt, "tore"));
     }
 }
