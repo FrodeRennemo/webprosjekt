@@ -32,10 +32,13 @@ public class Oversikt implements Serializable {
         return tabell;
     }
 
+    public int finnNokkel(Treningsokt Okt) {
+        return database.finnOktNr(Okt, bruker);
+    }
+
     public boolean registrerNyOkt(Treningsokt okt) {
         if (okt != null) {
             if (database.regNyOkt(okt, bruker)) {
-                                System.out.println("LOL");
                 tabell.add(okt);
                 antOkter++;
                 return true;
@@ -57,14 +60,10 @@ public class Oversikt implements Serializable {
     }
 
     public boolean slettOkt(Treningsokt okten) {
-        int indeks = 0;
-        for (int i = 0; i < tabell.size(); i++) {
-            if (tabell.get(i).equals(okten)) {
-                indeks = i + 1;
-                tabell.remove(okten);
-            }
-        }
-        if (database.slettOkt(indeks, bruker)) {
+        int oktNr = database.finnOktNr(okten, bruker);
+        if (database.slettOkt(oktNr, bruker)) {
+            tabell.remove(okten);
+
             return true;
         }
         return false;
@@ -108,7 +107,9 @@ public class Oversikt implements Serializable {
     public static void main(String[] args) {
         Oversikt liste = new Oversikt("tore");
         System.out.println(liste.toString());
-        System.out.println(liste.registrerNyOkt(new Treningsokt(new java.util.Date(), 45, "BEEF", "aerobics")));
+        Treningsokt a = new Treningsokt(new java.util.Date(), 45, "BEEF", "aerobics");
+        System.out.println(liste.registrerNyOkt(a));
         System.out.println(liste.toString());
+        System.out.println(liste.finnNokkel(a));
     }
 }

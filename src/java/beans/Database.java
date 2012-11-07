@@ -1,11 +1,11 @@
 package beans;
 
-import static javax.swing.JOptionPane.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date.*;
 
-class Database {
+class Database  {
 
     private String dbNavn;
     private Connection forbindelse;
@@ -42,6 +42,7 @@ class Database {
         Statement setning = forbindelse.createStatement();
         ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '"+bruker+"'");
         while (res.next()) {
+            int oktNr = res.getInt("oktnr");
             Date dato = res.getDate("dato");
             int varighet = res.getInt("varighet");
             String kategori = res.getString("kategorinavn");
@@ -107,15 +108,14 @@ class Database {
         return ok;
     }
 
-    public boolean slettOkt(int indeks,String brukernavn) {
+    public boolean slettOkt(int oektNr,String brukernavn) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
         åpneForbindelse();
         try {
             //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
-            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = ?");
-            sqlUpdOkt.setInt(1, indeks);
-           
+            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = ? AND brukernavn = '"+brukernavn+"'");
+            sqlUpdOkt.setInt(1, oektNr);
             int ant = sqlUpdOkt.executeUpdate();
             if (ant > 0) {
                 ok = true;
@@ -130,6 +130,19 @@ class Database {
     
 
 
+    }
+    public int finnOktNr(Treningsokt okt, String brukernavn){
+        int primNokkel = -1;
+        try{
+        åpneForbindelse();
+      Statement setning = forbindelse.createStatement();
+      ResultSet res = setning.executeQuery("select OKTNR FROM TRENING WHERE BRUKERNAVN = '"+brukernavn+"' AND KATEGORINAVN = '"+okt.getKategori()+"' AND DATO = "+okt.getDato().getTime()+"" );
+      primNokkel = res.getInt(1);
+      lukkForbindelse();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+      return primNokkel;
     }
 
     public boolean endreData(String brukernavn, int oktNr, Date dato, int varighet, String beskrivelse, String kategori) {
@@ -150,7 +163,7 @@ class Database {
                 ok = true;
             }
         } catch (SQLException e) {
-            Opprydder.skrivMelding(e, "lånUtEksemplar()");
+            Opprydder.skrivMelding(e, "endreData()");
         } finally {
             Opprydder.lukkSetning(sqlUpdOkt);
         }

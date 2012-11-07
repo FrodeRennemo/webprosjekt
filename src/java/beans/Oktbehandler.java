@@ -95,9 +95,8 @@ public class Oktbehandler implements java.io.Serializable {
     }
 
     public synchronized void leggTil() {
-        if (oversikt.registrerNyOkt(tempOkt)) {
-            Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
-            oversikt.registrerNyOkt(nyOkt);
+        Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
+        if (oversikt.registrerNyOkt(nyOkt)) {
             tabelldata.add(new OktStatus(nyOkt));
             tempOkt.nullstill();
        }
