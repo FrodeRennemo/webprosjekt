@@ -39,9 +39,12 @@
                             <f:facet name="header">
                                 <h:outputText value="#{tekster.Kategori}"/>
                             </f:facet>
-                            <h:inputText value="#{enOkt.okten.kategori}"
-                                         rendered="#{enOkt.endre}"
-                                         styleClass="venstrejustert"/>
+                            <h:selectOneMenu value ="#{oktbehandler.tempOkt.kategori}" rendered="#{enOkt.endre}">
+                                <f:selectItem  itemValue ="#{tekster.Jogging}"/>
+                                <f:selectItem  itemValue ="#{tekster.Styrke}" />
+                                <f:selectItem  itemValue ="#{tekster.Aerobics}"/>
+                                <f:selectItem  itemValue ="#{tekster.Sykling}" />
+                            </h:selectOneMenu>
                             <h:outputText value="#{enOkt.okten.kategori}" rendered="#{not enOkt.endre}" />
                         </h:column>
                         <!-- Kolonne: beskrivelse -->
@@ -90,7 +93,7 @@
                     <br></br>
                     <!--
                     <h:inputText value = "#{oktbehandler.oversikt.bruker}" styleClass = "overskrift"/>
-                  -->
+                    -->
 
                     <!-- Registrere ny transaksjon  -->
                     <br></br>
@@ -139,18 +142,18 @@
                         </tr>
                     </table>
                     <h:selectOneMenu value ="#{oktbehandler.maaned}">
-                        <f:selectItem  itemValue ="1"/>
-                        <f:selectItem  itemValue ="2" />
-                        <f:selectItem  itemValue ="3"/>
-                        <f:selectItem  itemValue ="4" />
-                        <f:selectItem  itemValue ="5"/>
-                        <f:selectItem  itemValue ="6" />
-                        <f:selectItem  itemValue ="7"/>
-                        <f:selectItem  itemValue ="8" />
-                        <f:selectItem  itemValue ="9"/>
-                        <f:selectItem  itemValue ="10" />
-                        <f:selectItem  itemValue ="11"/>
-                        <f:selectItem  itemValue ="12" />
+                        <f:selectItem  itemValue ="1" itemLabel="#{tekster.Januar}"/>
+                        <f:selectItem  itemValue ="2" itemLabel="#{tekster.Februar}"/>
+                        <f:selectItem  itemValue ="3" itemLabel="#{tekster.Mars}"/>
+                        <f:selectItem  itemValue ="4" itemLabel="#{tekster.April}"/>
+                        <f:selectItem  itemValue ="5" itemLabel="#{tekster.Mai}"/>
+                        <f:selectItem  itemValue ="6" itemLabel="#{tekster.Juni}"/>
+                        <f:selectItem  itemValue ="7" itemLabel="#{tekster.Juli}"/>
+                        <f:selectItem  itemValue ="8" itemLabel="#{tekster.August}"/>
+                        <f:selectItem  itemValue ="9" itemLabel="#{tekster.September}"/>
+                        <f:selectItem  itemValue ="10" itemLabel="#{tekster.Oktober}"/>
+                        <f:selectItem  itemValue ="11" itemLabel="#{tekster.November}"/>
+                        <f:selectItem  itemValue ="12" itemLabel="#{tekster.Desember}"/>
                     </h:selectOneMenu>
                     <h:dataTable value ="#{oktbehandler.maaneddata}" var="maanedOkt"
                                  styleClass="people" headerClass="hode"
@@ -191,7 +194,7 @@
                     <p>
                         <h:commandButton value="#{tekster.Endre}" 
                                          action="#{oktbehandler.endre()}"/>
-                        
+
                         <h:commandButton value="#{tekster.Send}" 
                                          action="#{oktbehandler.leggTil()}"/>
 
