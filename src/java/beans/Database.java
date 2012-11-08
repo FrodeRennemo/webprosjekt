@@ -4,15 +4,34 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date.*;
 import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 class Database {
-    //private String dbNavn;
+    @Resource(name = "jdbc/personressurs")
+    private DataSource ds;
     private Connection forbindelse;
     
-/*
-    public Database(String startDbNavn) {
-        dbNavn = startDbNavn;
+    public Database(){
+        try{
+            Context con = new InitialContext();
+            ds = (DataSource)con.lookup("java:comp/env/jdbc/personressurs");
+        }catch(NamingException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    /*
+    public boolean setConnection(){
+        try{
+            InitialContext con = new InitialContext();
+            ds = (DataSource)con.lookup("jdbc/personressurs");
+            return true;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
     */
     public boolean logInn(Bruker bruker){
@@ -118,14 +137,13 @@ class Database {
 
     private void åpneForbindelse() {
         try {
-            if(getForbindelse()==null){
+            if(ds==null){
                 throw new SQLException("Ingen forbindelse");
             }
-            forbindelse = getForbindelse();
+            forbindelse = ds.getConnection();
             System.out.println("Databaseforbindelse opprettet");
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "Konstruktøren");
-            Opprydder.lukkForbindelse(forbindelse);
         }
     }
 
@@ -250,8 +268,9 @@ class Database {
         lukkForbindelse();
         return ok;
     }
-/*
+
     public static void main(String[] args) throws SQLException {
+        /*
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (Exception e) {
@@ -259,12 +278,10 @@ class Database {
             e.printStackTrace();
             System.exit(0);
         }
-
-        String databasenavn = "jdbc:derby://localhost:1527/waplj_prosjekt;user=waplj;password=waplj";
-        Database database = new Database(databasenavn);
+        */
+        Database database = new Database();
         Treningsokt okt = new Treningsokt(new java.util.Date(), 45, "sdsd", "styrke");
-        database.regNyOkt(okt, "tore");
-//        System.out.println(database.finnOktNr(okt, "tore"));
+        System.out.println(database.regNyOkt(okt, "tore"));
     }
-    */
+    
 }

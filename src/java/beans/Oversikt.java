@@ -11,7 +11,7 @@ import java.util.Date;
 public class Oversikt implements Serializable {
     private String bruker = null;
     private ArrayList<Treningsokt> tabell = new ArrayList();
-    private Database database = new Database();
+    private Database database = new Database(); 
 
     public Oversikt(String bruker) {
         this.bruker = bruker;

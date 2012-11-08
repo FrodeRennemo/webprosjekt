@@ -14,7 +14,6 @@ import javax.sql.DataSource;
 @Named
 @SessionScoped
 public class Oktbehandler implements java.io.Serializable {
-    @Resource(name="jdbc/personressurs")  DataSource ds;
     private Oversikt oversikt = new Oversikt("tore");
     private List<OktStatus> tabelldata = Collections.synchronizedList(new ArrayList<OktStatus>());
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon
@@ -22,16 +21,6 @@ public class Oktbehandler implements java.io.Serializable {
     private List<MaanedStatus> maaneddata = Collections.synchronizedList(new ArrayList<MaanedStatus>());
 
     public Oktbehandler() {
-        try {
-            if(ds==null){
-                throw new SQLException("Ingen datasource");
-            }
-            oversikt.getDatabase().setForbindelse(ds.getConnection());
-            System.out.println("Databaseforbindelse opprettet");
-        } catch (SQLException e) {
-          System.out.println("FEIL");
-            
-        }
         if (oversikt.getTabell() != null) {
             for (int i = 0; i < oversikt.getTabell().size(); i++) {
                 tabelldata.add(new OktStatus(oversikt.getTabell().get(i)));

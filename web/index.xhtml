@@ -18,32 +18,21 @@
                         <tr>
                             <td>#{tekster.Brukernavn}</td>
                             <td>
-                                <h:inputText value="#{brukerBean.}">
+                                <h:inputText value="#{brukerBean.brukernavn}">
                                 </h:inputText>
                             </td>
                         </tr>
                         <tr>
                             <td>#{tekster.Passord}</td>
-                            <td><h:inputText value="#{}"/></td>
+                            <td><h:inputText value="#{brukerBean.passord}"/></td>
                         </tr>
 
-                        <tr>
-                            <td>#{tekster.Beskrivelse}</td>
-                            <td><h:inputText value="#{Okter.beskrivelse}" maxlength = "30" size ="30"/></td>
-                        </tr>
-                        <tr>
-                            <td>#{tekster.Kategori}</td>
-                            <td>
-
-                                <h:selectOneMenu value ="#{Okter.kategori}">
-                                    <f:selectItem  itemValue ="#{tekster.Utholdenhet}"/>
-                                    <f:selectItem  itemValue ="#{tekster.Styrke}" />
-                                </h:selectOneMenu>
-
-                            </td>
-                        </tr>
                     </table>
-                    <p><h:commandButton value="#{Okter.registrerNyOkt()}Send" action="nyokt"/></p>
+                    <p>
+                        <h:commandButton value="#{brukerBean.loggInn()} #{tekster.Logginn}" action="nyokt"/>
+                        <h:commandButton value="#{tekster.Nybruker}" action="nybruker"/>
+                    </p>
+                    
                 </h:form>
             </ui:define>
         </ui:composition>

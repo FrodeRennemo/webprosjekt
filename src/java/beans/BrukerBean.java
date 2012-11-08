@@ -12,42 +12,55 @@ import javax.inject.Named;
  *
  * @author Frode
  */
-@Named 
+@Named
 @SessionScoped
-public class BrukerBean implements Serializable{
-    private Bruker tempBruker;
+public class BrukerBean implements Serializable {
+
+    private Bruker bruker;
+    private String gjentaPassord;
     private Database database = new Database();
     private boolean login = false;
-    
+    private boolean nybrukerOk = false;
+
     public void setBrukernavn(String brukernavn) {
-        tempBruker.setBrukernavn(brukernavn);
+        bruker.setBrukernavn(brukernavn);
     }
 
     public void setPassord(String passord) {
-        tempBruker.setPassord(passord);
+        bruker.setPassord(passord);
     }
 
     public String getBrukernavn() {
-        return tempBruker.getBrukernavn();
+        return bruker.getBrukernavn();
     }
 
     public String getPassord() {
-        return tempBruker.getPassord();
+        return bruker.getPassord();
     }
-    public boolean loggInn(){
-        if(database.logInn(tempBruker)){
+
+    public void setGjentaPassord(String gjentaPassord) {
+        this.gjentaPassord = gjentaPassord;
+    }
+
+    public String getGjentaPassord() {
+        return gjentaPassord;
+    }
+
+    public boolean loggInn() {
+        if (database.logInn(bruker)) {
             login = true;
             return true;
         }
         return false;
     }
-    public boolean nyBruker(){
-        if(database.nyBruker(tempBruker)){
-            return true;
+
+    public boolean nyBruker() {
+        if (bruker.getPassord().equals(gjentaPassord)) {
+            if (database.nyBruker(bruker)) {
+                nybrukerOk = true;
+                return true;
+            }
         }
         return false;
     }
-    
-    
-    
 }
