@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 class Database {
-    @Resource(name="jdbc/personressurs")  DataSource ds;
     //private String dbNavn;
     private Connection forbindelse;
     
@@ -16,6 +15,58 @@ class Database {
         dbNavn = startDbNavn;
     }
     */
+    public boolean logInn(Bruker bruker){
+        PreparedStatement sqlLoggInn = null;
+        åpneForbindelse();
+        boolean ok = false;
+        try {
+            sqlLoggInn = forbindelse.prepareStatement("SELECT FROM BRUKER WHERE BRUKERNAVN = ? AND PASSORD = ?");
+            
+                sqlLoggInn.setString(1, bruker.getBrukernavn());
+                sqlLoggInn.setString(2, bruker.getPassord());
+            forbindelse.commit();
+            ok = true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Opprydder.rullTilbake(forbindelse);
+
+        } finally {
+            Opprydder.settAutoCommit(forbindelse);
+            Opprydder.lukkSetning(sqlLoggInn);
+        }
+        lukkForbindelse();
+        return ok;
+    }
+    
+    public boolean nyBruker(Bruker nyBruker){
+        PreparedStatement sqlRegNyBruker = null;
+        åpneForbindelse();
+        boolean ok = false;
+        try {
+            sqlRegNyBruker = forbindelse.prepareStatement("insert into bruker(brukernavn,passord) values(?, ?)");
+                sqlRegNyBruker.setString(1, nyBruker.getBrukernavn());
+                sqlRegNyBruker.setString(2, nyBruker.getPassord());
+            
+
+            forbindelse.commit();
+
+            /*
+             * Transaksjon slutt
+             */
+            ok = true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Opprydder.rullTilbake(forbindelse);
+
+        } finally {
+            Opprydder.settAutoCommit(forbindelse);
+            Opprydder.lukkSetning(sqlRegNyBruker);
+        }
+        lukkForbindelse();
+        return ok;
+    }
 
     public ArrayList<Treningsokt> lesInn() {
          ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
@@ -67,16 +118,25 @@ class Database {
 
     private void åpneForbindelse() {
         try {
-            if(ds==null){
-                throw new SQLException("Ingen datasource");
+            if(getForbindelse()==null){
+                throw new SQLException("Ingen forbindelse");
             }
-            forbindelse = ds.getConnection();
+            forbindelse = getForbindelse();
             System.out.println("Databaseforbindelse opprettet");
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "Konstruktøren");
             Opprydder.lukkForbindelse(forbindelse);
         }
     }
+
+    public void setForbindelse(Connection forbindelse) {
+        this.forbindelse = forbindelse;
+    }
+
+    public Connection getForbindelse() {
+        return forbindelse;
+    }
+    
 
     private void lukkForbindelse() {
         System.out.println("Lukker databaseforbindelsen");

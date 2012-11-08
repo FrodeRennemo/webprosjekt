@@ -22,6 +22,11 @@ public class Oversikt implements Serializable {
         this.tabell = database.lesInn();
     }
 
+    public Database getDatabase() {
+        return database;
+    }
+    
+
     public void lesFraBruker(String bruker) {
         database.lesInnBruker(bruker);
     }
