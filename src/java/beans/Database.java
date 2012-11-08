@@ -3,15 +3,19 @@ package beans;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date.*;
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 class Database {
-
-    private String dbNavn;
+    @Resource(name="jdbc/personressurs")  DataSource ds;
+    //private String dbNavn;
     private Connection forbindelse;
-
+    
+/*
     public Database(String startDbNavn) {
         dbNavn = startDbNavn;
     }
+    */
 
     public ArrayList<Treningsokt> lesInn() {
          ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
@@ -63,7 +67,10 @@ class Database {
 
     private void åpneForbindelse() {
         try {
-            forbindelse = DriverManager.getConnection(dbNavn);
+            if(ds==null){
+                throw new SQLException("Ingen datasource");
+            }
+            forbindelse = ds.getConnection();
             System.out.println("Databaseforbindelse opprettet");
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "Konstruktøren");
@@ -183,7 +190,7 @@ class Database {
         lukkForbindelse();
         return ok;
     }
-
+/*
     public static void main(String[] args) throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -199,4 +206,5 @@ class Database {
         database.regNyOkt(okt, "tore");
 //        System.out.println(database.finnOktNr(okt, "tore"));
     }
+    */
 }
