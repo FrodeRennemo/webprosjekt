@@ -14,19 +14,19 @@ class Database {
     }
 
     public ArrayList<Treningsokt> lesInn() {
-        ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+        PreparedStatement sqlLesInn = null;
         åpneForbindelse();
+        
         try {
-            Statement setning = forbindelse.createStatement();
-            ResultSet res = setning.executeQuery("Select * FROM TRENING");
+            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING");
+            ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
-                int oktnummer = res.getInt("oktnr");
                 Date dato = res.getDate("dato");
                 int varighet = res.getInt("varighet");
                 String kategori = res.getString("kategorinavn");
                 String beskrivelse = res.getString("tekst");
                 Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
-                okt.setNummer(oktnummer);
                 tab.add(okt);
             }
         } catch (SQLException e) {
@@ -38,12 +38,15 @@ class Database {
 
     public ArrayList<Treningsokt> lesInnBruker(String bruker) {
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+        PreparedStatement sqlLesInn = null;
         åpneForbindelse();
+        
         try {
-            Statement setning = forbindelse.createStatement();
-            ResultSet res = setning.executeQuery("Select * FROM TRENING WHERE bruker = '" + bruker + "'");
+            //Statement setning = forbindelse.createStatement();
+            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE bruker = ?");
+            sqlLesInn.setString(1, bruker);
+            ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
-                int oktNr = res.getInt("oktnr");
                 Date dato = res.getDate("dato");
                 int varighet = res.getInt("varighet");
                 String kategori = res.getString("kategorinavn");
@@ -112,20 +115,19 @@ class Database {
     public boolean slettOkt(Treningsokt okt, String brukernavn) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
-        Statement setning = null;
+        
         System.out.println(okt.getNummer());
         åpneForbindelse();
         try {
-            setning = forbindelse.createStatement();
-            setning.executeUpdate("DELETE FROM TRENING WHERE oktnr = " + okt.getNummer() + "");
-            //sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = " + okt.getNummer() + "");
+            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = ?");
+            sqlUpdOkt.setInt(1, okt.getNummer());
             System.out.println(okt.getNummer());
             ok = true;
 
         } catch (SQLException e) {
             Opprydder.skrivMelding(e, "slettOkt()");
         } finally {
-            Opprydder.lukkSetning(setning);
+            Opprydder.lukkSetning(sqlUpdOkt);
         }
         lukkForbindelse();
         return ok;

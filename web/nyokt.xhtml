@@ -86,7 +86,7 @@
                                 <h:outputText value="&#160;" />
                                 <h:outputText value="#{tekster.Endre}"/>
                             </f:facet>
-                            <h:commandButton value="#{tekster.Endre}" action="#{enOkt.endre()}"/>
+                            <h:commandButton value="#{tekster.Endre}" action="#{enOkt.endre()}" rendered="#{not enOkt.endre}"/>
                         </h:column>
                     </h:dataTable>
                     <!-- For bruk ved implementering av databasen-->
@@ -192,7 +192,7 @@
                         </h:column>
                     </h:dataTable>
                     <p>
-                        <h:commandButton value="#{tekster.Endre}" 
+                        <h:commandButton value="#{tekster.Oppdater}" 
                                          action="#{oktbehandler.endre()}"/>
 
                         <h:commandButton value="#{tekster.Send}" 
