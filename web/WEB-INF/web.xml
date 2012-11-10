@@ -21,4 +21,24 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Pages</web-resource-name>
+         <url-pattern>/faces/protected/*</url-pattern>
+         <url-pattern>/protected/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>bruker</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>waplj_realm</realm-name>
+   </login-config>
+   <security-role>
+      <role-name>bruker</role-name>
+   </security-role>
 </web-app>
+
+
+

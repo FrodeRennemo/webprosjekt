@@ -62,7 +62,6 @@ public class Oversikt implements Serializable {
     }
 
     public boolean slettOkt(Treningsokt okten) {
-//        int oktNr = database.finnOktNr(okten, bruker);
         if (database.slettOkt(okten, bruker)) {
             tabell.remove(okten);
             return true;

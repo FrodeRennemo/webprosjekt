@@ -10,41 +10,47 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 class Database {
+
     @Resource(name = "jdbc/personressurs")
     private DataSource ds;
     private Connection forbindelse;
-    
-    public Database(){
-        try{
+
+    public Database() {
+        try {
             Context con = new InitialContext();
-            ds = (DataSource)con.lookup("java:comp/env/jdbc/personressurs");
-        }catch(NamingException e){
+            ds = (DataSource) con.lookup("jdbc/personressurs");
+        } catch (NamingException e) {
             System.out.println(e.getMessage());
         }
     }
     /*
-    public boolean setConnection(){
-        try{
-            InitialContext con = new InitialContext();
-            ds = (DataSource)con.lookup("jdbc/personressurs");
-            return true;
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-    */
-    public boolean logInn(Bruker bruker){
+     public boolean setConnection(){
+     try{
+     InitialContext con = new InitialContext();
+     ds = (DataSource)con.lookup("jdbc/personressurs");
+     return true;
+     }catch(Exception e){
+     System.out.println(e.getMessage());
+     }
+     return false;
+     }
+     */
+
+    public boolean logInn(Bruker bruker) {
         PreparedStatement sqlLoggInn = null;
         åpneForbindelse();
         boolean ok = false;
         try {
-            sqlLoggInn = forbindelse.prepareStatement("SELECT FROM BRUKER WHERE BRUKERNAVN = ? AND PASSORD = ?");
-            
-                sqlLoggInn.setString(1, bruker.getBrukernavn());
-                sqlLoggInn.setString(2, bruker.getPassord());
+            sqlLoggInn = forbindelse.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = ? AND PASSORD = ?");
+            ResultSet res = sqlLoggInn.executeQuery();
+            sqlLoggInn.setString(1, bruker.getBrukernavn());
+            sqlLoggInn.setString(2, bruker.getPassord());
+            System.out.println(res.getString("brukernavn"));
+            System.out.println(res.getString("passord"));
             forbindelse.commit();
-            ok = true;
+            if (res.next()) {
+                ok = true;
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -57,16 +63,16 @@ class Database {
         lukkForbindelse();
         return ok;
     }
-    
-    public boolean nyBruker(Bruker nyBruker){
+
+    public boolean nyBruker(Bruker nyBruker) {
         PreparedStatement sqlRegNyBruker = null;
         åpneForbindelse();
         boolean ok = false;
         try {
             sqlRegNyBruker = forbindelse.prepareStatement("insert into bruker(brukernavn,passord) values(?, ?)");
-                sqlRegNyBruker.setString(1, nyBruker.getBrukernavn());
-                sqlRegNyBruker.setString(2, nyBruker.getPassord());
-            
+            sqlRegNyBruker.setString(1, nyBruker.getBrukernavn());
+            sqlRegNyBruker.setString(2, nyBruker.getPassord());
+
 
             forbindelse.commit();
 
@@ -88,10 +94,10 @@ class Database {
     }
 
     public ArrayList<Treningsokt> lesInn() {
-         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+        ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
         PreparedStatement sqlLesInn = null;
         åpneForbindelse();
-        
+
         try {
             sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING");
             ResultSet res = sqlLesInn.executeQuery();
@@ -100,7 +106,9 @@ class Database {
                 int varighet = res.getInt("varighet");
                 String kategori = res.getString("kategorinavn");
                 String beskrivelse = res.getString("tekst");
+                int oktNr = res.getInt("oktnr");
                 Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+                okt.setNummer(oktNr);
                 tab.add(okt);
             }
         } catch (SQLException e) {
@@ -114,7 +122,7 @@ class Database {
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
         PreparedStatement sqlLesInn = null;
         åpneForbindelse();
-        
+
         try {
             //Statement setning = forbindelse.createStatement();
             sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE bruker = ?");
@@ -137,7 +145,7 @@ class Database {
 
     private void åpneForbindelse() {
         try {
-            if(ds==null){
+            if (ds == null) {
                 throw new SQLException("Ingen forbindelse");
             }
             forbindelse = ds.getConnection();
@@ -154,7 +162,6 @@ class Database {
     public Connection getForbindelse() {
         return forbindelse;
     }
-    
 
     private void lukkForbindelse() {
         System.out.println("Lukker databaseforbindelsen");
@@ -200,13 +207,15 @@ class Database {
     public boolean slettOkt(Treningsokt okt, String brukernavn) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
-        
+
         System.out.println(okt.getNummer());
         åpneForbindelse();
         try {
             sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = ?");
             sqlUpdOkt.setInt(1, okt.getNummer());
             System.out.println(okt.getNummer());
+            sqlUpdOkt.executeUpdate();
+            forbindelse.commit();
             ok = true;
 
         } catch (SQLException e) {
@@ -271,17 +280,16 @@ class Database {
 
     public static void main(String[] args) throws SQLException {
         /*
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (Exception e) {
-            System.out.println("Kan ikke laste databasedriveren. Avbryter.");
-            e.printStackTrace();
-            System.exit(0);
-        }
-        */
+         try {
+         Class.forName("org.apache.derby.jdbc.ClientDriver");
+         } catch (Exception e) {
+         System.out.println("Kan ikke laste databasedriveren. Avbryter.");
+         e.printStackTrace();
+         System.exit(0);
+         }
+         */
         Database database = new Database();
         Treningsokt okt = new Treningsokt(new java.util.Date(), 45, "sdsd", "styrke");
         System.out.println(database.regNyOkt(okt, "tore"));
     }
-    
 }

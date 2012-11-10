@@ -16,7 +16,7 @@ import javax.inject.Named;
 @SessionScoped
 public class BrukerBean implements Serializable {
 
-    private Bruker bruker;
+    private Bruker bruker  = new Bruker();
     private String gjentaPassord;
     private Database database = new Database();
     private boolean login = false;
@@ -45,6 +45,14 @@ public class BrukerBean implements Serializable {
     public String getGjentaPassord() {
         return gjentaPassord;
     }
+    public boolean getLogin(){
+        return login;
+    }
+
+    public void setLogin(boolean login) {
+        this.login = login;
+    }
+    
 
     public boolean loggInn() {
         if (database.logInn(bruker)) {

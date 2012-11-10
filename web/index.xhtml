@@ -29,7 +29,8 @@
 
                     </table>
                     <p>
-                        <h:commandButton value="#{brukerBean.loggInn()} #{tekster.Logginn}" action="nyokt"/>
+                        <h:commandButton value="sjekk log" action="#{brukerBean.loggInn()}"/>
+                        <h:commandButton value="#{tekster.Logginn}" action="nyokt" rendered="#{brukerBean.login}"/>
                         <h:commandButton value="#{tekster.Nybruker}" action="nybruker"/>
                     </p>
                     
