@@ -5,36 +5,26 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>IGNORED</title>
+        <title>Login</title>
     </h:head>
     <h:body>
-        
         <ui:composition template ="newTemplate.xhtml">
             <ui:define name= "top">
             </ui:define>
             <ui:define name="content">
-                <h:form>
+                <form method="post" action="j_security_check">
                     <table>
                         <tr>
-                            <td>#{tekster.Brukernavn}</td>
-                            <td>
-                                <h:inputText value="#{brukerBean.brukernavn}">
-                                </h:inputText>
-                            </td>
+                            <td><h:outputText value="#{tekster.Brukernavn}"/></td>
+                            <td><input type="text" name="j_username" /></td>
                         </tr>
                         <tr>
-                            <td>#{tekster.Passord}</td>
-                            <td><h:inputText value="#{brukerBean.passord}"/></td>
+                            <td><h:outputText value="#{tekster.Passord}"/></td>
+                            <td><input type="password" name="j_password" /></td>
                         </tr>
-
                     </table>
-                    <p>
-                        <h:commandButton value="sjekk log" action="#{brukerBean.loggInn()}"/>
-                        <h:commandButton value="#{tekster.Logginn}" action="nyokt" rendered="#{brukerBean.login}"/>
-                        <h:commandButton value="#{tekster.Nybruker}" action="nybruker"/>
-                    </p>
-                    
-                </h:form>
+                    <p><input type="submit" value="Login" /></p>
+                </form>
             </ui:define>
         </ui:composition>
     </h:body>
