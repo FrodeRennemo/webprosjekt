@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
@@ -14,7 +14,7 @@
       <url-pattern>/faces/*</url-pattern>
    </servlet-mapping>
    <welcome-file-list>
-      <welcome-file>/faces/beskyttet/nyokt.xhtml/</welcome-file>
+      <welcome-file>faces/beskyttet/nyokt.xhtml</welcome-file>
    </welcome-file-list>
    <context-param>
       <param-name>javax.faces.PROJECT_STAGE</param-name>
@@ -23,12 +23,11 @@
 
    <security-constraint>
       <web-resource-collection>
-         <web-resource-name>Protected Pages</web-resource-name>
+         <web-resource-name>Beskyttet</web-resource-name>
          <url-pattern>/faces/beskyttet/*</url-pattern>
       </web-resource-collection>
       <auth-constraint>
          <role-name>bruker</role-name>
-         <role-name>system</role-name>
       </auth-constraint>
    </security-constraint>
 
@@ -43,8 +42,5 @@
    
    <security-role>
       <role-name>bruker</role-name>
-   </security-role>
-     <security-role>
-      <role-name>system</role-name>
    </security-role>
 </web-app>

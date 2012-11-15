@@ -1,0 +1,28 @@
+body {
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: blue;
+    background-color: black;
+    margin: 10px;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  20px;
+    margin: 0px;
+    padding: 0px;
+    color: blue;
+}
+
+a:link, a:visited {
+  color: blue;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+  color: blue;
+  font-weight : bold;
+  text-decoration : underline;
+}

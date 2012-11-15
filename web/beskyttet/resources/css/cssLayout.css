@@ -1,0 +1,80 @@
+#top {
+    background-color: whitesmoke;
+    color: black;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+}
+
+#bottom {
+    position: relative;
+    background-color: whitesmoke;
+    color: black;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+}
+
+#left {
+    float: left;
+    background-color: blueviolet;
+    padding: 5px;
+    width: 150px;
+}
+
+#right {
+    background-color: yellowgreen;
+    padding: 5px;
+    right: 5px;
+}
+
+.center_content {
+    background-color: yellowgreen;
+    padding: 5px;
+}
+
+.left_content {
+    position: fixed;
+    background-color: yellowgreen;
+}
+
+.right_content {
+    position: fixed;
+    background-color: black;
+}
+
+#top a:link, #top a:visited {
+    color: blue;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+    color: blue;
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+table.people {
+    width: 30%;
+    border-collapse: collapse; /* so we can control cellspacing in a practical way */
+}
+
+table.people td{
+    padding: 5px;
+    text-align: left;
+    font-family: Arial, Verdana, sans-serif;
+    border: 1px solid #000;
+}
+
+table.people tr.odd td {
+    border-top: 1px solid #000;
+}
+
+table.people tr.even td {
+    border-top: 1px solid #000;
+}
+
+table.people tfoot td{
+    border-bottom: 1px solid #000;
+}
+
+
