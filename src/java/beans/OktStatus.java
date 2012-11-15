@@ -4,6 +4,8 @@
  */
 package beans;
 
+import java.util.Date;
+
 /**
  *
  * @author Frode
@@ -48,6 +50,14 @@ public class OktStatus {
 
     public void setEndre(boolean endres) {
         endre = endres;
+    }
+    
+    public Date getDato(){
+        return okten.getDato();
+    }
+    
+    public void setDato(Date dato){
+        okten.setDato(dato);
     }
 
     public void endre() {

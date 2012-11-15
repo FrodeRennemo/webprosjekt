@@ -9,14 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Oversikt implements Serializable {
-    private String bruker = null;
     private ArrayList<Treningsokt> tabell = new ArrayList();
     private Database database = new Database(); 
-
-    public Oversikt(String bruker) {
-        this.bruker = bruker;
-        this.tabell = database.lesInn();
-    }
 
     public Oversikt() {
         this.tabell = database.lesInn();
@@ -27,8 +21,8 @@ public class Oversikt implements Serializable {
     }
     
 
-    public void lesFraBruker(String bruker) {
-        database.lesInnBruker(bruker);
+    public void lesFraBruker() {
+        database.lesInnBruker();
     }
 
     public ArrayList<Treningsokt> getAlleOkter() {
@@ -41,7 +35,7 @@ public class Oversikt implements Serializable {
 
     public boolean registrerNyOkt(Treningsokt okt) {
         if (okt != null) {
-            if (database.regNyOkt(okt, bruker)) {
+            if (database.regNyOkt(okt)) {
                 tabell.add(okt);
                 return true;
             }
@@ -62,7 +56,7 @@ public class Oversikt implements Serializable {
     }
 
     public boolean slettOkt(Treningsokt okten) {
-        if (database.slettOkt(okten, bruker)) {
+        if (database.slettOkt(okten)) {
             tabell.remove(okten);
             return true;
         }
@@ -83,7 +77,7 @@ public class Oversikt implements Serializable {
     public void endreData(Treningsokt okt) {
         
         for(int i = 0;i<tabell.size();i++){
-            if(okt.getNummer() == tabell.get(i).getNummer() && database.endreData(okt, bruker)){
+            if(okt.getNummer() == tabell.get(i).getNummer() && database.endreData(okt)){
                 System.out.println(okt.getBeskrivelse());
                 tabell.set(i, okt);
             }
@@ -91,7 +85,7 @@ public class Oversikt implements Serializable {
     }
 
     public String getBruker() {
-        return bruker;
+        return database.getBruker();
     }
 
     @Override
@@ -107,12 +101,8 @@ public class Oversikt implements Serializable {
         return tabell;
     }
 
-    public void setBruker(String bruker) {
-        this.bruker = bruker;
-    }
-
     public static void main(String[] args) {
-        Oversikt liste = new Oversikt("tore");
+        Oversikt liste = new Oversikt();
         System.out.println(liste.toString());
         Treningsokt a = new Treningsokt(new java.util.Date(), 45, "BEEF", "aerobics");
         System.out.println(liste.registrerNyOkt(a));

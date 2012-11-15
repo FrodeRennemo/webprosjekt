@@ -193,16 +193,19 @@
                     </h:dataTable>
                     <p>
                         <h:commandButton value="#{tekster.Oppdater}" 
-                                         action="#{oktbehandler.endre()}"/>
+                                         action="#{oktbehandler.endre}"/>
 
                         <h:commandButton value="#{tekster.Send}" 
-                                         action="#{oktbehandler.leggTil()}"/>
+                                         action="#{oktbehandler.leggTil}"/>
 
                         <h:commandButton value="#{tekster.slett}" 
-                                         action="#{oktbehandler.slett()}"/>
+                                         action="#{oktbehandler.slett}"/>
 
                         <h:commandButton value="#{tekster.Maaned}" 
-                                         action="#{oktbehandler.getAlleEnMnd()}"/>
+                                         action="#{oktbehandler.getAlleEnMnd}"/>
+                        
+                        <h:commandButton action="#{oktbehandler.logout}" 
+                                       value="#{tekster.LoggUt}" />
                     </p>
                 </h:form>
             </ui:define>

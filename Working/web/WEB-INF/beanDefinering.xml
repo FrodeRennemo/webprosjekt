@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config version="2.0"
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+    <managed-bean>
+        <managed-bean-name>reg</managed-bean-name>
+        <managed-bean-class>beans.registreringsBean</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>deltekerBean</managed-bean-name>
+        <managed-bean-class>beans.deltakerBean</managed-bean-class>
+        <managed-bean-scope>conversation</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>lopBean</managed-bean-name>
+        <managed-bean-class>beans.lopBean</managed-bean-class>
+        <managed-bean-scope>conversation</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>lopDeltaker</managed-bean-name>
+        <managed-bean-class>beans.LopDektaker</managed-bean-class>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>bruker</managed-bean-name>
+        <managed-bean-class>beans.brukerBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>vis</managed-bean-name>
+        <managed-bean-class>beans.visningsBean</managed-bean-class>
+        <managed-bean-scope>conversation</managed-bean-scope>
+    </managed-bean>    
+</faces-config>

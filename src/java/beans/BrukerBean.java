@@ -8,15 +8,11 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-/**
- *
- * @author Frode
- */
 @Named
 @SessionScoped
 public class BrukerBean implements Serializable {
 
-    private Bruker bruker  = new Bruker();
+    private Bruker bruker = new Bruker();
     private String gjentaPassord;
     private Database database = new Database();
     private boolean login = false;
@@ -45,30 +41,30 @@ public class BrukerBean implements Serializable {
     public String getGjentaPassord() {
         return gjentaPassord;
     }
-    public boolean getLogin(){
+
+    public boolean getLogin() {
         return login;
     }
 
     public void setLogin(boolean login) {
         this.login = login;
     }
-    
 
-    public boolean loggInn() {
-        if (database.logInn(bruker)) {
-            login = true;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean nyBruker() {
-        if (bruker.getPassord().equals(gjentaPassord)) {
-            if (database.nyBruker(bruker)) {
-                nybrukerOk = true;
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean loggInn() {
+//        if (database.logInn(bruker)) {
+//            login = true;
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public boolean nyBruker() {
+//        if (bruker.getPassord().equals(gjentaPassord)) {
+//            if (database.nyBruker(bruker)) {
+//                nybrukerOk = true;
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

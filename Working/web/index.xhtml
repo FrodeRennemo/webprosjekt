@@ -1,0 +1,24 @@
+<!-- root-index -->
+
+<ui:composition template="/templates/masterLayout.xhtml" 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name ="utils">
+        <h:form>
+            <!--<h:commandLink value="#{auth_txt.login_button}" action="user_profile"/>-->
+            <a href="./faces/protected/index.xhtml">#{auth_txt.login_button}</a>
+        </h:form>
+    </ui:define>
+    <ui:define name="meny">
+        <h:form>
+            <!--<h:commandLink value="#{auth_txt.login_button}" action="user_profile"/>-->
+            <a href="./faces/protected/index.xhtml">#{auth_txt.login_button}</a>
+        </h:form> 
+    </ui:define>    
+    <ui:define name="content">
+        #{skjema.welcome}
+    </ui:define>
+</ui:composition>

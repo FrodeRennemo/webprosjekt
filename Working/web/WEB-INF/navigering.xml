@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config version="2.0"
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+ <!-- PROTECTED-NAVIGERING -->
+    <navigation-rule>
+        <from-view-id>/protected/*</from-view-id>
+        <navigation-case>
+            <from-outcome>tilbake</from-outcome>
+            <to-view-id>/protected/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>regDTL</from-outcome>
+            <to-view-id>/protected/registrereDeltakerTilLop.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>regD</from-outcome>
+            <to-view-id>/protected/registrereDeltaker.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>regL</from-outcome>
+            <to-view-id>/protected/registrereLop.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>regR</from-outcome>
+            <to-view-id>/protected/registrereResultatVelgLop.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>user_profile</from-outcome>
+            <to-view-id>/protected/brukerProfil.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+            
+    <navigation-rule>
+        <from-view-id>/protected/brukerProfil.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>changed</from-outcome>
+            <to-view-id>/protected/brukerProfil.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>ulike_passord</from-outcome>
+            <to-view-id>/protected/brukerProfilulikePassord.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>passord_endret</from-outcome>
+            <to-view-id>/protected/brukerProfilPassordEndret.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+
+    <navigation-rule>
+        <from-view-id>/protected/registrereDeltakerTilLop.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>visLop</from-outcome>
+            <to-view-id>/protected/visRegistrertDeltakerTilLop.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/protected/visRegistrertDeltakerTilLop.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>regNy</from-outcome>
+            <to-view-id>/protected/registrereDeltakerTilLop.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/registrereDeltaker.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>registrert</from-outcome>
+            <to-view-id>/protected/visRegistrertDeltaker.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/protected/visRegistrertDeltaker.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>regNy</from-outcome>
+            <to-view-id>/protected/registrereDeltaker.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/protected/registrereLop.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>registret</from-outcome>
+            <to-view-id>/protected/visRegistrertLop.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/protected/visRegistrertLop.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>regNytt</from-outcome>
+            <to-view-id>/protected/registrereLop.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/registrereResultatVelgLop.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>valt</from-outcome>
+            <to-view-id>/protected/registrereResultat.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/registrereResultat.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>registrert</from-outcome>
+            <to-view-id>/protected/registrereResultat.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>sortert</from-outcome>
+            <to-view-id>/protected/registrereResultat.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/protected/test.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>changed</from-outcome>
+            <to-view-id>/protected/test.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+<!-- UNPROTECTED -->
+    <navigation-rule>
+        <from-view-id>/faces/index.xhtml</from-view-id>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>user_profile</from-outcome>
+            <to-view-id>/faces/protected/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+</faces-config>
+

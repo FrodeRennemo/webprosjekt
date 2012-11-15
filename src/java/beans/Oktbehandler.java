@@ -1,20 +1,20 @@
 package beans;
 
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.sql.DataSource;
-
+import javax.servlet.http.HttpSession;
 
 @Named
 @SessionScoped
 public class Oktbehandler implements java.io.Serializable {
-    private Oversikt oversikt = new Oversikt("tore");
+
+    private Oversikt oversikt = new Oversikt();
     private List<OktStatus> tabelldata = Collections.synchronizedList(new ArrayList<OktStatus>());
     private Treningsokt tempOkt = new Treningsokt(); // midlertidig lager for ny transaksjon
     private int maaned;
@@ -100,6 +100,9 @@ public class Oktbehandler implements java.io.Serializable {
         Treningsokt nyOkt = new Treningsokt(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
         if (oversikt.registrerNyOkt(nyOkt)) {
             tabelldata.add(new OktStatus(nyOkt));
+            if (nyOkt.getDato() == null) {
+                nyOkt.setDato(new java.sql.Date(new java.util.Date().getTime()));
+            }
             tempOkt.nullstill();
         }
     }
@@ -130,9 +133,20 @@ public class Oktbehandler implements java.io.Serializable {
         int indeks = tabelldata.size() - 1;
         while (indeks >= 0) {
             OktStatus ts = tabelldata.get(indeks);
+            if (ts.getDato() == null) {
+                ts.setDato(new java.sql.Date(new java.util.Date().getTime()));
+            }
             ts.setEndre(false);
             oversikt.endreData(ts.getOkten());
             indeks--;
         }
+    }
+
+    public String logout() {
+        // FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.invalidate();
+        return "../index.xhtml?faces-redirect=true";
     }
 }

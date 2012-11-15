@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+        <title>test</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="top" class="top">
+            <h:form>
+                <p> <h:commandLink action="#{Spraak.setEng()}"><h:graphicImage value = "resources/en.png"/> </h:commandLink> <h:commandLink action="#{Spraak.setNo()}" ><h:graphicImage value = "resources/no.png"/></h:commandLink></p>
+                <p><h3>#{tekster.Overskrift} </h3></p>
+            </h:form>
+            <ui:insert name="top"></ui:insert>
+        </div>
+
+        <div id="content" class="center_content">
+            <ui:insert name="content"></ui:insert>
+        </div>
+
+        <div id="right" class="right">
+            <ui:insert name="right"></ui:insert>
+        </div>
+
+        <div id="right_content" class="right_content">
+            <ui:insert name="right_content"></ui:insert>
+        </div>
+
+        <div id="left_content" class="left_content">
+            <ui:insert name="left_content"></ui:insert>
+        </div>
+    </h:body>
+
+</html>

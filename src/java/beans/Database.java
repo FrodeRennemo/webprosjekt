@@ -2,8 +2,8 @@ package beans;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date.*;
 import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -14,6 +14,7 @@ class Database {
     @Resource(name = "jdbc/personressurs")
     private DataSource ds;
     private Connection forbindelse;
+    private String bruker = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
 
     public Database() {
         try {
@@ -23,75 +24,68 @@ class Database {
             System.out.println(e.getMessage());
         }
     }
-    /*
-     public boolean setConnection(){
-     try{
-     InitialContext con = new InitialContext();
-     ds = (DataSource)con.lookup("jdbc/personressurs");
-     return true;
-     }catch(Exception e){
-     System.out.println(e.getMessage());
-     }
-     return false;
-     }
-     */
-
-    public boolean logInn(Bruker bruker) {
-        PreparedStatement sqlLoggInn = null;
-        åpneForbindelse();
-        boolean ok = false;
-        try {
-            sqlLoggInn = forbindelse.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = ? AND PASSORD = ?");
-            ResultSet res = sqlLoggInn.executeQuery();
-            sqlLoggInn.setString(1, bruker.getBrukernavn());
-            sqlLoggInn.setString(2, bruker.getPassord());
-            System.out.println(res.getString("brukernavn"));
-            System.out.println(res.getString("passord"));
-            forbindelse.commit();
-            if (res.next()) {
-                ok = true;
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            Opprydder.rullTilbake(forbindelse);
-
-        } finally {
-            Opprydder.settAutoCommit(forbindelse);
-            Opprydder.lukkSetning(sqlLoggInn);
-        }
-        lukkForbindelse();
-        return ok;
+    
+    public String getBruker(){
+        return bruker;
     }
 
-    public boolean nyBruker(Bruker nyBruker) {
-        PreparedStatement sqlRegNyBruker = null;
-        åpneForbindelse();
-        boolean ok = false;
-        try {
-            sqlRegNyBruker = forbindelse.prepareStatement("insert into bruker(brukernavn,passord) values(?, ?)");
-            sqlRegNyBruker.setString(1, nyBruker.getBrukernavn());
-            sqlRegNyBruker.setString(2, nyBruker.getPassord());
+//    public boolean logInn() {
+//        PreparedStatement sqlLoggInn = null;
+//        åpneForbindelse();
+//        boolean ok = false;
+//        try {
+//            sqlLoggInn = forbindelse.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = ? AND PASSORD = ?");
+//            ResultSet res = sqlLoggInn.executeQuery();
+//            sqlLoggInn.setString(1, bruker.getBrukernavn());
+//            sqlLoggInn.setString(2, bruker.getPassord());
+//            System.out.println(res.getString("brukernavn"));
+//            System.out.println(res.getString("passord"));
+//            sqlLoggInn.executeUpdate();
+//            forbindelse.commit();
+//            if (res.next()) {
+//                ok = true;
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//            Opprydder.rullTilbake(forbindelse);
+//
+//        } finally {
+//            Opprydder.settAutoCommit(forbindelse);
+//            Opprydder.lukkSetning(sqlLoggInn);
+//        }
+//        lukkForbindelse();
+//        return ok;
+//    }
 
-
-            forbindelse.commit();
-
-            /*
-             * Transaksjon slutt
-             */
-            ok = true;
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            Opprydder.rullTilbake(forbindelse);
-
-        } finally {
-            Opprydder.settAutoCommit(forbindelse);
-            Opprydder.lukkSetning(sqlRegNyBruker);
-        }
-        lukkForbindelse();
-        return ok;
-    }
+//    public boolean nyBruker() {
+//        PreparedStatement sqlRegNyBruker = null;
+//        åpneForbindelse();
+//        boolean ok = false;
+//        try {
+//            sqlRegNyBruker = forbindelse.prepareStatement("insert into bruker(brukernavn,passord) values(?, ?)");
+//            sqlRegNyBruker.setString(1, nyBruker.getBrukernavn());
+//            sqlRegNyBruker.setString(2, nyBruker.getPassord());
+//
+//
+//            forbindelse.commit();
+//
+//            /*
+//             * Transaksjon slutt
+//             */
+//            ok = true;
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//            Opprydder.rullTilbake(forbindelse);
+//
+//        } finally {
+//            Opprydder.settAutoCommit(forbindelse);
+//            Opprydder.lukkSetning(sqlRegNyBruker);
+//        }
+//        lukkForbindelse();
+//        return ok;
+//    }
 
     public ArrayList<Treningsokt> lesInn() {
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
@@ -99,7 +93,8 @@ class Database {
         åpneForbindelse();
 
         try {
-            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING");
+            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE brukernavn = ?");
+            sqlLesInn.setString(1, bruker);
             ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
                 Date dato = res.getDate("dato");
@@ -118,14 +113,13 @@ class Database {
         return tab;
     }
 
-    public ArrayList<Treningsokt> lesInnBruker(String bruker) {
+    public ArrayList<Treningsokt> lesInnBruker() {
         ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
         PreparedStatement sqlLesInn = null;
         åpneForbindelse();
-
         try {
             //Statement setning = forbindelse.createStatement();
-            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE bruker = ?");
+            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE brukernavn = ?");
             sqlLesInn.setString(1, bruker);
             ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
@@ -168,7 +162,7 @@ class Database {
         Opprydder.lukkForbindelse(forbindelse);
     }
 
-    public boolean regNyOkt(Treningsokt nyOkt, String brukernavn) {
+    public boolean regNyOkt(Treningsokt nyOkt) {
         PreparedStatement sqlRegNyOkt = null;
         åpneForbindelse();
         boolean ok = false;
@@ -182,7 +176,7 @@ class Database {
             sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
             sqlRegNyOkt.setString(3, nyOkt.getKategori());
             sqlRegNyOkt.setString(4, nyOkt.getBeskrivelse());
-            sqlRegNyOkt.setString(5, brukernavn);
+            sqlRegNyOkt.setString(5, bruker);
             sqlRegNyOkt.executeUpdate();
 
             forbindelse.commit();
@@ -204,7 +198,7 @@ class Database {
         return ok;
     }
 
-    public boolean slettOkt(Treningsokt okt, String brukernavn) {
+    public boolean slettOkt(Treningsokt okt) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
 
@@ -253,19 +247,23 @@ class Database {
 //      return primNokkel;
 //    }
 
-    public boolean endreData(Treningsokt okt, String brukernavn) {
+    public boolean endreData(Treningsokt okt) {
         PreparedStatement sqlUpdOkt = null;
         boolean ok = false;
         åpneForbindelse();
         try {
             //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
             sqlUpdOkt = forbindelse.prepareStatement("update trening set dato = ?,varighet = ?,kategorinavn = ?, tekst = ? where oktnr = ? and brukernavn = ?");
-            sqlUpdOkt.setDate(1, new java.sql.Date(okt.getDato().getTime()));
+            try {
+                sqlUpdOkt.setDate(1, new java.sql.Date(okt.getDato().getTime()));
+            } catch (NullPointerException e) {
+                sqlUpdOkt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+            }
             sqlUpdOkt.setInt(2, okt.getVarighet());
             sqlUpdOkt.setString(3, okt.getKategori());
             sqlUpdOkt.setString(4, okt.getBeskrivelse());
             sqlUpdOkt.setInt(5, okt.getNummer());
-            sqlUpdOkt.setString(6, brukernavn);
+            sqlUpdOkt.setString(6, bruker);
             ok = true;
             sqlUpdOkt.executeUpdate();
             forbindelse.commit();
@@ -280,16 +278,11 @@ class Database {
 
     public static void main(String[] args) throws SQLException {
         /*
-         try {
-         Class.forName("org.apache.derby.jdbc.ClientDriver");
-         } catch (Exception e) {
-         System.out.println("Kan ikke laste databasedriveren. Avbryter.");
-         e.printStackTrace();
-         System.exit(0);
-         }
+         * try { Class.forName("org.apache.derby.jdbc.ClientDriver"); } catch
+         * (Exception e) { System.out.println("Kan ikke laste databasedriveren.
+         * Avbryter."); e.printStackTrace(); System.exit(0); }
          */
         Database database = new Database();
         Treningsokt okt = new Treningsokt(new java.util.Date(), 45, "sdsd", "styrke");
-        System.out.println(database.regNyOkt(okt, "tore"));
     }
 }

@@ -1,0 +1,138 @@
+
+#flagg{
+    position: relative;
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+#top-util-list{
+    padding-top: 8px;
+    position: relative;
+    float: left;
+    width: 380px;
+    text-align: right;
+    color: black;
+}
+#top-util-list a{
+    color: blue;
+}
+#top-util-list a:link:hover{
+    color: red;
+}
+#wrap {
+    padding: 5px;
+    margin: 0 auto;
+    width: 600px;
+}
+
+
+#top {
+    position: relative;
+    background-image: url("images/tillerlopet.gif");
+    background-repeat: no-repeat;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+    width: 490px;
+    min-height: 190px;
+}
+
+#menu{
+    position: relative;
+    margin: auto;
+    width:auto;
+    height: 20px;
+
+}
+#menu a{
+    padding-left: 10px;
+    padding-right: 10px;
+    text-decoration: none;
+    
+}
+
+#menu a:link:hover{
+    color:red;
+    font: bold;
+    border-top: 1px #045491 solid;
+    border-bottom: 1px #045491 solid;
+}
+
+
+#content {
+    position: relative;
+    background-color: #ffffff;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+    width: 600px;
+}
+
+#divide {
+    position: relative;
+    background-color: #ffffff;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    width: 200px;
+}
+
+#left {
+    float: left;
+    background-color: #ece3a5;
+    padding: 5px;
+    width: 150px;
+}
+
+#right {
+    float: right;
+    background-color: #ece3a5;
+    padding: 5px;
+    width: 150px;
+}
+
+.center_content {
+    position: relative;
+    background-color: #dddddd;
+    padding: 5px;
+}
+
+.left_content {
+    background-color: #dddddd;
+    padding: 5px;
+    margin-left: 170px;
+}
+
+.right_content {
+    background-color: #dddddd;
+    padding: 5px;
+    margin: 0px 170px 0px 170px;
+}
+
+/*#top a:link, #top a:visited {
+  color: white;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+  color: blue;
+  font-weight : bold;
+  text-decoration : none;
+}
+*/
+a:link:hover.hidden_link{
+    color:white;
+    text-decoration: none;
+}
+
+
+a.hidden_link{
+    display: block;
+    color:white;
+    min-height:170px;
+}
+
+#bottom{
+    font-size: 0.8em;
+    font-style: italic;
+    color: #AFAFAF;
+}
+
