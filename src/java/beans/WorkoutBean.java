@@ -125,7 +125,7 @@ public class WorkoutBean implements java.io.Serializable {
         return workouts.getAverageDuration();
     }
 
-    public synchronized void getWorkoutsMonth() {
+    public synchronized void workoutsMonth() {
         monthdata = Collections.synchronizedList(new ArrayList<MonthStatus>());
         for (Workout i : workouts.getWorkoutsMonth(month)) {
             monthdata.add(new MonthStatus(i));

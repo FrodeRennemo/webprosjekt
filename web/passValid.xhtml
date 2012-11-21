@@ -8,15 +8,17 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-         <ui:composition template ="./resources/temp.xhtml">
+         <ui:composition template ="./resources/masterLayout.xhtml">
             <ui:define name= "top">
             </ui:define>
             <ui:define name="content">
-                <p><h:outputText value="#{lang.PassOk}"/></p>
+               
+                <h:form>
+               <p><h:outputText value="#{lang.PassOk}"/></p>
                 <p><a href="index.xhtml"><h:outputText value="#{lang.Link}"/></a></p>
+                </h:form>
             </ui:define>
          </ui:composition>
-        
     </h:body>
 </html>
 

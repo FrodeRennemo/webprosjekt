@@ -71,9 +71,8 @@ public class UserBean implements Serializable {
         checkPassword();
         if (database.logIn(user)) {
             if (newPassword.equals(repeatPassword) && passwordOk) {
-                user.setPassword(newPassword);
                 if (database.changePassword(user)) {
-                    return "passwordOk";
+                    return "passValid";
                 }
             }
         }

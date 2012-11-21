@@ -8,7 +8,7 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template ="./resources/temp.xhtml">
+        <ui:composition template ="./resources/masterLayout.xhtml">
             <ui:define name="content">
                 <h:form>
                     <p>
@@ -18,7 +18,7 @@
                     <h:dataTable value ="#{workoutBean.tableData}" var="oneWorkout"
                                  styleClass="people" headerClass="hode"  
                                  rowClasses="odd,even" footerClass="fot"
-                                 rendered="#{workoutBean.dataExist()}">
+                                 rendered="#{workoutBean.dataExist}">
                         <!-- Kolonne: dato -->
                         <h:column>
                             <f:facet name="header">
@@ -30,7 +30,7 @@
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
                             </h:inputText>
                             <h:outputText value="#{oneWorkout.workout.date}"  
-                                          rendered="#{not workout.change}" >
+                                          rendered="#{not oneWorkout.change}" >
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
                             </h:outputText>
                         </h:column>
@@ -50,7 +50,7 @@
                         <!-- Kolonne: beskrivelse -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.text}"/>
+                                <h:outputText value="#{lang.Text}"/>
                             </f:facet>
                             <h:inputText value="#{oneWorkout.workout.text}"
                                          rendered="#{oneWorkout.change}"
@@ -116,96 +116,96 @@
                             <td>
                                 <h:selectOneMenu value ="#{workoutBean.tempWorkout.category}">
                                     <f:selectItem  itemValue ="#{lang.Jogging}"/>
-                                    <f:selectItem  itemValue ="#{lang.Styrke}" />
+                                    <f:selectItem  itemValue ="#{lang.Strength}" />
                                     <f:selectItem  itemValue ="#{lang.Aerobics}"/>
-                                    <f:selectItem  itemValue ="#{lang.Sykling}" />
+                                    <f:selectItem  itemValue ="#{lang.Biking}" />
                                 </h:selectOneMenu>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h:outputText value="#{lang.Beskrivelse}:  "/>
+                                <h:outputText value="#{lang.Text}:  "/>
                             </td>
                             <td>
-                                <h:inputText value="#{workoutBean.tempOkt.beskrivelse}">
+                                <h:inputText value="#{workoutBean.tempWorkout.text}">
                                 </h:inputText>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h:outputText value="#{lang.Varighet}:  "/>
+                                <h:outputText value="#{lang.Duration}:  "/>
                             </td>
                             <td>
-                                <h:inputText value="#{workoutBean.tempOkt.varighet}">
+                                <h:inputText value="#{workoutBean.tempWorkout.duration}">
                                 </h:inputText>
                             </td>
                         </tr>
                     </table>
-                    <h:selectOneMenu value ="#{workoutBean.maaned}">
-                        <f:selectItem  itemValue ="1" itemLabel="#{lang.Januar}"/>
-                        <f:selectItem  itemValue ="2" itemLabel="#{lang.Februar}"/>
-                        <f:selectItem  itemValue ="3" itemLabel="#{lang.Mars}"/>
+                    <h:selectOneMenu value ="#{workoutBean.month}">
+                        <f:selectItem  itemValue ="1" itemLabel="#{lang.January}"/>
+                        <f:selectItem  itemValue ="2" itemLabel="#{lang.February}"/>
+                        <f:selectItem  itemValue ="3" itemLabel="#{lang.March}"/>
                         <f:selectItem  itemValue ="4" itemLabel="#{lang.April}"/>
-                        <f:selectItem  itemValue ="5" itemLabel="#{lang.Mai}"/>
-                        <f:selectItem  itemValue ="6" itemLabel="#{lang.Juni}"/>
-                        <f:selectItem  itemValue ="7" itemLabel="#{lang.Juli}"/>
+                        <f:selectItem  itemValue ="5" itemLabel="#{lang.May}"/>
+                        <f:selectItem  itemValue ="6" itemLabel="#{lang.June}"/>
+                        <f:selectItem  itemValue ="7" itemLabel="#{lang.July}"/>
                         <f:selectItem  itemValue ="8" itemLabel="#{lang.August}"/>
                         <f:selectItem  itemValue ="9" itemLabel="#{lang.September}"/>
-                        <f:selectItem  itemValue ="10" itemLabel="#{lang.Oktober}"/>
+                        <f:selectItem  itemValue ="10" itemLabel="#{lang.October}"/>
                         <f:selectItem  itemValue ="11" itemLabel="#{lang.November}"/>
-                        <f:selectItem  itemValue ="12" itemLabel="#{lang.Desember}"/>
+                        <f:selectItem  itemValue ="12" itemLabel="#{lang.December}"/>
                     </h:selectOneMenu>
-                    <h:dataTable value ="#{workoutBean.maaneddata}" var="maanedOkt"
+                    <h:dataTable value ="#{workoutBean.monthdata}" var="monthWorkout"
                                  styleClass="people" headerClass="hode"
                                  rowClasses="odd,even" footerClass="fot"
-                                 rendered="#{workoutBean.getDataMaanedfins()}">
+                                 rendered="#{workoutBean.dataMonthExist}">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.Dato}"/>
+                                <h:outputText value="#{lang.Date}"/>
                             </f:facet>
-                            <h:outputText value="#{maanedOkt.okten.dato}" >
+                            <h:outputText value="#{monthWorkout.workout.date}" >
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
                             </h:outputText>
                         </h:column>
                         <!-- Kolonne: kategori -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.Kategori}"/>
+                                <h:outputText value="#{lang.Category}"/>
                             </f:facet>
-                            <h:outputText value="#{maanedOkt.okten.kategori}" />
+                            <h:outputText value="#{monthWorkout.workout.category}" />
                         </h:column>
                         <!-- Kolonne: beskrivelse -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.Beskrivelse}"/>
+                                <h:outputText value="#{lang.Text}"/>
                             </f:facet>
-                            <h:outputText value="#{maanedOkt.okten.beskrivelse}"/>
+                            <h:outputText value="#{monthWorkout.workout.text}"/>
                         </h:column>
 
                         S
                         <!-- Kolonne: varighet -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.Varighet}"/>
+                                <h:outputText value="#{lang.Duration}"/>
                             </f:facet>
-                            <h:outputText value="#{maanedOkt.okten.varighet}"/>
+                            <h:outputText value="#{monthWorkout.workout.duration}"/>
                         </h:column>
                     </h:dataTable>
                     <p>
-                        <h:commandButton value="#{lang.Oppdater}" 
-                                         action="#{workoutBean.endre}"/>
+                        <h:commandButton value="#{lang.Update}" 
+                                         action="#{workoutBean.change()}"/>
 
                         <h:commandButton value="#{lang.Send}" 
-                                         action="#{workoutBean.leggTil}"/>
+                                         action="#{workoutBean.add()}"/>
 
-                        <h:commandButton value="#{lang.slett}" 
-                                         action="#{workoutBean.slett}"/>
+                        <h:commandButton value="#{lang.Delete}" 
+                                         action="#{workoutBean.delete()}"/>
 
-                        <h:commandButton value="#{lang.Maaned}" 
-                                         action="#{workoutBean.getAlleEnMnd}"/>
+                        <h:commandButton value="#{lang.Month}" 
+                                         action="#{workoutBean.workoutsMonth()}"/>
                         
-                        <h:commandButton action="#{workoutBean.logout}" 
-                                       value="#{lang.LoggUt}" />
+                        <h:commandButton action="#{workoutBean.logout()}" 
+                                         value="#{lang.LogOut}" />
                     </p>
                 </h:form>
             </ui:define>

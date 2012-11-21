@@ -36,7 +36,7 @@
       <realm-name>waplj_realm</realm-name>
       <form-login-config>
          <form-login-page>/faces/index.xhtml</form-login-page>
-         <form-error-page>/faces/noAuth.xhtml</form-error-page>
+         <form-error-page>/faces/noauth.xhtml</form-error-page>
       </form-login-config>
    </login-config>
    

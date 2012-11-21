@@ -35,7 +35,7 @@ public class Database {
         openConnection();
         boolean ok = false;
         try {
-            sqlLogIn = connection.prepareStatement("SELECT * FROM user WHERE userNAVN = '"+user.getUsername()+"' AND PASSORD = '"+user.getPassword()+"' ");
+            sqlLogIn = connection.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = '"+user.getUsername()+"' AND PASSORD = '"+user.getPassword()+"' ");
             ResultSet res = sqlLogIn.executeQuery();
             connection.commit();
             if(res.next()){
@@ -58,7 +58,7 @@ public class Database {
         openConnection();
         boolean ok = false;
         try {
-            sqlLogIn = connection.prepareStatement("UPDATE user SET PASSORD = ? WHERE userNAVN = ?");
+            sqlLogIn = connection.prepareStatement("UPDATE BRUKER SET PASSORD = ? WHERE BRUKERNAVN = ?");
             sqlLogIn.setString(1, user.getPassword());
             sqlLogIn.setString(2, user.getUsername());
             sqlLogIn.executeUpdate();
@@ -116,15 +116,15 @@ public class Database {
         openConnection();
 
         try {
-            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE usernavn = ?");
+            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE BRUKERNAVN = ?");
             sqlLesInn.setString(1, user);
             ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
-                Date date = res.getDate("date");
-                int duration = res.getInt("duration");
+                Date date = res.getDate("dato");
+                int duration = res.getInt("varighet");
                 String category = res.getString("kategorinavn");
                 String text = res.getString("tekst");
-                int number = res.getInt("workoutnr");
+                int number = res.getInt("oktnr");
                 Workout workout = new Workout(date, duration, text, category);
                 workout.setNumber(number);
                 tab.add(workout);
@@ -142,13 +142,13 @@ public class Database {
         openConnection();
         try {
             //Statement setning = connection.createStatement();
-            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE usernavn = ?");
+            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE BRUKERNAVN = ?");
             sqlLesInn.setString(1, user);
             ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
-                Date date = res.getDate("date");
-                int duration = res.getInt("duration");
-                String category = res.getString("categorynavn");
+                Date date = res.getDate("dato");
+                int duration = res.getInt("varighet");
+                String category = res.getString("kategorinavn");
                 String text = res.getString("tekst");
                 Workout workout = new Workout(date, duration, text, category);
                 tab.add(workout);
@@ -163,25 +163,18 @@ public class Database {
     private void openConnection() {
         try {
             if (ds == null) {
-                throw new SQLException("Ingen connection");
+                throw new SQLException("No connection");
             }
             connection = ds.getConnection();
-            System.out.println("Databaseconnection opprettet");
+            System.out.println("Databaseconnection established");
         } catch (SQLException e) {
-            Cleaner.writeMessage(e, "Konstruktøren");
+            Cleaner.writeMessage(e, "Construktor");
         }
     }
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
 
     private void closeConnection() {
-        System.out.println("Lukker databaseconnectionn");
+        System.out.println("Closing databaseconnection");
         Cleaner.closeConnection(connection);
     }
 
@@ -190,7 +183,7 @@ public class Database {
         openConnection();
         boolean ok = false;
         try {
-            sqlRegNew = connection.prepareStatement("insert into trening(date,duration,categorynavn,tekst,usernavn) values(?, ?, ?,?,?)");
+            sqlRegNew = connection.prepareStatement("insert into trening(dato,varighet,kategorinavn,tekst,brukernavn) values(?, ?, ?,?,?)");
             try {
                 sqlRegNew.setDate(1, new java.sql.Date(newWorkout.getDate().getTime()));
             } catch (NullPointerException e) {
@@ -228,14 +221,14 @@ public class Database {
         System.out.println(workout.getNumber());
         openConnection();
         try {
-            sqlUpdWorkout = connection.prepareStatement("DELETE FROM TRENING WHERE number = ?");
+            sqlUpdWorkout = connection.prepareStatement("DELETE FROM TRENING WHERE oktnr = ?");
             sqlUpdWorkout.setInt(1, workout.getNumber());
             sqlUpdWorkout.executeUpdate();
             connection.commit();
             ok = true;
 
         } catch (SQLException e) {
-            Cleaner.writeMessage(e, "slettworkout()");
+            Cleaner.writeMessage(e, "deleteWorkout()");
         } finally {
             Cleaner.closeSentence(sqlUpdWorkout);
         }
@@ -245,29 +238,6 @@ public class Database {
 
 
     }
-//    public int finnnumber(Treningsworkout workout, String usernavn){
-//        int primNokkel = -1;
-//        try{
-//        openConnection();
-//      Statement setning = connection.createStatement();
-//      Statement setning2 = connection.createStatement();
-//      java.sql.Date jall = new java.sql.Date(workout.getdate().getTime());
-//      ResultSet res2 = setning2.executeQuery("SELECT * FROM TRENING");
-//      java.sql.Date date = new java.sql.Date(workout.getdate().getTime());
-//      while(res2.next()){
-//          if(res2.getDate(2).equals(date) && res2.getString(6).equals(usernavn)){
-//              res2 = setning.executeQuery("DELETE FROM TRENING WHERE usernavn = '"+usernavn+"'");
-//          }
-//      }
-//      
-//      ResultSet res = setning.executeQuery("select number FROM TRENING WHERE userNAVN = '"+usernavn+"' AND date = ?" );
-//      primNokkel = res.getInt(1);
-//      closeConnection();
-//        }catch(SQLException e){
-//            System.out.println(e.getMessage());
-//        }
-//      return primNokkel;
-//    }
 
     public boolean changeData(Workout workout) {
         PreparedStatement sqlUpdWorkout = null;
@@ -275,7 +245,7 @@ public class Database {
         openConnection();
         try {
             //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
-            sqlUpdWorkout = connection.prepareStatement("update trening set date = ?,duration = ?,categorynavn = ?, tekst = ? where number = ? and usernavn = ?");
+            sqlUpdWorkout = connection.prepareStatement("update trening set dato = ?,varighet = ?,kategorinavn = ?, tekst = ? where oktnr = ? and brukernavn = ?");
             try {
                 sqlUpdWorkout.setDate(1, new java.sql.Date(workout.getDate().getTime()));
             } catch (NullPointerException e) {
