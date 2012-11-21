@@ -1,22 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package beans;
 
+import database.Database;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import user.User;
 
-/**
- *
- * @author Frode
- */
 @Named
 @SessionScoped
-public class BrukerBean implements Serializable {
+public class UserBean implements Serializable {
 
-    private Bruker bruker = new Bruker();
+    private User bruker = new User();
     private String nyPassord;
     private String gjentaPassord;
     private String resultat = "";

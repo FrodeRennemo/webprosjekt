@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package database;
 
 /**
  *
  * @author Frode
  */
 import java.sql.*;
-public class Opprydder {
+public class Cleaner {
   public static void lukkResSet(ResultSet res) {
     try {
       if (res != null) {

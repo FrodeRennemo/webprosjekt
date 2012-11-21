@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='ISO-8859-1'?>
 
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 
@@ -7,18 +7,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
     <managed-bean>
-        <managed-bean-name>Spraak</managed-bean-name>
-        <managed-bean-class>beans.SpraakSkift</managed-bean-class>
+        <managed-bean-name>Lang</managed-bean-name>
+        <managed-bean-class>language.LangChange</managed-bean-class>
     
         <managed-bean-scope>session</managed-bean-scope></managed-bean>
 <application>
        <locale-config>
-          <default-locale>no</default-locale>       STANDARD SPRÃ…K
-          <supported-locale>en</supported-locale> EKSTRA SPRÃ…K
+          <default-locale>en</default-locale>       STANDARD SPRÅK
+          <supported-locale>no</supported-locale> EKSTRA SPRÅK
        </locale-config>
         <resource-bundle>
-            <base-name>properties.okt</base-name>   MAPPE- OG FILNAVN
-            <var>tekster</var> NAVN BRUKT I JSF-KODEN
+            <base-name>language.workout</base-name>   MAPPE- OG FILNAVN
+            <var>lang</var> NAVN BRUKT I JSF-KODEN
         </resource-bundle>
     </application>
 </faces-config>

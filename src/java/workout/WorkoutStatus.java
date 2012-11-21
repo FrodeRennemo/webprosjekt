@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package workout;
 
 import java.util.Date;
 
@@ -10,20 +10,20 @@ import java.util.Date;
  *
  * @author Frode
  */
-public class OktStatus {
+public class WorkoutStatus {
 
-    private Treningsokt okten;
+    private Workout okten;
     private boolean skalSlettes;
     private boolean endre;
 
-    public OktStatus(Treningsokt okten) {
+    public WorkoutStatus(Workout okten) {
         this.okten = okten;
         skalSlettes = false;
         endre = false;
     }
 
-    public OktStatus() {
-        okten = new Treningsokt();
+    public WorkoutStatus() {
+        okten = new Workout();
         skalSlettes = false;
         endre = false;
     }
@@ -36,11 +36,11 @@ public class OktStatus {
         skalSlettes = nySkalSlettes;
     }
 
-    public Treningsokt getOkten() {
+    public Workout getOkten() {
         return okten;
     }
 
-    public void setOkten(Treningsokt nyOkt) {
+    public void setOkten(Workout nyOkt) {
         okten = nyOkt;
     }
 

@@ -2,17 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package workout;
 
+import database.Database;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Oversikt implements Serializable {
-    private ArrayList<Treningsokt> tabell = new ArrayList();
+public class Workouts implements Serializable {
+    private ArrayList<Workout> tabell = new ArrayList();
     private Database database = new Database(); 
 
-    public Oversikt() {
+    public Workouts() {
         this.tabell = database.lesInn();
     }
 
@@ -25,7 +26,7 @@ public class Oversikt implements Serializable {
         database.lesInnBruker();
     }
 
-    public ArrayList<Treningsokt> getAlleOkter() {
+    public ArrayList<Workout> getAlleOkter() {
         return tabell;
     }
 
@@ -33,7 +34,7 @@ public class Oversikt implements Serializable {
 //        return database.finnOktNr(Okt, bruker);
 //    }
 
-    public boolean registrerNyOkt(Treningsokt okt) {
+    public boolean registrerNyOkt(Workout okt) {
         if (okt != null) {
             if (database.regNyOkt(okt)) {
                 tabell.add(okt);
@@ -43,8 +44,8 @@ public class Oversikt implements Serializable {
         return false;
     }
 
-    public ArrayList<Treningsokt> getAlleOkterEnMnd(int maaned) {
-        ArrayList<Treningsokt> Maaned = new ArrayList<Treningsokt>();
+    public ArrayList<Workout> getAlleOkterEnMnd(int maaned) {
+        ArrayList<Workout> Maaned = new ArrayList<Workout>();
         for (int i = 0; i < tabell.size(); i++) {
             if (tabell.get(i).getDato() != null) {
                 if (tabell.get(i).getDato().getMonth() + 1 == maaned) {
@@ -55,7 +56,7 @@ public class Oversikt implements Serializable {
         return Maaned;
     }
 
-    public boolean slettOkt(Treningsokt okten) {
+    public boolean slettOkt(Workout okten) {
         if (database.slettOkt(okten)) {
             tabell.remove(okten);
             return true;
@@ -74,7 +75,7 @@ public class Oversikt implements Serializable {
         return (total / tabell.size());
     }
 
-    public void endreData(Treningsokt okt) {
+    public void endreData(Workout okt) {
         
         for(int i = 0;i<tabell.size();i++){
             if(okt.getNummer() == tabell.get(i).getNummer() && database.endreData(okt)){
@@ -97,14 +98,14 @@ public class Oversikt implements Serializable {
         return utskrift;
     }
 
-    public ArrayList<Treningsokt> getTabell() {
+    public ArrayList<Workout> getTabell() {
         return tabell;
     }
 
     public static void main(String[] args) {
-        Oversikt liste = new Oversikt();
+        Workouts liste = new Workouts();
         System.out.println(liste.toString());
-        Treningsokt a = new Treningsokt(new java.util.Date(), 45, "BEEF", "aerobics");
+        Workout a = new Workout(new java.util.Date(), 45, "BEEF", "aerobics");
         System.out.println(liste.registrerNyOkt(a));
         System.out.println(liste.toString());
 //        System.out.println(liste.finnNokkel(a));

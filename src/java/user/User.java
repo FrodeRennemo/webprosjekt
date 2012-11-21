@@ -2,22 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package user;
 
 /**
  *
  * @author Frode
  */
-public class Bruker {
+public class User {
     private String brukernavn;
     private String passord;
 
-    public Bruker(String brukernavn, String passord) {
+    public User(String brukernavn, String passord) {
         this.brukernavn = brukernavn;
         this.passord = passord;
     }
 
-    public Bruker() {
+    public User() {
     }
 
     public void setBrukernavn(String brukernavn) {

@@ -1,8 +1,8 @@
-package beans;
+package workout;
 
 import java.util.Date;
 
-public class Treningsokt {
+public class Workout {
     
     private int nummer = 0;
     private static int oktnummer = 0;
@@ -11,11 +11,11 @@ public class Treningsokt {
     private String beskrivelse;
     private String kategori;
 
-    public Treningsokt() {
+    public Workout() {
         oppdatOktnummer();
     }
 
-    public Treningsokt(Date dato, int varighet, String beskrivelse, String kategori) {
+    public Workout(Date dato, int varighet, String beskrivelse, String kategori) {
         this.dato = dato;
         this.varighet = varighet;
         this.beskrivelse = beskrivelse;

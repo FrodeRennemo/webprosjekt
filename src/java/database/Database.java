@@ -1,4 +1,4 @@
-package beans;
+package database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,8 +8,10 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import user.User;
+import workout.Workout;
 
-class Database {
+public class Database {
 
     @Resource(name = "jdbc/personressurs")
     private DataSource ds;
@@ -28,7 +30,7 @@ class Database {
     public String getBruker(){
         return bruker;
     }
-    public boolean loggInn(Bruker bruker) {
+    public boolean loggInn(User bruker) {
         PreparedStatement sqlLoggInn = null;
         åpneForbindelse();
         boolean ok = false;
@@ -41,17 +43,17 @@ class Database {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Opprydder.rullTilbake(forbindelse);
+            Cleaner.rullTilbake(forbindelse);
 
         } finally {
-            Opprydder.settAutoCommit(forbindelse);
-            Opprydder.lukkSetning(sqlLoggInn);
+            Cleaner.settAutoCommit(forbindelse);
+            Cleaner.lukkSetning(sqlLoggInn);
         }
         lukkForbindelse();
         return ok;
     }
     
-    public boolean endrePassord(Bruker bruker) {
+    public boolean endrePassord(User bruker) {
         PreparedStatement sqlLoggInn = null;
         åpneForbindelse();
         boolean ok = false;
@@ -66,11 +68,11 @@ class Database {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Opprydder.rullTilbake(forbindelse);
+            Cleaner.rullTilbake(forbindelse);
 
         } finally {
-            Opprydder.settAutoCommit(forbindelse);
-            Opprydder.lukkSetning(sqlLoggInn);
+            Cleaner.settAutoCommit(forbindelse);
+            Cleaner.lukkSetning(sqlLoggInn);
         }
         lukkForbindelse();
         return ok;
@@ -108,8 +110,8 @@ class Database {
 //        return ok;
 //    }
 
-    public ArrayList<Treningsokt> lesInn() {
-        ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+    public ArrayList<Workout> lesInn() {
+        ArrayList<Workout> tab = new ArrayList<Workout>();
         PreparedStatement sqlLesInn = null;
         åpneForbindelse();
 
@@ -123,7 +125,7 @@ class Database {
                 String kategori = res.getString("kategorinavn");
                 String beskrivelse = res.getString("tekst");
                 int oktNr = res.getInt("oktnr");
-                Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+                Workout okt = new Workout(dato, varighet, beskrivelse, kategori);
                 okt.setNummer(oktNr);
                 tab.add(okt);
             }
@@ -134,8 +136,8 @@ class Database {
         return tab;
     }
 
-    public ArrayList<Treningsokt> lesInnBruker() {
-        ArrayList<Treningsokt> tab = new ArrayList<Treningsokt>();
+    public ArrayList<Workout> lesInnBruker() {
+        ArrayList<Workout> tab = new ArrayList<Workout>();
         PreparedStatement sqlLesInn = null;
         åpneForbindelse();
         try {
@@ -148,7 +150,7 @@ class Database {
                 int varighet = res.getInt("varighet");
                 String kategori = res.getString("kategorinavn");
                 String beskrivelse = res.getString("tekst");
-                Treningsokt okt = new Treningsokt(dato, varighet, beskrivelse, kategori);
+                Workout okt = new Workout(dato, varighet, beskrivelse, kategori);
                 tab.add(okt);
             }
         } catch (SQLException e) {
@@ -166,7 +168,7 @@ class Database {
             forbindelse = ds.getConnection();
             System.out.println("Databaseforbindelse opprettet");
         } catch (SQLException e) {
-            Opprydder.skrivMelding(e, "Konstruktøren");
+            Cleaner.skrivMelding(e, "Konstruktøren");
         }
     }
 
@@ -180,10 +182,10 @@ class Database {
 
     private void lukkForbindelse() {
         System.out.println("Lukker databaseforbindelsen");
-        Opprydder.lukkForbindelse(forbindelse);
+        Cleaner.lukkForbindelse(forbindelse);
     }
 
-    public boolean regNyOkt(Treningsokt nyOkt) {
+    public boolean regNyOkt(Workout nyOkt) {
         PreparedStatement sqlRegNyOkt = null;
         åpneForbindelse();
         boolean ok = false;
@@ -209,17 +211,17 @@ class Database {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Opprydder.rullTilbake(forbindelse);
+            Cleaner.rullTilbake(forbindelse);
 
         } finally {
-            Opprydder.settAutoCommit(forbindelse);
-            Opprydder.lukkSetning(sqlRegNyOkt);
+            Cleaner.settAutoCommit(forbindelse);
+            Cleaner.lukkSetning(sqlRegNyOkt);
         }
         lukkForbindelse();
         return ok;
     }
 
-    public boolean slettOkt(Treningsokt okt) {
+    public boolean slettOkt(Workout okt) {
         boolean ok = false;
         PreparedStatement sqlUpdOkt = null;
 
@@ -234,9 +236,9 @@ class Database {
             ok = true;
 
         } catch (SQLException e) {
-            Opprydder.skrivMelding(e, "slettOkt()");
+            Cleaner.skrivMelding(e, "slettOkt()");
         } finally {
-            Opprydder.lukkSetning(sqlUpdOkt);
+            Cleaner.lukkSetning(sqlUpdOkt);
         }
         lukkForbindelse();
         return ok;
@@ -268,7 +270,7 @@ class Database {
 //      return primNokkel;
 //    }
 
-    public boolean endreData(Treningsokt okt) {
+    public boolean endreData(Workout okt) {
         PreparedStatement sqlUpdOkt = null;
         boolean ok = false;
         åpneForbindelse();
@@ -289,9 +291,9 @@ class Database {
             sqlUpdOkt.executeUpdate();
             forbindelse.commit();
         } catch (SQLException e) {
-            Opprydder.skrivMelding(e, "endreData()");
+            Cleaner.skrivMelding(e, "endreData()");
         } finally {
-            Opprydder.lukkSetning(sqlUpdOkt);
+            Cleaner.lukkSetning(sqlUpdOkt);
         }
         lukkForbindelse();
         return ok;
@@ -304,6 +306,6 @@ class Database {
          * Avbryter."); e.printStackTrace(); System.exit(0); }
          */
         Database database = new Database();
-        Treningsokt okt = new Treningsokt(new java.util.Date(), 45, "sdsd", "styrke");
+        Workout okt = new Workout(new java.util.Date(), 45, "sdsd", "styrke");
     }
 }

@@ -1,5 +1,7 @@
+package language;
 
-package beans;
+
+
 
 import java.util.Locale;
 import javax.enterprise.context.Dependent;
@@ -8,7 +10,7 @@ import javax.inject.Named;
 
 @Named("Spraak")
 @Dependent
-public class SpraakSkift {
+public class LangChange {
 
     private FacesContext context = FacesContext.getCurrentInstance();
     private Locale locale =  context.getViewRoot().getLocale();
