@@ -15,8 +15,8 @@ public class Database {
 
     @Resource(name = "jdbc/personressurs")
     private DataSource ds;
-    private Connection forbindelse;
-    private String bruker = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+    private Connection connection;
+    private String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
 
     public Database() {
         try {
@@ -27,71 +27,71 @@ public class Database {
         }
     }
     
-    public String getBruker(){
-        return bruker;
+    public String getUser(){
+        return user;
     }
-    public boolean loggInn(User bruker) {
-        PreparedStatement sqlLoggInn = null;
-        åpneForbindelse();
+    public boolean logIn(User user) {
+        PreparedStatement sqlLogIn = null;
+        openConnection();
         boolean ok = false;
         try {
-            sqlLoggInn = forbindelse.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = '"+bruker.getBrukernavn()+"' AND PASSORD = '"+bruker.getPassord()+"' ");
-            ResultSet res = sqlLoggInn.executeQuery();
-            forbindelse.commit();
+            sqlLogIn = connection.prepareStatement("SELECT * FROM user WHERE userNAVN = '"+user.getUsername()+"' AND PASSORD = '"+user.getPassword()+"' ");
+            ResultSet res = sqlLogIn.executeQuery();
+            connection.commit();
             if(res.next()){
                  ok = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Cleaner.rullTilbake(forbindelse);
+            Cleaner.rollback(connection);
 
         } finally {
-            Cleaner.settAutoCommit(forbindelse);
-            Cleaner.lukkSetning(sqlLoggInn);
+            Cleaner.setAutoCommit(connection);
+            Cleaner.closeSentence(sqlLogIn);
         }
-        lukkForbindelse();
+        closeConnection();
         return ok;
     }
     
-    public boolean endrePassord(User bruker) {
-        PreparedStatement sqlLoggInn = null;
-        åpneForbindelse();
+    public boolean endrePassord(User user) {
+        PreparedStatement sqlLogIn = null;
+        openConnection();
         boolean ok = false;
         try {
-            sqlLoggInn = forbindelse.prepareStatement("UPDATE BRUKER SET PASSORD = ? WHERE BRUKERNAVN = ?");
-            sqlLoggInn.setString(1, bruker.getPassord());
-            sqlLoggInn.setString(2, bruker.getBrukernavn());
-            sqlLoggInn.executeUpdate();
-            forbindelse.commit();
+            sqlLogIn = connection.prepareStatement("UPDATE user SET PASSORD = ? WHERE userNAVN = ?");
+            sqlLogIn.setString(1, user.getPassword());
+            sqlLogIn.setString(2, user.getUsername());
+            sqlLogIn.executeUpdate();
+            connection.commit();
             ok = true;
          
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Cleaner.rullTilbake(forbindelse);
+            Cleaner.rollback(connection);
 
         } finally {
-            Cleaner.settAutoCommit(forbindelse);
-            Cleaner.lukkSetning(sqlLoggInn);
+            Cleaner.setAutoCommit(connection);
+            Cleaner.closeSentence(sqlLogIn);
         }
-        lukkForbindelse();
+        closeConnection();
         return ok;
     }
 
 
 
 
-//    public boolean nyBruker() {
-//        PreparedStatement sqlRegNyBruker = null;
-//        åpneForbindelse();
+//    public boolean nyuser() {
+//        PreparedStatement sqlRegNyuser = null;
+//        openConnection();
 //        boolean ok = false;
 //        try {
-//            sqlRegNyBruker = forbindelse.prepareStatement("insert into bruker(brukernavn,passord) values(?, ?)");
-//            sqlRegNyBruker.setString(1, nyBruker.getBrukernavn());
-//            sqlRegNyBruker.setString(2, nyBruker.getPassord());
+//            sqlRegNyuser = connection.prepareStatement("insert into user(usernavn,passord) values(?, ?)");
+//            sqlRegNyuser.setString(1, nyuser.getusernavn());
+//            sqlRegNyuser.setString(2, nyuser.getPassord());
 //
 //
-//            forbindelse.commit();
+//            connection.commit();
 //
 //            /*
 //             * Transaksjon slutt
@@ -100,109 +100,109 @@ public class Database {
 //
 //        } catch (SQLException e) {
 //            System.out.println(e.getMessage());
-//            Opprydder.rullTilbake(forbindelse);
+//            Opprydder.rollback(connection);
 //
 //        } finally {
-//            Opprydder.settAutoCommit(forbindelse);
-//            Opprydder.lukkSetning(sqlRegNyBruker);
+//            Opprydder.settAutoCommit(connection);
+//            Opprydder.closeSentence(sqlRegNyuser);
 //        }
-//        lukkForbindelse();
+//        closeConnection();
 //        return ok;
 //    }
 
-    public ArrayList<Workout> lesInn() {
+    public ArrayList<Workout> readIn() {
         ArrayList<Workout> tab = new ArrayList<Workout>();
         PreparedStatement sqlLesInn = null;
-        åpneForbindelse();
+        openConnection();
 
         try {
-            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE brukernavn = ?");
-            sqlLesInn.setString(1, bruker);
+            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE usernavn = ?");
+            sqlLesInn.setString(1, user);
             ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
-                Date dato = res.getDate("dato");
-                int varighet = res.getInt("varighet");
-                String kategori = res.getString("kategorinavn");
-                String beskrivelse = res.getString("tekst");
-                int oktNr = res.getInt("oktnr");
-                Workout okt = new Workout(dato, varighet, beskrivelse, kategori);
-                okt.setNummer(oktNr);
-                tab.add(okt);
+                Date date = res.getDate("date");
+                int duration = res.getInt("duration");
+                String category = res.getString("kategorinavn");
+                String text = res.getString("tekst");
+                int number = res.getInt("workoutnr");
+                Workout workout = new Workout(date, duration, text, category);
+                workout.setNummer(number);
+                tab.add(workout);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        lukkForbindelse();
+        closeConnection();
         return tab;
     }
 
-    public ArrayList<Workout> lesInnBruker() {
+    public ArrayList<Workout> lesInUser() {
         ArrayList<Workout> tab = new ArrayList<Workout>();
         PreparedStatement sqlLesInn = null;
-        åpneForbindelse();
+        openConnection();
         try {
-            //Statement setning = forbindelse.createStatement();
-            sqlLesInn = forbindelse.prepareStatement("SELECT * FROM TRENING WHERE brukernavn = ?");
-            sqlLesInn.setString(1, bruker);
+            //Statement setning = connection.createStatement();
+            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE usernavn = ?");
+            sqlLesInn.setString(1, user);
             ResultSet res = sqlLesInn.executeQuery();
             while (res.next()) {
-                Date dato = res.getDate("dato");
-                int varighet = res.getInt("varighet");
-                String kategori = res.getString("kategorinavn");
-                String beskrivelse = res.getString("tekst");
-                Workout okt = new Workout(dato, varighet, beskrivelse, kategori);
-                tab.add(okt);
+                Date date = res.getDate("date");
+                int duration = res.getInt("duration");
+                String category = res.getString("categorynavn");
+                String text = res.getString("tekst");
+                Workout workout = new Workout(date, duration, text, category);
+                tab.add(workout);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        lukkForbindelse();
+        closeConnection();
         return tab;
     }
 
-    private void åpneForbindelse() {
+    private void openConnection() {
         try {
             if (ds == null) {
-                throw new SQLException("Ingen forbindelse");
+                throw new SQLException("Ingen connection");
             }
-            forbindelse = ds.getConnection();
-            System.out.println("Databaseforbindelse opprettet");
+            connection = ds.getConnection();
+            System.out.println("Databaseconnection opprettet");
         } catch (SQLException e) {
-            Cleaner.skrivMelding(e, "Konstruktøren");
+            Cleaner.writeMessage(e, "Konstruktøren");
         }
     }
 
-    public void setForbindelse(Connection forbindelse) {
-        this.forbindelse = forbindelse;
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
-    public Connection getForbindelse() {
-        return forbindelse;
+    public Connection getConnection() {
+        return connection;
     }
 
-    private void lukkForbindelse() {
-        System.out.println("Lukker databaseforbindelsen");
-        Cleaner.lukkForbindelse(forbindelse);
+    private void closeConnection() {
+        System.out.println("Lukker databaseconnectionn");
+        Cleaner.closeConnection(connection);
     }
 
-    public boolean regNyOkt(Workout nyOkt) {
-        PreparedStatement sqlRegNyOkt = null;
-        åpneForbindelse();
+    public boolean regNew(Workout nyworkout) {
+        PreparedStatement sqlRegNew = null;
+        openConnection();
         boolean ok = false;
         try {
-            sqlRegNyOkt = forbindelse.prepareStatement("insert into trening(dato,varighet,kategorinavn,tekst,brukernavn) values(?, ?, ?,?,?)");
+            sqlRegNew = connection.prepareStatement("insert into trening(date,duration,categorynavn,tekst,usernavn) values(?, ?, ?,?,?)");
             try {
-                sqlRegNyOkt.setDate(1, new java.sql.Date(nyOkt.getDato().getTime()));
+                sqlRegNew.setDate(1, new java.sql.Date(newWorkout.getdate().getTime()));
             } catch (NullPointerException e) {
-                sqlRegNyOkt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+                sqlRegNew.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
             }
-            sqlRegNyOkt.setInt(2, nyOkt.getVarighet());
-            sqlRegNyOkt.setString(3, nyOkt.getKategori());
-            sqlRegNyOkt.setString(4, nyOkt.getBeskrivelse());
-            sqlRegNyOkt.setString(5, bruker);
-            sqlRegNyOkt.executeUpdate();
+            sqlRegNew.setInt(2, nyworkout.getduration());
+            sqlRegNew.setString(3, nyworkout.getcategory());
+            sqlRegNew.setString(4, nyworkout.gettext());
+            sqlRegNew.setString(5, user);
+            sqlRegNew.executeUpdate();
 
-            forbindelse.commit();
+            connection.commit();
 
             /*
              * Transaksjon slutt
@@ -211,91 +211,90 @@ public class Database {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Cleaner.rullTilbake(forbindelse);
+            Cleaner.rollback(connection);
 
         } finally {
-            Cleaner.settAutoCommit(forbindelse);
-            Cleaner.lukkSetning(sqlRegNyOkt);
+            Cleaner.setAutoCommit(connection);
+            Cleaner.closeSentence(sqlRegNyworkout);
         }
-        lukkForbindelse();
+        closeConnection();
         return ok;
     }
 
-    public boolean slettOkt(Workout okt) {
+    public boolean deleteWorkout(Workout workout) {
         boolean ok = false;
-        PreparedStatement sqlUpdOkt = null;
+        PreparedStatement sqlUpdWorkout = null;
 
-        System.out.println(okt.getNummer());
-        åpneForbindelse();
+        System.out.println(workout.getNummer());
+        openConnection();
         try {
-            sqlUpdOkt = forbindelse.prepareStatement("DELETE FROM TRENING WHERE oktnr = ?");
-            sqlUpdOkt.setInt(1, okt.getNummer());
-            System.out.println(okt.getNummer());
-            sqlUpdOkt.executeUpdate();
-            forbindelse.commit();
+            sqlUpdWorkout = connection.prepareStatement("DELETE FROM TRENING WHERE number = ?");
+            sqlUpdWorkout.setInt(1, workout.getNummer());
+            sqlUpdWorkout.executeUpdate();
+            connection.commit();
             ok = true;
 
         } catch (SQLException e) {
-            Cleaner.skrivMelding(e, "slettOkt()");
+            Cleaner.writeMessage(e, "slettworkout()");
         } finally {
-            Cleaner.lukkSetning(sqlUpdOkt);
+            Cleaner.closeSentence(sqlUpdWorkout);
         }
-        lukkForbindelse();
+        closeConnection();
         return ok;
 
 
 
     }
-//    public int finnOktNr(Treningsokt okt, String brukernavn){
+//    public int finnnumber(Treningsworkout workout, String usernavn){
 //        int primNokkel = -1;
 //        try{
-//        åpneForbindelse();
-//      Statement setning = forbindelse.createStatement();
-//      Statement setning2 = forbindelse.createStatement();
-//      java.sql.Date jall = new java.sql.Date(okt.getDato().getTime());
+//        openConnection();
+//      Statement setning = connection.createStatement();
+//      Statement setning2 = connection.createStatement();
+//      java.sql.Date jall = new java.sql.Date(workout.getdate().getTime());
 //      ResultSet res2 = setning2.executeQuery("SELECT * FROM TRENING");
-//      java.sql.Date dato = new java.sql.Date(okt.getDato().getTime());
+//      java.sql.Date date = new java.sql.Date(workout.getdate().getTime());
 //      while(res2.next()){
-//          if(res2.getDate(2).equals(dato) && res2.getString(6).equals(brukernavn)){
-//              res2 = setning.executeQuery("DELETE FROM TRENING WHERE brukernavn = '"+brukernavn+"'");
+//          if(res2.getDate(2).equals(date) && res2.getString(6).equals(usernavn)){
+//              res2 = setning.executeQuery("DELETE FROM TRENING WHERE usernavn = '"+usernavn+"'");
 //          }
 //      }
 //      
-//      ResultSet res = setning.executeQuery("select OKTNR FROM TRENING WHERE BRUKERNAVN = '"+brukernavn+"' AND DATO = ?" );
+//      ResultSet res = setning.executeQuery("select number FROM TRENING WHERE userNAVN = '"+usernavn+"' AND date = ?" );
 //      primNokkel = res.getInt(1);
-//      lukkForbindelse();
+//      closeConnection();
 //        }catch(SQLException e){
 //            System.out.println(e.getMessage());
 //        }
 //      return primNokkel;
 //    }
 
-    public boolean endreData(Workout okt) {
-        PreparedStatement sqlUpdOkt = null;
+    public boolean changeData(Workout workout) {
+        PreparedStatement sqlUpdWorkout = null;
         boolean ok = false;
-        åpneForbindelse();
+        openConnection();
         try {
             //String sql = "update eksemplar set laant_av = '" + navn + "' where isbn = '" + isbn + "' and eks_nr = " + eksNr;
-            sqlUpdOkt = forbindelse.prepareStatement("update trening set dato = ?,varighet = ?,kategorinavn = ?, tekst = ? where oktnr = ? and brukernavn = ?");
+            sqlUpdWorkout = connection.prepareStatement("update trening set date = ?,duration = ?,categorynavn = ?, tekst = ? where number = ? and usernavn = ?");
             try {
-                sqlUpdOkt.setDate(1, new java.sql.Date(okt.getDato().getTime()));
+                sqlUpdWorkout.setDate(1, new java.sql.Date(workout.getDate().getTime()));
             } catch (NullPointerException e) {
-                sqlUpdOkt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+                sqlUpdWorkout.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
             }
-            sqlUpdOkt.setInt(2, okt.getVarighet());
-            sqlUpdOkt.setString(3, okt.getKategori());
-            sqlUpdOkt.setString(4, okt.getBeskrivelse());
-            sqlUpdOkt.setInt(5, okt.getNummer());
-            sqlUpdOkt.setString(6, bruker);
+            sqlUpdWorkout.setInt(2, workout.getDuration());
+            sqlUpdWorkout.setString(3, workout.getDategory());
+            sqlUpdWorkout.setString(4, workout.getText());
+            sqlUpdWorkout.setInt(5, workout.getNumber());
+            sqlUpdWorkout.setString(6, user);
             ok = true;
-            sqlUpdOkt.executeUpdate();
-            forbindelse.commit();
+            sqlUpdWorkout.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
-            Cleaner.skrivMelding(e, "endreData()");
+            Cleaner.writeMessage(e, "changeData()");
         } finally {
-            Cleaner.lukkSetning(sqlUpdOkt);
+            Cleaner.closeSentence(sqlUpdWorkout);
         }
-        lukkForbindelse();
+        closeConnection();
         return ok;
     }
 
@@ -306,6 +305,6 @@ public class Database {
          * Avbryter."); e.printStackTrace(); System.exit(0); }
          */
         Database database = new Database();
-        Workout okt = new Workout(new java.util.Date(), 45, "sdsd", "styrke");
+        Workout workout = new Workout(new java.util.Date(), 45, "sdsd", "styrke");
     }
 }

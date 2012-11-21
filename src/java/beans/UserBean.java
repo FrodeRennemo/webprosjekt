@@ -11,115 +11,112 @@ import user.User;
 @SessionScoped
 public class UserBean implements Serializable {
 
-    private User bruker = new User();
-    private String nyPassord;
-    private String gjentaPassord;
-    private String resultat = "";
-    private String spesialtegn = "-_,.";
+    private User user = new User();
+    private String newPassword;
+    private String repeatPassword;
+    private String result = "";
+    private String specialLetter = "-_,.";
     private Database database = new Database();
-    private boolean passordOk = false;
+    private boolean passwordOk = false;
 
-    public void setBrukernavn(String brukernavn) {
-        bruker.setBrukernavn(brukernavn);
+    public void setUsernavn(String usernavn) {
+        user.setUsernavn(usernavn);
     }
 
-    public void setNyPassord(String nyPassord) {
-        this.nyPassord = nyPassord;
+    public void setNypassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
-    public String getNyPassord() {
-        return nyPassord;
+    public String getNypassword() {
+        return newPassword;
     }
 
-    public void setPassord(String passord) {
-        bruker.setPassord(passord);
+    public void setPassword(String password) {
+        user.setPassword(password);
     }
 
-    public String getBrukernavn() {
-        return bruker.getBrukernavn();
+    public String getUsernavn() {
+        return user.getUsernavn();
     }
 
-    public String getPassord() {
-        return bruker.getPassord();
+    public String getPassword() {
+        return user.getPassword();
     }
 
-    public void setGjentaPassord(String gjentaPassord) {
-        this.gjentaPassord = gjentaPassord;
+    public void setrepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
     }
 
-    public boolean getPassordOk() {
-        return passordOk;
+    public boolean getPasswordOk() {
+        return passwordOk;
     }
 
-    public void setPassordOk(boolean passordOk) {
-        this.passordOk = passordOk;
+    public void setpasswordOk(boolean passwordOk) {
+        this.passwordOk = passwordOk;
     }
 
-    public String getResultat() {
-        return resultat;
+    public String getResult() {
+        return result;
     }
 
-    public void setResultat(String resultat) {
-        this.resultat = resultat;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public String getGjentaPassord() {
-        return gjentaPassord;
+    public String getRepeatPassword() {
+        return repeatPassword;
     }
 
-    public String skiftPassord() {
-        sjekkPassord();
-        if (database.loggInn(bruker)) {
-            if (nyPassord.equals(gjentaPassord) && passordOk) {
-                bruker.setPassord(nyPassord);
-                if (database.endrePassord(bruker)) {
-                    return "passordOk";
+    public String changePassword() {
+        checkPassword();
+        if (database.loggInn(user)) {
+            if (newPassword.equals(repeatPassword) && passwordOk) {
+                user.setPassword(newPassword);
+                if (database.changePassword(user)) {
+                    return "passwordOk";
                 }
             }
         }
-        System.out.println("0");
-        return resultat;
-
-
+        return result;
     }
 
-    public void sjekkPassord() {
-        int antallspestegn = 0;
-        int antallsiffer = 0;
-        int antbokstaver = 0;
-        int antalltegn = 0;
-        if (nyPassord.equals("")) {
-            resultat = "Vennligst skriv inn et passord.";
+    public void checkPassword() {
+        int special = 0;
+        int number = 0;
+        int letter = 0;
+        int symbol = 0;
+        if (newPassword.equals("")) {
+            result = "Vennligst skriv inn et password.";
             return;
         }
-        if (!nyPassord.equals(gjentaPassord)) {
-            resultat = "Passordene må være like.";
+        if (!newPassword.equals(repeatPassword)) {
+            result = "passwordene må være like.";
             return;
         }
 
-        for (int i = 0; i < nyPassord.length(); i++) {
-            char tegn = nyPassord.charAt(i);
+        for (int i = 0; i < newPassword.length(); i++) {
+            char tegn = newPassword.charAt(i);
 
-            /* isLetterOrDigit() bruker tegnsettet som maskinen er satt opp med */
-            if (!(Character.isLetterOrDigit(tegn)) && !(spesialtegn.indexOf(tegn) >= 0)) {
-                resultat = "Spesialtegn";
+            /* isLetterOrDigit() user tegnsettet som maskinen er satt opp med */
+            if (!(Character.isLetterOrDigit(tegn)) && !(specialLetter.indexOf(tegn) >= 0)) {
+                result = "Spesialtegn";
                 return;
             }
             if (Character.isLetter(tegn)) {
-                antbokstaver++;
+                letter++;
             }
             if (Character.isDigit(tegn)) {
-                antallsiffer++;
+                number++;
             }
-            if (spesialtegn.indexOf(tegn) >= 0) {
-                antallspestegn++;
+            if (specialLetter.indexOf(tegn) >= 0) {
+                special++;
             }
-            antalltegn++;
+            symbol++;
         }
-        if (antallspestegn > 0 && antallsiffer > 0 && antallspestegn > 0 && antalltegn >= 6) {
-            passordOk = true;
+        if (special > 0 && number > 0 && special > 0 && symbol >= 6) {
+            passwordOk = true;
         } else {
-            resultat = "For kort eller ikke nok bokstaver, tall eller spesialtegn";
+            result = "Too short or not enough letters, number or special letters.";
         }
     }
 }

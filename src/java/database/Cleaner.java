@@ -1,67 +1,63 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
-/**
- *
- * @author Frode
- */
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Cleaner {
-  public static void lukkResSet(ResultSet res) {
+  public static void closeResSet(ResultSet res) {
     try {
       if (res != null) {
         res.close();
       }
     } catch (SQLException e) {
-      skrivMelding(e, "lukkResSet()");
+      writeMessage(e, "closeResSet()");
     }
   }
 
-  public static void lukkSetning(Statement stm) {
+  public static void closeSentence(Statement stm) {
     try {
       if (stm != null) {
         stm.close();
       }
     } catch (SQLException e) {
-      skrivMelding(e, "lukkSetning()");
+      writeMessage(e, "closeSentence()");
     }
   }
 
-  public static void lukkForbindelse(Connection forbindelse) {
+  public static void closeConnection(Connection connection) {
     try {
-      if (forbindelse != null) {
-        forbindelse.close();
+      if (connection != null) {
+        connection.close();
       }
     } catch (SQLException e) {
-      skrivMelding(e, "lukkForbindelse()");
+      writeMessage(e, "lukkconnection()");
     }
   }
 
-  public static void rullTilbake(Connection forbindelse) {
+  public static void rollback(Connection connection) {
     try {
-      if (forbindelse != null && !forbindelse.getAutoCommit()) {
-        forbindelse.rollback();
+      if (connection != null && !connection.getAutoCommit()) {
+        connection.rollback();
       }
     } catch (SQLException e) {
-      skrivMelding(e, "rollback()");
+      writeMessage(e, "rollback()");
     }
   }
 
-  public static void settAutoCommit(Connection forbindelse) {
+  public static void setAutoCommit(Connection connection) {
     try {
-      if (forbindelse != null && !forbindelse.getAutoCommit()) {
-        forbindelse.setAutoCommit(true);
+      if (connection != null && !connection.getAutoCommit()) {
+        connection.setAutoCommit(true);
       }
     } catch (SQLException e) {
-      skrivMelding(e, "settAutoCommit()");
+      writeMessage(e, "settAutoCommit()");
     }
   }
 
-  public static void skrivMelding(Exception e, String melding) {
-    System.err.println("*** Feil oppstått: " + melding + ". ***");
+  public static void writeMessage(Exception e, String message) {
+    System.err.println("*** Error occured: " + message + ". ***");
     e.printStackTrace(System.err);
   }
 }

@@ -21,131 +21,131 @@ import workout.Workout;
 @SessionScoped
 public class WorkoutBean implements java.io.Serializable {
 
-    private Workouts oversikt = new Workouts();
-    private List<WorkoutStatus> tabelldata = Collections.synchronizedList(new ArrayList<WorkoutStatus>());
-    private Workout tempOkt = new Workout(); // midlertidig lager for ny transaksjon
-    private int maaned;
-    private List<MonthStatus> maaneddata = Collections.synchronizedList(new ArrayList<MonthStatus>());
+    private Workouts workouts = new Workouts();
+    private List<WorkoutStatus> tabledata = Collections.synchronizedList(new ArrayList<WorkoutStatus>());
+    private Workout tempWorkout = new Workout(); // midlertidig lager for ny transaksjon
+    private int month;
+    private List<MonthStatus> monthdata = Collections.synchronizedList(new ArrayList<MonthStatus>());
 
     public WorkoutBean() {
-        if (oversikt.getTabell() != null) {
-            for (int i = 0; i < oversikt.getTabell().size(); i++) {
-                tabelldata.add(new WorkoutStatus(oversikt.getTabell().get(i)));
+        if (workouts.getTabell() != null) {
+            for (int i = 0; i < workouts.getTabell().size(); i++) {
+                tabledata.add(new WorkoutStatus(workouts.getTabell().get(i)));
             }
         }
     }
 
-    public synchronized boolean getDatafins() {
-        return (tabelldata.size() > 0);
+    public synchronized boolean getDataExist() {
+        return (tabledata.size() > 0);
     }
 
-    public Workouts getOversikt() {
-        return oversikt;
+    public Workouts getWorkouts() {
+        return workouts;
     }
 
-    public synchronized List<MonthStatus> getMaaneddata() {
-        return maaneddata;
+    public synchronized List<MonthStatus> getMonthdata() {
+        return monthdata;
     }
 
-    public synchronized boolean getDataMaanedfins() {
-        return (maaneddata.size() > 0);
+    public synchronized boolean getDataMonthExist() {
+        return (monthdata.size() > 0);
     }
 
-    public synchronized List<WorkoutStatus> getTabelldata() {
-        return tabelldata;
+    public synchronized List<WorkoutStatus> getTableData() {
+        return tabledata;
     }
 
-    public synchronized void setMaaned(int maaned) {
-        this.maaned = maaned;
+    public synchronized void setMonth(int month) {
+        this.month = month;
     }
 
-    public synchronized int getMaaned() {
-        return maaned;
+    public synchronized int getMonth() {
+        return month;
     }
 
     public synchronized Date getDato() {
-        return tempOkt.getDato();
+        return tempWorkout.getDato();
     }
 
     public synchronized void setDato(Date nyDato) {
-        tempOkt.setDato(nyDato);
+        tempWorkout.setDato(nyDato);
     }
 
-    public synchronized String getKategori() {
-        return tempOkt.getKategori();
+    public synchronized String getCategory() {
+        return tempWorkout.getCategory();
     }
 
-    public synchronized void setKategori(String kategori) {
-        tempOkt.setKategori(kategori);
+    public synchronized void setCategory(String category) {
+        tempWorkout.setCategory(category);
     }
 
-    public synchronized String getBeskrivelse() {
-        return tempOkt.getBeskrivelse();
+    public synchronized String getText() {
+        return tempWorkout.getText();
     }
 
-    public synchronized void setBeskrivelse(String beskrivelse) {
-        tempOkt.setBeskrivelse(beskrivelse);
+    public synchronized void setText(String text) {
+        tempWorkout.setText(text);
     }
 
-    public synchronized int getVarighet() {
-        return tempOkt.getVarighet();
+    public synchronized int getDuration() {
+        return tempWorkout.getDuration();
     }
 
-    public synchronized void setVarighet(int varighet) {
-        tempOkt.setVarighet(varighet);
+    public synchronized void setDuration(int duration) {
+        tempWorkout.setDuration(duration);
     }
 
-    public synchronized Workout getTempOkt() {
-        return tempOkt;
+    public synchronized Workout getTempWorkout() {
+        return tempWorkout;
     }
 
-    public synchronized void setTempOkt(Workout nyOkt) {
-        tempOkt = nyOkt;
+    public synchronized void setTempWorkout(Workout nyOkt) {
+        tempWorkout = nyOkt;
     }
 
-    public synchronized void leggTil() {
-        Workout nyOkt = new Workout(tempOkt.getDato(), tempOkt.getVarighet(), tempOkt.getBeskrivelse(), tempOkt.getKategori());
-        if (oversikt.registrerNyOkt(nyOkt)) {
-            tabelldata.add(new WorkoutStatus(nyOkt));
+    public synchronized void add() {
+        Workout nyOkt = new Workout(tempWorkout.getDato(), tempWorkout.getDuration(), tempWorkout.getText(), tempWorkout.getCategory());
+        if (workouts.registerNewWorkout(nyOkt)) {
+            tabledata.add(new WorkoutStatus(nyOkt));
             if (nyOkt.getDato() == null) {
                 nyOkt.setDato(new java.sql.Date(new java.util.Date().getTime()));
             }
-            tempOkt.nullstill();
+            tempWorkout.reset();
         }
     }
 
-    public synchronized void slett() {
-        int indeks = tabelldata.size() - 1;
-        while (indeks >= 0) {
-            WorkoutStatus ts = tabelldata.get(indeks);
-            if (ts.getSkalSlettes() && oversikt.slettOkt(ts.getOkten())) {
-                tabelldata.remove(indeks);
+    public synchronized void delete() {
+        int index = tabledata.size() - 1;
+        while (index >= 0) {
+            WorkoutStatus ts = tabledata.get(index);
+            if (ts.getIfDelete() && workouts.deleteWorkout(ts.getOkten())) {
+                tabledata.remove(index);
             }
-            indeks--;
+            index--;
         }
     }
 
-    public synchronized double getSnittVarighet() {
-        return oversikt.getSnittVarighet();
+    public synchronized double getAverageDuration() {
+        return workouts.getAverageDuration();
     }
 
-    public synchronized void getAlleEnMnd() {
-        maaneddata = Collections.synchronizedList(new ArrayList<MonthStatus>());
-        for (Workout i : oversikt.getAlleOkterEnMnd(maaned)) {
-            maaneddata.add(new MonthStatus(i));
+    public synchronized void getWorkoutsMonth() {
+        monthdata = Collections.synchronizedList(new ArrayList<MonthStatus>());
+        for (Workout i : workouts.getWorkoutsMonth(month)) {
+            monthdata.add(new MonthStatus(i));
         }
     }
 
-    public synchronized void endre() {
-        int indeks = tabelldata.size() - 1;
-        while (indeks >= 0) {
-            WorkoutStatus ts = tabelldata.get(indeks);
+    public synchronized void change() {
+        int index = tabledata.size() - 1;
+        while (index >= 0) {
+            WorkoutStatus ts = tabledata.get(index);
             if (ts.getDato() == null) {
                 ts.setDato(new java.sql.Date(new java.util.Date().getTime()));
             }
             ts.setEndre(false);
-            oversikt.endreData(ts.getOkten());
-            indeks--;
+            workouts.endreData(ts.getOkten());
+            index--;
         }
     }
 
