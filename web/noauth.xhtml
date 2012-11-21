@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title><h:outputText value="#{tekster.AutFeil}"/></title>
+        <title><h:outputText value="#{lang.Auth}"/></title>
     </h:head>
     <h:body>
        <ui:composition template ="./resources/temp.xhtml">
@@ -13,7 +13,7 @@
             </ui:define>
             <ui:define name="content">
                 
-                <h:outputText value="#{tekster.Autentisering}"/>
+                <h:outputText value="#{tekster.NoAuth}"/>
             </ui:define>
        </ui:composition>
 </h:body>

@@ -80,7 +80,7 @@ public class Workouts implements Serializable {
         }
     }
 
-    public String getBruker() {
+    public String getUser() {
         return database.getUser();
     }
 

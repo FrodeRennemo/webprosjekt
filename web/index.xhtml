@@ -16,18 +16,18 @@
                 <form method="post" action="j_security_check">
                     <table>
                         <tr>
-                            <td><h:outputText value="#{tekster.Brukernavn}"/></td>
+                            <td><h:outputText value="#{lang.Username}"/></td>
                             <td><input type="text" name="j_username" /></td>
                         </tr>
                         <tr>
-                            <td><h:outputText value="#{tekster.Passord}"/></td>
+                            <td><h:outputText value="#{lang.Password}"/></td>
                             <td><input type="password" name="j_password" /></td>
                         </tr>
                     </table>
                     <p><input type="submit" value="Login" /></p>
                 </form>
                 <h:form>
-                <p><h:commandButton value="#{tekster.Skiftpassord}" action="newpass"/></p>
+                    <p><h:commandButton value="#{lang.ChangePass}" action="newpass"/></p>
                 </h:form>
 
             </ui:define>

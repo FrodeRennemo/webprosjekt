@@ -12,156 +12,156 @@
             <ui:define name="content">
                 <h:form>
                     <p>
-                        <h:outputText value="#{tekster.ingenOkt}" 
-                                      rendered="#{not oktbehandler.getDatafins()}"/>
+                        <h:outputText value="#{lang.NoWork}" 
+                                      rendered="#{not workoutBean.dataExist}"/>
                     </p>     
-                    <h:dataTable value ="#{oktbehandler.tabelldata}" var="enOkt"
+                    <h:dataTable value ="#{workoutBean.tableData}" var="oneWorkout"
                                  styleClass="people" headerClass="hode"  
                                  rowClasses="odd,even" footerClass="fot"
-                                 rendered="#{oktbehandler.getDatafins()}">
+                                 rendered="#{workoutBean.dataExist()}">
                         <!-- Kolonne: dato -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Dato}"/>
+                                <h:outputText value="#{lang.Date}"/>
                             </f:facet>
-                            <h:inputText value="#{enOkt.okten.dato}" 
-                                         rendered="#{enOkt.endre}"
+                            <h:inputText value="#{oneWorkout.workout.date}" 
+                                         rendered="#{oneWorkout.change}"
                                          styleClass="venstrejustert">
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
                             </h:inputText>
-                            <h:outputText value="#{enOkt.okten.dato}"  
-                                          rendered="#{not enOkt.endre}" >
+                            <h:outputText value="#{oneWorkout.workout.date}"  
+                                          rendered="#{not workout.change}" >
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
                             </h:outputText>
                         </h:column>
                         <!-- Kolonne: kategori -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Kategori}"/>
+                                <h:outputText value="#{lang.Category}"/>
                             </f:facet>
-                            <h:selectOneMenu value ="#{oktbehandler.tempOkt.kategori}" rendered="#{enOkt.endre}">
-                                <f:selectItem  itemValue ="#{tekster.Jogging}"/>
-                                <f:selectItem  itemValue ="#{tekster.Styrke}" />
-                                <f:selectItem  itemValue ="#{tekster.Aerobics}"/>
-                                <f:selectItem  itemValue ="#{tekster.Sykling}" />
+                            <h:selectOneMenu value ="#{workoutBean.tempWorkout.category}" rendered="#{workout.change}">
+                                <f:selectItem  itemValue ="#{lang.Jogging}"/>
+                                <f:selectItem  itemValue ="#{lang.Strength}" />
+                                <f:selectItem  itemValue ="#{lang.Aerobics}"/>
+                                <f:selectItem  itemValue ="#{lang.Biking}" />
                             </h:selectOneMenu>
-                            <h:outputText value="#{enOkt.okten.kategori}" rendered="#{not enOkt.endre}" />
+                            <h:outputText value="#{oneWorkout.workout.category}" rendered="#{not oneWorkout.change}" />
                         </h:column>
                         <!-- Kolonne: beskrivelse -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Beskrivelse}"/>
+                                <h:outputText value="#{lang.text}"/>
                             </f:facet>
-                            <h:inputText value="#{enOkt.okten.beskrivelse}"
-                                         rendered="#{enOkt.endre}"
+                            <h:inputText value="#{oneWorkout.workout.text}"
+                                         rendered="#{oneWorkout.change}"
                                          styleClass="hoyrejustert" 
                                          maxlength="30"/>
-                            <h:outputText value="#{enOkt.okten.beskrivelse}" rendered="#{not enOkt.endre}" />
+                            <h:outputText value="#{oneWorkout.workout.text}" rendered="#{not oneWorkout.change}" />
 
                         </h:column>
                         <!-- Kolonne: varighet -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Varighet}"/>
+                                <h:outputText value="#{lang.Duration}"/>
                             </f:facet>
-                            <h:inputText value="#{enOkt.okten.varighet}" 
-                                         rendered="#{enOkt.endre}"
+                            <h:inputText value="#{oneWorkout.workout.duration}" 
+                                         rendered="#{oneWorkout.change}"
                                          styleClass="hoyrejustert">
                             </h:inputText>
-                            <h:outputText value="#{enOkt.okten.varighet}" rendered="#{not enOkt.endre}" />
+                            <h:outputText value="#{oneWorkout.workout.duration}" rendered="#{not oneWorkout.change}" />
                             <f:facet name="footer">  
-                                <h:outputText value="#{oktbehandler.getSnittVarighet()}" />
+                                <h:outputText value="#{workoutBean.averageDuration}" />
                             </f:facet>
                         </h:column>
 
                         <!-- Kolonne: eventuell sletting -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.slett}"/>
+                                <h:outputText value="#{lang.Delete}"/>
                             </f:facet>
-                            <h:selectBooleanCheckbox value="#{enOkt.skalSlettes}"/>
+                            <h:selectBooleanCheckbox value="#{oneWorkout.delete}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="&#160;" />
-                                <h:outputText value="#{tekster.Endre}"/>
+                                <h:outputText value="#{lang.Change}"/>
                             </f:facet>
-                            <h:commandButton value="#{tekster.Endre}" action="#{enOkt.endre()}" rendered="#{not enOkt.endre}"/>
+                            <h:commandButton value="#{lang.Change}" action="#{oneWorkout.change()}" rendered="#{not oneWorkout.change}"/>
                         </h:column>
                     </h:dataTable>
                     <!-- For bruk ved implementering av databasen-->
                     <br></br>
                     <!--
-                    <h:inputText value = "#{oktbehandler.oversikt.bruker}" styleClass = "overskrift"/>
+                    <h:inputText value = "#{workoutBean.workouts.user}" styleClass = "overskrift"/>
                     -->
 
                     <!-- Registrere ny transaksjon  -->
                     <br></br>
-                    <h:outputText value="#{tekster.nyOkt}" styleClass ="overskrift"/>
+                    <h:outputText value="#{lang.NewWork}" styleClass ="overskrift"/>
                     <table>
                         <tr>
                             <td>
-                                <h:outputText value="#{tekster.Dato}:  "/>
+                                <h:outputText value="#{lang.Date}:  "/>
                             </td>
                             <td>
-                                <h:inputText value="#{oktbehandler.tempOkt.dato}">
+                                <h:inputText value="#{workoutBean.tempWorkout.date}">
                                     <f:convertDateTime pattern="dd.MM.yyyy"/>
                                 </h:inputText>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h:outputText value ="#{tekster.Kategori}:  "/>
+                                <h:outputText value ="#{lang.Category}:  "/>
                             </td>
                             <td>
-                                <h:selectOneMenu value ="#{oktbehandler.tempOkt.kategori}">
-                                    <f:selectItem  itemValue ="#{tekster.Jogging}"/>
-                                    <f:selectItem  itemValue ="#{tekster.Styrke}" />
-                                    <f:selectItem  itemValue ="#{tekster.Aerobics}"/>
-                                    <f:selectItem  itemValue ="#{tekster.Sykling}" />
+                                <h:selectOneMenu value ="#{workoutBean.tempWorkout.category}">
+                                    <f:selectItem  itemValue ="#{lang.Jogging}"/>
+                                    <f:selectItem  itemValue ="#{lang.Styrke}" />
+                                    <f:selectItem  itemValue ="#{lang.Aerobics}"/>
+                                    <f:selectItem  itemValue ="#{lang.Sykling}" />
                                 </h:selectOneMenu>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h:outputText value="#{tekster.Beskrivelse}:  "/>
+                                <h:outputText value="#{lang.Beskrivelse}:  "/>
                             </td>
                             <td>
-                                <h:inputText value="#{oktbehandler.tempOkt.beskrivelse}">
+                                <h:inputText value="#{workoutBean.tempOkt.beskrivelse}">
                                 </h:inputText>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h:outputText value="#{tekster.Varighet}:  "/>
+                                <h:outputText value="#{lang.Varighet}:  "/>
                             </td>
                             <td>
-                                <h:inputText value="#{oktbehandler.tempOkt.varighet}">
+                                <h:inputText value="#{workoutBean.tempOkt.varighet}">
                                 </h:inputText>
                             </td>
                         </tr>
                     </table>
-                    <h:selectOneMenu value ="#{oktbehandler.maaned}">
-                        <f:selectItem  itemValue ="1" itemLabel="#{tekster.Januar}"/>
-                        <f:selectItem  itemValue ="2" itemLabel="#{tekster.Februar}"/>
-                        <f:selectItem  itemValue ="3" itemLabel="#{tekster.Mars}"/>
-                        <f:selectItem  itemValue ="4" itemLabel="#{tekster.April}"/>
-                        <f:selectItem  itemValue ="5" itemLabel="#{tekster.Mai}"/>
-                        <f:selectItem  itemValue ="6" itemLabel="#{tekster.Juni}"/>
-                        <f:selectItem  itemValue ="7" itemLabel="#{tekster.Juli}"/>
-                        <f:selectItem  itemValue ="8" itemLabel="#{tekster.August}"/>
-                        <f:selectItem  itemValue ="9" itemLabel="#{tekster.September}"/>
-                        <f:selectItem  itemValue ="10" itemLabel="#{tekster.Oktober}"/>
-                        <f:selectItem  itemValue ="11" itemLabel="#{tekster.November}"/>
-                        <f:selectItem  itemValue ="12" itemLabel="#{tekster.Desember}"/>
+                    <h:selectOneMenu value ="#{workoutBean.maaned}">
+                        <f:selectItem  itemValue ="1" itemLabel="#{lang.Januar}"/>
+                        <f:selectItem  itemValue ="2" itemLabel="#{lang.Februar}"/>
+                        <f:selectItem  itemValue ="3" itemLabel="#{lang.Mars}"/>
+                        <f:selectItem  itemValue ="4" itemLabel="#{lang.April}"/>
+                        <f:selectItem  itemValue ="5" itemLabel="#{lang.Mai}"/>
+                        <f:selectItem  itemValue ="6" itemLabel="#{lang.Juni}"/>
+                        <f:selectItem  itemValue ="7" itemLabel="#{lang.Juli}"/>
+                        <f:selectItem  itemValue ="8" itemLabel="#{lang.August}"/>
+                        <f:selectItem  itemValue ="9" itemLabel="#{lang.September}"/>
+                        <f:selectItem  itemValue ="10" itemLabel="#{lang.Oktober}"/>
+                        <f:selectItem  itemValue ="11" itemLabel="#{lang.November}"/>
+                        <f:selectItem  itemValue ="12" itemLabel="#{lang.Desember}"/>
                     </h:selectOneMenu>
-                    <h:dataTable value ="#{oktbehandler.maaneddata}" var="maanedOkt"
+                    <h:dataTable value ="#{workoutBean.maaneddata}" var="maanedOkt"
                                  styleClass="people" headerClass="hode"
                                  rowClasses="odd,even" footerClass="fot"
-                                 rendered="#{oktbehandler.getDataMaanedfins()}">
+                                 rendered="#{workoutBean.getDataMaanedfins()}">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Dato}"/>
+                                <h:outputText value="#{lang.Dato}"/>
                             </f:facet>
                             <h:outputText value="#{maanedOkt.okten.dato}" >
                                 <f:convertDateTime pattern="dd.MM.yyyy"/>
@@ -170,14 +170,14 @@
                         <!-- Kolonne: kategori -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Kategori}"/>
+                                <h:outputText value="#{lang.Kategori}"/>
                             </f:facet>
                             <h:outputText value="#{maanedOkt.okten.kategori}" />
                         </h:column>
                         <!-- Kolonne: beskrivelse -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Beskrivelse}"/>
+                                <h:outputText value="#{lang.Beskrivelse}"/>
                             </f:facet>
                             <h:outputText value="#{maanedOkt.okten.beskrivelse}"/>
                         </h:column>
@@ -186,26 +186,26 @@
                         <!-- Kolonne: varighet -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{tekster.Varighet}"/>
+                                <h:outputText value="#{lang.Varighet}"/>
                             </f:facet>
                             <h:outputText value="#{maanedOkt.okten.varighet}"/>
                         </h:column>
                     </h:dataTable>
                     <p>
-                        <h:commandButton value="#{tekster.Oppdater}" 
-                                         action="#{oktbehandler.endre}"/>
+                        <h:commandButton value="#{lang.Oppdater}" 
+                                         action="#{workoutBean.endre}"/>
 
-                        <h:commandButton value="#{tekster.Send}" 
-                                         action="#{oktbehandler.leggTil}"/>
+                        <h:commandButton value="#{lang.Send}" 
+                                         action="#{workoutBean.leggTil}"/>
 
-                        <h:commandButton value="#{tekster.slett}" 
-                                         action="#{oktbehandler.slett}"/>
+                        <h:commandButton value="#{lang.slett}" 
+                                         action="#{workoutBean.slett}"/>
 
-                        <h:commandButton value="#{tekster.Maaned}" 
-                                         action="#{oktbehandler.getAlleEnMnd}"/>
+                        <h:commandButton value="#{lang.Maaned}" 
+                                         action="#{workoutBean.getAlleEnMnd}"/>
                         
-                        <h:commandButton action="#{oktbehandler.logout}" 
-                                       value="#{tekster.LoggUt}" />
+                        <h:commandButton action="#{workoutBean.logout}" 
+                                       value="#{lang.LoggUt}" />
                     </p>
                 </h:form>
             </ui:define>
