@@ -4,90 +4,90 @@ import java.util.Date;
 
 public class Workout {
     
-    private int nummer = 0;
-    private static int oktnummer = 0;
-    private Date dato = new Date();
-    private int varighet;
-    private String beskrivelse;
-    private String kategori;
+    private int number = 0;
+    private static int totNumber = 0;
+    private Date date = new Date();
+    private int duration;
+    private String text;
+    private String category;
 
     public Workout() {
-        oppdatOktnummer();
+        updateTotNumber();
     }
 
-    public Workout(Date dato, int varighet, String beskrivelse, String kategori) {
-        this.dato = dato;
-        this.varighet = varighet;
-        this.beskrivelse = beskrivelse;
-        this.kategori = kategori;
-        oppdatOktnummer();
+    public Workout(Date date, int duration, String text, String category) {
+        this.date = date;
+        this.duration = duration;
+        this.text = text;
+        this.category = category;
+        updateTotNumber();
     }
     
-    public void setNummer(int nummer){
-        this.nummer = nummer;
+    public void setNumber(int number){
+        this.number = number;
     }
     
-    public synchronized int getNummer(){
-        return nummer;
+    public synchronized int getNumber(){
+        return number;
     }
 
-    public synchronized void oppdatOktnummer() {
-        oktnummer++;
+    public synchronized void updateTotNumber() {
+        totNumber++;
     }
 
-    public synchronized int getOktnummer() {
-        return oktnummer;
+    public synchronized int getTotNumber() {
+        return totNumber;
     }
 
-    public synchronized void setKategori(String kategori) {
+    public synchronized void setCategory(String category) {
         try {
-            this.kategori = kategori;
+            this.category = category;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Illegal value!");
+        }
+    }
+
+    public synchronized String getCategory() {
+        return category;
+    }
+
+    public synchronized Date getDate() {
+        return date;
+    }
+    public synchronized void setDate(Date date) {
+
+        this.date = date;
+    }
+
+    public synchronized String getText() {
+        return text;
+    }
+
+    public synchronized void setText(String text) {
+        try {
+            this.text = text;
         } catch (IllegalArgumentException e) {
             System.out.println("Ugyldig verdi!");
         }
     }
 
-    public synchronized String getKategori() {
-        return kategori;
+    public synchronized int getDuration() {
+        return duration;
     }
 
-    public synchronized Date getDato() {
-        return dato;
-    }
 
-    public synchronized String getBeskrivelse() {
-        return beskrivelse;
-    }
-
-    public synchronized void setBeskrivelse(String beskrivelse) {
+    public synchronized void setDuration(int duration) {
         try {
-            this.beskrivelse = beskrivelse;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ugyldig verdi!");
-        }
-    }
-
-    public synchronized int getVarighet() {
-        return varighet;
-    }
-
-    public synchronized void setDato(Date dato) {
-
-        this.dato = dato;
-    }
-
-    public synchronized void setVarighet(int varighet) {
-        try {
-            this.varighet = varighet;
+            this.duration = duration;
         } catch (NumberFormatException e) {
             System.out.println("Må skrive inn heltall!");
         }
     }
 
-    public synchronized void nullstill() {
-        dato = null;
-        varighet = 0;
-        beskrivelse = null;
-        kategori = null;
+    public synchronized void reset() {
+        date = null;
+        duration = 0;
+        text = null;
+        category = null;
     }
 }

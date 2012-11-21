@@ -1,9 +1,5 @@
 package beans;
 
-import workout.WorkoutStatus;
-import workout.Workouts;
-import workout.Workout;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -13,9 +9,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import workout.MonthStatus;
+import workout.Workout;
 import workout.WorkoutStatus;
 import workout.Workouts;
-import workout.Workout;
 
 @Named
 @SessionScoped
@@ -28,9 +24,9 @@ public class WorkoutBean implements java.io.Serializable {
     private List<MonthStatus> monthdata = Collections.synchronizedList(new ArrayList<MonthStatus>());
 
     public WorkoutBean() {
-        if (workouts.getTabell() != null) {
-            for (int i = 0; i < workouts.getTabell().size(); i++) {
-                tabledata.add(new WorkoutStatus(workouts.getTabell().get(i)));
+        if (workouts.getList() != null) {
+            for (int i = 0; i < workouts.getList().size(); i++) {
+                tabledata.add(new WorkoutStatus(workouts.getList().get(i)));
             }
         }
     }
@@ -63,12 +59,12 @@ public class WorkoutBean implements java.io.Serializable {
         return month;
     }
 
-    public synchronized Date getDato() {
-        return tempWorkout.getDato();
+    public synchronized Date getDate() {
+        return tempWorkout.getDate();
     }
 
-    public synchronized void setDato(Date nyDato) {
-        tempWorkout.setDato(nyDato);
+    public synchronized void setDate(Date nyDato) {
+        tempWorkout.setDate(nyDato);
     }
 
     public synchronized String getCategory() {
@@ -104,11 +100,11 @@ public class WorkoutBean implements java.io.Serializable {
     }
 
     public synchronized void add() {
-        Workout nyOkt = new Workout(tempWorkout.getDato(), tempWorkout.getDuration(), tempWorkout.getText(), tempWorkout.getCategory());
+        Workout nyOkt = new Workout(tempWorkout.getDate(), tempWorkout.getDuration(), tempWorkout.getText(), tempWorkout.getCategory());
         if (workouts.registerNewWorkout(nyOkt)) {
             tabledata.add(new WorkoutStatus(nyOkt));
-            if (nyOkt.getDato() == null) {
-                nyOkt.setDato(new java.sql.Date(new java.util.Date().getTime()));
+            if (nyOkt.getDate() == null) {
+                nyOkt.setDate(new java.sql.Date(new java.util.Date().getTime()));
             }
             tempWorkout.reset();
         }
@@ -118,7 +114,7 @@ public class WorkoutBean implements java.io.Serializable {
         int index = tabledata.size() - 1;
         while (index >= 0) {
             WorkoutStatus ts = tabledata.get(index);
-            if (ts.getIfDelete() && workouts.deleteWorkout(ts.getOkten())) {
+            if (ts.getDelete() && workouts.deleteWorkout(ts.getWorkout())) {
                 tabledata.remove(index);
             }
             index--;
@@ -140,11 +136,11 @@ public class WorkoutBean implements java.io.Serializable {
         int index = tabledata.size() - 1;
         while (index >= 0) {
             WorkoutStatus ts = tabledata.get(index);
-            if (ts.getDato() == null) {
-                ts.setDato(new java.sql.Date(new java.util.Date().getTime()));
+            if (ts.getDate() == null) {
+                ts.setDate(new java.sql.Date(new java.util.Date().getTime()));
             }
-            ts.setEndre(false);
-            workouts.endreData(ts.getOkten());
+            ts.setChange(false);
+            workouts.changeData(ts.getWorkout());
             index--;
         }
     }

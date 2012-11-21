@@ -1,26 +1,22 @@
 package workout;
 
-/**
- *
- * @author Frode
- */
 public class MonthStatus {
 
-    private Workout okten;
+    private Workout workout;
 
-    public MonthStatus(Workout okten) {
-        this.okten = okten;
+    public MonthStatus(Workout workout) {
+        this.workout = workout;
     }
 
     public MonthStatus() {
-        okten = new Workout();
+        workout = new Workout();
     }
 
-    public Workout getOkten() {
-        return okten;
+    public Workout getWorkout() {
+        return workout;
     }
 
-    public void setOkten(Workout nyOkt) {
-        okten = nyOkt;
+    public void setWorkout(Workout newWork) {
+        workout = newWork;
     }
 }

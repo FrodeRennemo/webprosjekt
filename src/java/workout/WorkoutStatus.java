@@ -1,68 +1,61 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package workout;
 
 import java.util.Date;
 
-/**
- *
- * @author Frode
- */
 public class WorkoutStatus {
 
-    private Workout okten;
-    private boolean skalSlettes;
-    private boolean endre;
+    private Workout workout;
+    private boolean delete;
+    private boolean change;
 
-    public WorkoutStatus(Workout okten) {
-        this.okten = okten;
-        skalSlettes = false;
-        endre = false;
+    public WorkoutStatus(Workout workout) {
+        this.workout = workout;
+        delete = false;
+        change = false;
     }
 
     public WorkoutStatus() {
-        okten = new Workout();
-        skalSlettes = false;
-        endre = false;
+        workout = new Workout();
+        delete = false;
+        change = false;
     }
 
-    public synchronized boolean getSkalSlettes() {
-        return skalSlettes;
+    public synchronized boolean getDelete() {
+        return delete;
     }
 
-    public void setSkalSlettes(boolean nySkalSlettes) {
-        skalSlettes = nySkalSlettes;
+    public void setDelete(boolean newDelete) {
+        delete = newDelete;
     }
 
-    public Workout getOkten() {
-        return okten;
+    public Workout getWorkout() {
+        return workout;
     }
 
-    public void setOkten(Workout nyOkt) {
-        okten = nyOkt;
+    public void setWorkout(Workout newWork) {
+        workout = newWork;
     }
 
-    public synchronized boolean getEndre() {
-        return endre;
+    public synchronized boolean getChange() {
+        return change;
     }
 
-    public void setEndre(boolean endres) {
-        endre = endres;
+    public void setChange(boolean changes) {
+        change = changes;
     }
     
-    public Date getDato(){
-        return okten.getDato();
+    public Date getDate(){
+        return workout.getDate();
     }
     
-    public void setDato(Date dato){
-        okten.setDato(dato);
+    public void setDate(Date date){
+        workout.setDate(date);
     }
 
-    public void endre() {
-        if (!endre) {
-            endre = true;
+    public void change() {
+        if (!change) {
+            change = true;
         }
     }
 }

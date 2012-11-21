@@ -19,15 +19,15 @@ public class UserBean implements Serializable {
     private Database database = new Database();
     private boolean passwordOk = false;
 
-    public void setUsernavn(String usernavn) {
-        user.setUsernavn(usernavn);
+    public void setUsername(String username) {
+        user.setUsername(username);
     }
 
-    public void setNypassword(String newPassword) {
+    public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
 
-    public String getNypassword() {
+    public String getNewPassword() {
         return newPassword;
     }
 
@@ -35,15 +35,15 @@ public class UserBean implements Serializable {
         user.setPassword(password);
     }
 
-    public String getUsernavn() {
-        return user.getUsernavn();
+    public String getUsername() {
+        return user.getUsername();
     }
 
     public String getPassword() {
         return user.getPassword();
     }
 
-    public void setrepeatPassword(String repeatPassword) {
+    public void setRepeatPassword(String repeatPassword) {
         this.repeatPassword = repeatPassword;
     }
 
@@ -51,7 +51,7 @@ public class UserBean implements Serializable {
         return passwordOk;
     }
 
-    public void setpasswordOk(boolean passwordOk) {
+    public void setPasswordOk(boolean passwordOk) {
         this.passwordOk = passwordOk;
     }
 
@@ -69,7 +69,7 @@ public class UserBean implements Serializable {
 
     public String changePassword() {
         checkPassword();
-        if (database.loggInn(user)) {
+        if (database.logIn(user)) {
             if (newPassword.equals(repeatPassword) && passwordOk) {
                 user.setPassword(newPassword);
                 if (database.changePassword(user)) {

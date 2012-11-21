@@ -7,14 +7,13 @@ package workout;
 import database.Database;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Workouts implements Serializable {
-    private ArrayList<Workout> tabell = new ArrayList();
+    private ArrayList<Workout> list = new ArrayList();
     private Database database = new Database(); 
 
     public Workouts() {
-        this.tabell = database.lesInn();
+        this.list = database.readIn();
     }
 
     public Database getDatabase() {
@@ -22,92 +21,76 @@ public class Workouts implements Serializable {
     }
     
 
-    public void lesFraBruker() {
-        database.lesInnBruker();
+    public void readIn() {
+        database.readIn();
     }
 
-    public ArrayList<Workout> getAlleOkter() {
-        return tabell;
+    public ArrayList<Workout> getList() {
+        return list;
     }
 
-//    public int finnNokkel(Treningsokt Okt) {
-//        return database.finnOktNr(Okt, bruker);
-//    }
-
-    public boolean registrerNyOkt(Workout okt) {
-        if (okt != null) {
-            if (database.regNyOkt(okt)) {
-                tabell.add(okt);
+    public boolean registerNewWorkout(Workout workout) {
+        if (workout != null) {
+            if (database.regNew(workout)) {
+                list.add(workout);
                 return true;
             }
         }
         return false;
     }
 
-    public ArrayList<Workout> getAlleOkterEnMnd(int maaned) {
-        ArrayList<Workout> Maaned = new ArrayList<Workout>();
-        for (int i = 0; i < tabell.size(); i++) {
-            if (tabell.get(i).getDato() != null) {
-                if (tabell.get(i).getDato().getMonth() + 1 == maaned) {
-                    Maaned.add(tabell.get(i));
+    public ArrayList<Workout> getWorkoutsMonth(int maaned) {
+        ArrayList<Workout> Month = new ArrayList<Workout>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getDate() != null) {
+                if (list.get(i).getDate().getMonth() + 1 == maaned) {
+                    Month.add(list.get(i));
                 }
             }
         }
-        return Maaned;
+        return Month;
     }
 
-    public boolean slettOkt(Workout okten) {
-        if (database.slettOkt(okten)) {
-            tabell.remove(okten);
+    public boolean deleteWorkout(Workout delWorkout) {
+        if (database.deleteWorkout(delWorkout)) {
+            list.remove(delWorkout);
             return true;
         }
         return false;
     }
 
-    public int getSnittVarighet() {
+    public int getAverageDuration() {
         int total = 0;
-        for (int i = 0; i < tabell.size(); i++) {
-            total += tabell.get(i).getVarighet();
+        for (int i = 0; i < list.size(); i++) {
+            total += list.get(i).getDuration();
         }
-        if (tabell.isEmpty()) {
+        if (list.isEmpty()) {
             return 0;
         }
-        return (total / tabell.size());
+        return (total / list.size());
     }
 
-    public void endreData(Workout okt) {
+    public void changeData(Workout workout) {
         
-        for(int i = 0;i<tabell.size();i++){
-            if(okt.getNummer() == tabell.get(i).getNummer() && database.endreData(okt)){
-                System.out.println(okt.getBeskrivelse());
-                tabell.set(i, okt);
+        for(int i = 0;i<list.size();i++){
+            if(workout.getNumber() == list.get(i).getNumber() && database.changeData(workout)){
+                System.out.println(workout.getText());
+                list.set(i, workout);
             }
         }
     }
 
     public String getBruker() {
-        return database.getBruker();
+        return database.getUser();
     }
 
     @Override
     public String toString() {
         String utskrift = "";
-        for (int i = 0; i < tabell.size(); i++) {
-            utskrift += tabell.get(i).getDato() + " " + tabell.get(i).getVarighet() + " " + tabell.get(i).getKategori() + " " + tabell.get(i).getBeskrivelse() + "\n";
+        for (int i = 0; i < list.size(); i++) {
+            utskrift += list.get(i).getDate() + " " + list.get(i).getDuration() + " " + list.get(i).getCategory() + " " + list.get(i).getText() + "\n";
         }
         return utskrift;
     }
 
-    public ArrayList<Workout> getTabell() {
-        return tabell;
-    }
-
-    public static void main(String[] args) {
-        Workouts liste = new Workouts();
-        System.out.println(liste.toString());
-        Workout a = new Workout(new java.util.Date(), 45, "BEEF", "aerobics");
-        System.out.println(liste.registrerNyOkt(a));
-        System.out.println(liste.toString());
-//        System.out.println(liste.finnNokkel(a));
-    }
 }

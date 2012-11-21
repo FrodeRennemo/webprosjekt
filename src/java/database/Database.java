@@ -53,7 +53,7 @@ public class Database {
         return ok;
     }
     
-    public boolean endrePassord(User user) {
+    public boolean changePassword(User user) {
         PreparedStatement sqlLogIn = null;
         openConnection();
         boolean ok = false;
@@ -82,13 +82,13 @@ public class Database {
 
 
 //    public boolean nyuser() {
-//        PreparedStatement sqlRegNyuser = null;
+//        PreparedStatement sqlRegNewuser = null;
 //        openConnection();
 //        boolean ok = false;
 //        try {
-//            sqlRegNyuser = connection.prepareStatement("insert into user(usernavn,passord) values(?, ?)");
-//            sqlRegNyuser.setString(1, nyuser.getusernavn());
-//            sqlRegNyuser.setString(2, nyuser.getPassord());
+//            sqlRegNewuser = connection.prepareStatement("insert into user(usernavn,passord) values(?, ?)");
+//            sqlRegNewuser.setString(1, nyuser.getusernavn());
+//            sqlRegNewuser.setString(2, nyuser.getPassord());
 //
 //
 //            connection.commit();
@@ -104,7 +104,7 @@ public class Database {
 //
 //        } finally {
 //            Opprydder.settAutoCommit(connection);
-//            Opprydder.closeSentence(sqlRegNyuser);
+//            Opprydder.closeSentence(sqlRegNewuser);
 //        }
 //        closeConnection();
 //        return ok;
@@ -126,7 +126,7 @@ public class Database {
                 String text = res.getString("tekst");
                 int number = res.getInt("workoutnr");
                 Workout workout = new Workout(date, duration, text, category);
-                workout.setNummer(number);
+                workout.setNumber(number);
                 tab.add(workout);
             }
         } catch (SQLException e) {
@@ -185,20 +185,20 @@ public class Database {
         Cleaner.closeConnection(connection);
     }
 
-    public boolean regNew(Workout nyworkout) {
+    public boolean regNew(Workout newWorkout) {
         PreparedStatement sqlRegNew = null;
         openConnection();
         boolean ok = false;
         try {
             sqlRegNew = connection.prepareStatement("insert into trening(date,duration,categorynavn,tekst,usernavn) values(?, ?, ?,?,?)");
             try {
-                sqlRegNew.setDate(1, new java.sql.Date(newWorkout.getdate().getTime()));
+                sqlRegNew.setDate(1, new java.sql.Date(newWorkout.getDate().getTime()));
             } catch (NullPointerException e) {
                 sqlRegNew.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
             }
-            sqlRegNew.setInt(2, nyworkout.getduration());
-            sqlRegNew.setString(3, nyworkout.getcategory());
-            sqlRegNew.setString(4, nyworkout.gettext());
+            sqlRegNew.setInt(2, newWorkout.getDuration());
+            sqlRegNew.setString(3, newWorkout.getCategory());
+            sqlRegNew.setString(4, newWorkout.getText());
             sqlRegNew.setString(5, user);
             sqlRegNew.executeUpdate();
 
@@ -215,7 +215,7 @@ public class Database {
 
         } finally {
             Cleaner.setAutoCommit(connection);
-            Cleaner.closeSentence(sqlRegNyworkout);
+            Cleaner.closeSentence(sqlRegNew);
         }
         closeConnection();
         return ok;
@@ -225,11 +225,11 @@ public class Database {
         boolean ok = false;
         PreparedStatement sqlUpdWorkout = null;
 
-        System.out.println(workout.getNummer());
+        System.out.println(workout.getNumber());
         openConnection();
         try {
             sqlUpdWorkout = connection.prepareStatement("DELETE FROM TRENING WHERE number = ?");
-            sqlUpdWorkout.setInt(1, workout.getNummer());
+            sqlUpdWorkout.setInt(1, workout.getNumber());
             sqlUpdWorkout.executeUpdate();
             connection.commit();
             ok = true;
@@ -282,7 +282,7 @@ public class Database {
                 sqlUpdWorkout.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
             }
             sqlUpdWorkout.setInt(2, workout.getDuration());
-            sqlUpdWorkout.setString(3, workout.getDategory());
+            sqlUpdWorkout.setString(3, workout.getCategory());
             sqlUpdWorkout.setString(4, workout.getText());
             sqlUpdWorkout.setInt(5, workout.getNumber());
             sqlUpdWorkout.setString(6, user);
