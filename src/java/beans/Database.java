@@ -28,35 +28,56 @@ class Database {
     public String getBruker(){
         return bruker;
     }
+    public boolean loggInn(Bruker bruker) {
+        PreparedStatement sqlLoggInn = null;
+        åpneForbindelse();
+        boolean ok = false;
+        try {
+            sqlLoggInn = forbindelse.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = '"+bruker.getBrukernavn()+"' AND PASSORD = '"+bruker.getPassord()+"' ");
+            ResultSet res = sqlLoggInn.executeQuery();
+            forbindelse.commit();
+            if(res.next()){
+                 ok = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Opprydder.rullTilbake(forbindelse);
 
-//    public boolean logInn() {
-//        PreparedStatement sqlLoggInn = null;
-//        åpneForbindelse();
-//        boolean ok = false;
-//        try {
-//            sqlLoggInn = forbindelse.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = ? AND PASSORD = ?");
-//            ResultSet res = sqlLoggInn.executeQuery();
-//            sqlLoggInn.setString(1, bruker.getBrukernavn());
-//            sqlLoggInn.setString(2, bruker.getPassord());
-//            System.out.println(res.getString("brukernavn"));
-//            System.out.println(res.getString("passord"));
-//            sqlLoggInn.executeUpdate();
-//            forbindelse.commit();
-//            if (res.next()) {
-//                ok = true;
-//            }
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//            Opprydder.rullTilbake(forbindelse);
-//
-//        } finally {
-//            Opprydder.settAutoCommit(forbindelse);
-//            Opprydder.lukkSetning(sqlLoggInn);
-//        }
-//        lukkForbindelse();
-//        return ok;
-//    }
+        } finally {
+            Opprydder.settAutoCommit(forbindelse);
+            Opprydder.lukkSetning(sqlLoggInn);
+        }
+        lukkForbindelse();
+        return ok;
+    }
+    
+    public boolean endrePassord(Bruker bruker) {
+        PreparedStatement sqlLoggInn = null;
+        åpneForbindelse();
+        boolean ok = false;
+        try {
+            sqlLoggInn = forbindelse.prepareStatement("UPDATE BRUKER SET PASSORD = ? WHERE BRUKERNAVN = ?");
+            sqlLoggInn.setString(1, bruker.getPassord());
+            sqlLoggInn.setString(2, bruker.getBrukernavn());
+            sqlLoggInn.executeUpdate();
+            forbindelse.commit();
+            ok = true;
+         
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Opprydder.rullTilbake(forbindelse);
+
+        } finally {
+            Opprydder.settAutoCommit(forbindelse);
+            Opprydder.lukkSetning(sqlLoggInn);
+        }
+        lukkForbindelse();
+        return ok;
+    }
+
+
+
 
 //    public boolean nyBruker() {
 //        PreparedStatement sqlRegNyBruker = null;

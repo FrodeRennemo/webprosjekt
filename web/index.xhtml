@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Login</title>
     </h:head>
@@ -25,6 +26,10 @@
                     </table>
                     <p><input type="submit" value="Login" /></p>
                 </form>
+                <h:form>
+                <p><h:commandButton value="#{tekster.Skiftpassord}" action="newpass"/></p>
+                </h:form>
+
             </ui:define>
         </ui:composition>
     </h:body>
