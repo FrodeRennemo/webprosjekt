@@ -26,20 +26,21 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
-    
-    public String getUser(){
+
+    public String getUser() {
         return user;
     }
+
     public boolean logIn(User user) {
         PreparedStatement sqlLogIn = null;
         openConnection();
         boolean ok = false;
         try {
-            sqlLogIn = connection.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = '"+user.getUsername()+"' AND PASSORD = '"+user.getPassword()+"' ");
+            sqlLogIn = connection.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = '" + user.getUsername() + "' AND PASSORD = '" + user.getPassword() + "' ");
             ResultSet res = sqlLogIn.executeQuery();
             connection.commit();
-            if(res.next()){
-                 ok = true;
+            if (res.next()) {
+                ok = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -52,7 +53,7 @@ public class Database {
         closeConnection();
         return ok;
     }
-    
+
     public boolean changePassword(User user) {
         PreparedStatement sqlLogIn = null;
         openConnection();
@@ -64,7 +65,7 @@ public class Database {
             sqlLogIn.executeUpdate();
             connection.commit();
             ok = true;
-         
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -78,37 +79,57 @@ public class Database {
         return ok;
     }
 
+    public boolean newUser(User user) {
+        PreparedStatement sqlRegNewuser = null;
+        PreparedStatement sqlRegNewRole = null;
+        openConnection();
+        boolean ok = false;
+        try {
+            sqlRegNewuser = connection.prepareStatement("insert into BRUKER(BRUKERNAVN,PASSORD) values(?, ?)");
+            sqlRegNewuser.setString(1, user.getUsername());
+            sqlRegNewuser.setString(2, user.getPassword());
+            sqlRegNewuser.executeUpdate();
+            
+            sqlRegNewRole = connection.prepareStatement("INSERT INTO ROLLE(BRUKERNAVN,ROLLE) VALUES(?,'bruker')");
+            sqlRegNewRole.setString(1, user.getUsername());
+            sqlRegNewRole.executeUpdate();
+            connection.commit();
+            ok = true;
 
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Cleaner.rollback(connection);
 
+        } finally {
+            Cleaner.setAutoCommit(connection);
+            Cleaner.closeSentence(sqlRegNewuser);
+        }
+        closeConnection();
+        return ok;
+    }
+    
+      public boolean userExist(User user) {
+        PreparedStatement sqlLogIn = null;
+        openConnection();
+        boolean exist = false;
+        try {
+            sqlLogIn = connection.prepareStatement("SELECT * FROM BRUKER WHERE BRUKERNAVN = '" + user.getUsername() + "'");
+            ResultSet res = sqlLogIn.executeQuery();
+            connection.commit();
+            if (res.next()) {
+                exist = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Cleaner.rollback(connection);
 
-//    public boolean nyuser() {
-//        PreparedStatement sqlRegNewuser = null;
-//        openConnection();
-//        boolean ok = false;
-//        try {
-//            sqlRegNewuser = connection.prepareStatement("insert into user(usernavn,passord) values(?, ?)");
-//            sqlRegNewuser.setString(1, nyuser.getusernavn());
-//            sqlRegNewuser.setString(2, nyuser.getPassord());
-//
-//
-//            connection.commit();
-//
-//            /*
-//             * Transaksjon slutt
-//             */
-//            ok = true;
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//            Opprydder.rollback(connection);
-//
-//        } finally {
-//            Opprydder.settAutoCommit(connection);
-//            Opprydder.closeSentence(sqlRegNewuser);
-//        }
-//        closeConnection();
-//        return ok;
-//    }
+        } finally {
+            Cleaner.setAutoCommit(connection);
+            Cleaner.closeSentence(sqlLogIn);
+        }
+        closeConnection();
+        return exist;
+    }
 
     public ArrayList<Workout> readIn() {
         ArrayList<Workout> tab = new ArrayList<Workout>();
@@ -171,7 +192,6 @@ public class Database {
             Cleaner.writeMessage(e, "Construktor");
         }
     }
-
 
     private void closeConnection() {
         System.out.println("Closing databaseconnection");

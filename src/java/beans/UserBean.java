@@ -1,4 +1,3 @@
-
 package beans;
 
 import database.Database;
@@ -14,10 +13,12 @@ public class UserBean implements Serializable {
     private User user = new User();
     private String newPassword;
     private String repeatPassword;
-    private String result = "";
+    private String resultPass = "";
+    private String resultUser = "";
     private String specialLetter = "-_,.";
     private Database database = new Database();
     private boolean passwordOk = false;
+    private boolean userOk = false;
 
     public void setUsername(String username) {
         user.setUsername(username);
@@ -55,41 +56,58 @@ public class UserBean implements Serializable {
         this.passwordOk = passwordOk;
     }
 
-    public String getResult() {
-        return result;
+    public String getResultPass() {
+        return resultPass;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setResultPass(String result) {
+        this.resultPass = result;
+    }
+
+    public String getResultUser() {
+        return resultUser;
+    }
+
+    public void setResultUser(String resultUser) {
+        this.resultUser = resultUser;
     }
 
     public String getRepeatPassword() {
         return repeatPassword;
     }
+    public boolean getUserOk(){
+        return userOk;
+    }
+
+    public void setUserOk(boolean userOk) {
+        this.userOk = userOk;
+    }
+    
 
     public String changePassword() {
         checkPassword();
         if (database.logIn(user)) {
-            if (newPassword.equals(repeatPassword) && passwordOk) {
+            if (passwordOk) {
+                user.setPassword(newPassword);
                 if (database.changePassword(user)) {
                     return "passValid";
                 }
             }
         }
-        return result;
+        return resultPass;
     }
 
-    public void checkPassword() {
+    private void checkPassword() {
         int special = 0;
         int number = 0;
         int letter = 0;
         int symbol = 0;
         if (newPassword.equals("")) {
-            result = "Vennligst skriv inn et password.";
+            resultPass = "Vennligst skriv inn et password.";
             return;
         }
         if (!newPassword.equals(repeatPassword)) {
-            result = "passwordene må være like.";
+            resultPass = "passwordene må være like.";
             return;
         }
 
@@ -98,7 +116,7 @@ public class UserBean implements Serializable {
 
             /* isLetterOrDigit() user tegnsettet som maskinen er satt opp med */
             if (!(Character.isLetterOrDigit(tegn)) && !(specialLetter.indexOf(tegn) >= 0)) {
-                result = "Spesialtegn";
+                resultPass = "Spesialtegn";
                 return;
             }
             if (Character.isLetter(tegn)) {
@@ -115,7 +133,32 @@ public class UserBean implements Serializable {
         if (special > 0 && number > 0 && special > 0 && symbol >= 6) {
             passwordOk = true;
         } else {
-            result = "Too short or not enough letters, number or special letters.";
+            resultPass = "Too short or not enough letters, number or special letters.";
         }
+    }
+
+    private void checkUser() {
+        if (database.userExist(user)) {
+            resultUser = "Username already exist";
+        } else {
+            userOk = true;
+        }
+    }
+
+    public String newUser() {
+        checkUser();
+        if (userOk) {
+            checkPassword();
+            if (passwordOk) {
+                    user.setPassword(newPassword);
+                    if (database.newUser(user)) {
+                        return "userValid";
+                    }
+            }else{
+                return resultPass;
+            }
+        }
+        return resultUser;
+       
     }
 }

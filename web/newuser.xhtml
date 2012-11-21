@@ -20,10 +20,6 @@
                         </tr>
                         <tr>
                             <td><h:outputText value="#{lang.Password}"/></td>
-                            <td><h:inputText value ="#{userBean.password}" /></td>
-                        </tr>
-                        <tr>
-                            <td><h:outputText value ="#{lang.NewPass}"/></td>
                             <td><h:inputText value ="#{userBean.newPassword}" /></td>
                         </tr>
                         <tr>
@@ -34,17 +30,15 @@
                     <p>
                         <h:outputText value ="#{userBean.resultPass}" rendered="#{not userBean.passwordOk}" />
                     </p>
-                    
-                   
-                
                     <p>
-                        
-                        <h:commandButton value="#{lang.ChangePass}" action="#{userBean.changePassword()}"/>
-                        
- 
+                        <h:outputText value ="#{userBean.resultUser}" rendered="#{not userBean.userOk}" />
                     </p>
 
-                   </h:form>
+                    <p>
+                        <h:commandButton value="#{lang.NewUser}" action="#{userBean.newUser()}"/>
+                    </p>
+
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>
