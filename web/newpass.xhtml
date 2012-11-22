@@ -34,14 +34,8 @@
                     <p>
                         <h:outputText value ="#{userBean.resultPass}" rendered="#{not userBean.passwordOk}" />
                     </p>
-                    
-                   
-                
-                    <p>
-                        
+                    <p>  
                         <h:commandButton value="#{lang.ChangePass}" action="#{userBean.changePassword()}"/>
-                        
- 
                     </p>
 
                    </h:form>

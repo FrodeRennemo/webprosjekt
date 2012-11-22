@@ -3,22 +3,27 @@
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 
 <faces-config version="2.1"
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
     <managed-bean>
         <managed-bean-name>Lang</managed-bean-name>
         <managed-bean-class>language.LangChange</managed-bean-class>
     
-        <managed-bean-scope>session</managed-bean-scope></managed-bean>
-<application>
-       <locale-config>
-          <default-locale>en</default-locale>       STANDARD SPRÅK
-          <supported-locale>no</supported-locale> EKSTRA SPRÅK
-       </locale-config>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>       STANDARD SPRÅK
+            <supported-locale>no</supported-locale> EKSTRA SPRÅK
+        </locale-config>
         <resource-bundle>
             <base-name>language.workout</base-name>   MAPPE- OG FILNAVN
             <var>lang</var> NAVN BRUKT I JSF-KODEN
         </resource-bundle>
     </application>
+    <validator>
+        <validator-id>checkvalidpassword</validator-id>
+        <validator-class>Message.validation</validator-class>
+    </validator>
 </faces-config>
