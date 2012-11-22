@@ -85,6 +85,7 @@ public class UserBean implements Serializable {
             passwordOk = true;
         } else {
             passwordOk = false;
+            FacesContext.getCurrentInstance().addMessage("fail", new FacesMessage("Passwords are not matching"));
         }
     }
 
@@ -109,7 +110,7 @@ public class UserBean implements Serializable {
                 }
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage("fail", new FacesMessage("Brukernavnet er i bruk"));
+            FacesContext.getCurrentInstance().addMessage("fail", new FacesMessage("Username already exists"));
         }
         return null;
 
