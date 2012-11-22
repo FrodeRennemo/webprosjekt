@@ -68,7 +68,7 @@
                         <h:column>
                             <f:facet name="header">
                                 <h:commandLink action ="#{workoutBean.sortByDuration()}">
-                                <h:outputText value="#{lang.Duration}"/>
+                                    <h:outputText value="#{lang.Duration}"/>
                                 </h:commandLink>
                             </f:facet>
                             <h:inputText value="#{oneWorkout.workout.duration}" 
@@ -162,42 +162,6 @@
                         <f:selectItem  itemValue ="11" itemLabel="#{lang.November}"/>
                         <f:selectItem  itemValue ="12" itemLabel="#{lang.December}"/>
                     </h:selectOneMenu>
-                    <h:dataTable value ="#{workoutBean.monthdata}" var="monthWorkout"
-                                 styleClass="people" headerClass="hode"
-                                 rowClasses="odd,even" footerClass="fot"
-                                 rendered="#{workoutBean.dataMonthExist}">
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{lang.Date}"/>
-                            </f:facet>
-                            <h:outputText value="#{monthWorkout.workout.date}" >
-                                <f:convertDateTime pattern="dd.MM.yyyy"/>
-                            </h:outputText>
-                        </h:column>
-                        <!-- Kolonne: kategori -->
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{lang.Category}"/>
-                            </f:facet>
-                            <h:outputText value="#{monthWorkout.workout.category}" />
-                        </h:column>
-                        <!-- Kolonne: beskrivelse -->
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{lang.Text}"/>
-                            </f:facet>
-                            <h:outputText value="#{monthWorkout.workout.text}"/>
-                        </h:column>
-
-                        S
-                        <!-- Kolonne: varighet -->
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{lang.Duration}"/>
-                            </f:facet>
-                            <h:outputText value="#{monthWorkout.workout.duration}"/>
-                        </h:column>
-                    </h:dataTable>
                     <p>
                         <h:commandButton value="#{lang.Update}" 
                                          action="#{workoutBean.change()}"/>
@@ -214,6 +178,46 @@
                         <h:commandButton action="#{workoutBean.logout()}" 
                                          value="#{lang.LogOut}" />
                     </p>
+                </h:form>
+            </ui:define>
+            <ui:define name="right">
+                <h:form>
+                <h:dataTable value ="#{workoutBean.monthdata}" var="monthWorkout"
+                             styleClass="people" headerClass="hode"
+                             rowClasses="odd,even" footerClass="fot"
+                             rendered="#{workoutBean.dataMonthExist}">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{lang.Date}"/>
+                        </f:facet>
+                        <h:outputText value="#{monthWorkout.workout.date}" >
+                            <f:convertDateTime pattern="dd.MM.yyyy"/>
+                        </h:outputText>
+                    </h:column>
+                    <!-- Kolonne: kategori -->
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{lang.Category}"/>
+                        </f:facet>
+                        <h:outputText value="#{monthWorkout.workout.category}" />
+                    </h:column>
+                    <!-- Kolonne: beskrivelse -->
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{lang.Text}"/>
+                        </f:facet>
+                        <h:outputText value="#{monthWorkout.workout.text}"/>
+                    </h:column>
+
+                    S
+                    <!-- Kolonne: varighet -->
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{lang.Duration}"/>
+                        </f:facet>
+                        <h:outputText value="#{monthWorkout.workout.duration}"/>
+                    </h:column>
+                </h:dataTable>
                 </h:form>
             </ui:define>
         </ui:composition>

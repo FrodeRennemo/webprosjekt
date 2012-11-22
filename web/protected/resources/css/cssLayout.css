@@ -5,30 +5,19 @@
     margin: 0px 0px 10px 0px;
 }
 
-#bottom {
-    position: relative;
-    background-color: whitesmoke;
-    color: black;
-    padding: 5px;
-    margin: 10px 0px 0px 0px;
-}
-
-#left {
-    float: left;
-    background-color: blueviolet;
-    padding: 5px;
-    width: 150px;
-}
-
 #right {
-    background-color: yellowgreen;
+    position:absolute;
     padding: 5px;
-    right: 5px;
+    top:150px;
+    background-color: yellowgreen;
+    margin-right: 200px;
+    z-index: 0;
 }
 
 .center_content {
     background-color: yellowgreen;
     padding: 5px;
+    z-index: -1;
 }
 
 .left_content {
@@ -38,7 +27,8 @@
 
 .right_content {
     position: fixed;
-    background-color: black;
+    background-color: blue;
+    float: right;
 }
 
 #top a:link, #top a:visited {
