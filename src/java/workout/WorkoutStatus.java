@@ -52,6 +52,12 @@ public class WorkoutStatus {
     public void setDate(Date date){
         workout.setDate(date);
     }
+    public int getDuration(){
+        return workout.getDuration();
+    }
+    public String getCategory(){
+        return workout.getCategory();
+    }
 
     public void change() {
         if (!change) {

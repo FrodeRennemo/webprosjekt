@@ -22,7 +22,9 @@
                         <!-- Kolonne: dato -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.Date}"/>
+                                <h:commandLink action ="#{workoutBean.sortByDate()}">
+                                    <h:outputText value="#{lang.Date}"/>
+                                </h:commandLink>
                             </f:facet>
                             <h:inputText value="#{oneWorkout.workout.date}" 
                                          rendered="#{oneWorkout.change}"
@@ -37,7 +39,10 @@
                         <!-- Kolonne: kategori -->
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{lang.Category}"/>
+                                <h:commandLink action ="#{workoutBean.sortByCategory()}">
+                                    <h:outputText value="#{lang.Category}"/>
+                                </h:commandLink>
+
                             </f:facet>
                             <h:selectOneMenu value ="#{workoutBean.tempWorkout.category}" rendered="#{workout.change}">
                                 <f:selectItem  itemValue ="#{lang.Jogging}"/>
@@ -62,7 +67,9 @@
                         <!-- Kolonne: varighet -->
                         <h:column>
                             <f:facet name="header">
+                                <h:commandLink action ="#{workoutBean.sortByDuration()}">
                                 <h:outputText value="#{lang.Duration}"/>
+                                </h:commandLink>
                             </f:facet>
                             <h:inputText value="#{oneWorkout.workout.duration}" 
                                          rendered="#{oneWorkout.change}"
@@ -203,7 +210,7 @@
 
                         <h:commandButton value="#{lang.Month}" 
                                          action="#{workoutBean.workoutsMonth()}"/>
-                        
+
                         <h:commandButton action="#{workoutBean.logout()}" 
                                          value="#{lang.LogOut}" />
                     </p>

@@ -157,29 +157,6 @@ public class Database {
         return tab;
     }
 
-    public ArrayList<Workout> lesInUser() {
-        ArrayList<Workout> tab = new ArrayList<Workout>();
-        PreparedStatement sqlLesInn = null;
-        openConnection();
-        try {
-            //Statement setning = connection.createStatement();
-            sqlLesInn = connection.prepareStatement("SELECT * FROM TRENING WHERE BRUKERNAVN = ?");
-            sqlLesInn.setString(1, user);
-            ResultSet res = sqlLesInn.executeQuery();
-            while (res.next()) {
-                Date date = res.getDate("dato");
-                int duration = res.getInt("varighet");
-                String category = res.getString("kategorinavn");
-                String text = res.getString("tekst");
-                Workout workout = new Workout(date, duration, text, category);
-                tab.add(workout);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        closeConnection();
-        return tab;
-    }
 
     private void openConnection() {
         try {
@@ -286,15 +263,5 @@ public class Database {
         }
         closeConnection();
         return ok;
-    }
-
-    public static void main(String[] args) throws SQLException {
-        /*
-         * try { Class.forName("org.apache.derby.jdbc.ClientDriver"); } catch
-         * (Exception e) { System.out.println("Kan ikke laste databasedriveren.
-         * Avbryter."); e.printStackTrace(); System.exit(0); }
-         */
-        Database database = new Database();
-        Workout workout = new Workout(new java.util.Date(), 45, "sdsd", "styrke");
     }
 }
