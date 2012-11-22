@@ -22,10 +22,10 @@ public class WorkoutBean implements java.io.Serializable {
     private List<WorkoutStatus> tabledata = Collections.synchronizedList(new ArrayList<WorkoutStatus>());
     private Workout tempWorkout = new Workout(); // midlertidig lager for ny transaksjon
     private int month;
+    private int year;
     private boolean sortDateAsc = true;
     private boolean sortDurationAsc = true;
     private boolean sortCategoryAsc = true;
-    private List<MonthStatus> monthdata = Collections.synchronizedList(new ArrayList<MonthStatus>());
 
     public WorkoutBean() {
         if (workouts.getList() != null) {
@@ -43,16 +43,16 @@ public class WorkoutBean implements java.io.Serializable {
         return workouts;
     }
 
-    public synchronized List<MonthStatus> getMonthdata() {
-        return monthdata;
-    }
-
-    public synchronized boolean getDataMonthExist() {
-        return (monthdata.size() > 0);
-    }
-
     public synchronized List<WorkoutStatus> getTableData() {
         return tabledata;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public synchronized void setMonth(int month) {
@@ -130,10 +130,21 @@ public class WorkoutBean implements java.io.Serializable {
     }
 
     public synchronized void workoutsMonth() {
-        monthdata = Collections.synchronizedList(new ArrayList<MonthStatus>());
-        for (Workout i : workouts.getWorkoutsMonth(month)) {
-            monthdata.add(new MonthStatus(i));
+        List<WorkoutStatus> monthdata = Collections.synchronizedList(new ArrayList<WorkoutStatus>());
+        for (Workout i : workouts.getWorkoutsMonth(month, year)) {
+            monthdata.add(new WorkoutStatus(i));
         }
+        tabledata = monthdata;
+    }
+
+    public synchronized void everyWorkout() {
+        List<WorkoutStatus> everydata = Collections.synchronizedList(new ArrayList<WorkoutStatus>());
+        if (workouts.getList() != null) {
+            for (int i = 0; i < workouts.getList().size(); i++) {
+                everydata.add(new WorkoutStatus(workouts.getList().get(i)));
+            }
+        }
+        tabledata = everydata;
     }
 
     public synchronized void change() {
@@ -160,6 +171,7 @@ public class WorkoutBean implements java.io.Serializable {
         if (sortDateAsc) {
             //ascending order
             Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+
                 @Override
                 public int compare(WorkoutStatus w1, WorkoutStatus w2) {
 
@@ -171,6 +183,7 @@ public class WorkoutBean implements java.io.Serializable {
         } else {
             //descending order
             Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+
                 @Override
                 public int compare(WorkoutStatus w1, WorkoutStatus w2) {
                     return w2.getDate().compareTo(w1.getDate());
@@ -185,6 +198,7 @@ public class WorkoutBean implements java.io.Serializable {
         if (sortDurationAsc) {
             //ascending order
             Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+
                 @Override
                 public int compare(WorkoutStatus w1, WorkoutStatus w2) {
                     if (w1.getDuration() == w2.getDuration()) {
@@ -200,6 +214,7 @@ public class WorkoutBean implements java.io.Serializable {
         } else {
             //descending order
             Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+
                 @Override
                 public int compare(WorkoutStatus w1, WorkoutStatus w2) {
                     if (w2.getDuration() == w1.getDuration()) {
@@ -220,6 +235,7 @@ public class WorkoutBean implements java.io.Serializable {
         if (sortCategoryAsc) {
             //ascending order
             Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+
                 @Override
                 public int compare(WorkoutStatus w1, WorkoutStatus w2) {
                     return w1.getCategory().compareTo(w2.getCategory());
@@ -229,6 +245,7 @@ public class WorkoutBean implements java.io.Serializable {
         } else {
             //descending order
             Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+
                 @Override
                 public int compare(WorkoutStatus w1, WorkoutStatus w2) {
                     return w2.getCategory().compareTo(w1.getCategory());

@@ -39,17 +39,19 @@ public class Workouts implements Serializable {
         return false;
     }
 
-    public ArrayList<Workout> getWorkoutsMonth(int maaned) {
+    public ArrayList<Workout> getWorkoutsMonth(int month, int year) {
         ArrayList<Workout> Month = new ArrayList<Workout>();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getDate() != null) {
-                if (list.get(i).getDate().getMonth() + 1 == maaned) {
+                if (list.get(i).getDate().getMonth() + 1 == month && list.get(i).getDate().getYear() + 1900 == year) {
                     Month.add(list.get(i));
                 }
             }
         }
         return Month;
     }
+    
+    
 
     public boolean deleteWorkout(Workout delWorkout) {
         if (database.deleteWorkout(delWorkout)) {

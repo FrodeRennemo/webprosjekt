@@ -10,7 +10,7 @@
     padding: 5px;
     top:150px;
     background-color: yellowgreen;
-    margin-right: 200px;
+    right: 200px;
     z-index: 0;
 }
 
@@ -26,9 +26,12 @@
 }
 
 .right_content {
-    position: fixed;
-    background-color: blue;
-    float: right;
+    position:absolute;
+    padding: 5px;
+    top:150px;
+    background-color: yellowgreen;
+    right: 300px;
+    z-index: 0;
 }
 
 #top a:link, #top a:visited {
