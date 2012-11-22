@@ -125,6 +125,9 @@ public class WorkoutBean implements java.io.Serializable {
     }
 
     public synchronized double getAverageDuration() {
+        for(int i = 0;i<workouts.getList().size();i++){
+            System.out.println(workouts.getList().get(i).getDuration());
+        }
         return workouts.getAverageDuration();
     }
 

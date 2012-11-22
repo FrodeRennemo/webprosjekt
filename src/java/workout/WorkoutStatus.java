@@ -1,9 +1,10 @@
 
 package workout;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class WorkoutStatus {
+public class WorkoutStatus implements Serializable {
 
     private Workout workout;
     private boolean delete;

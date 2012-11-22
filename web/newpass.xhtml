@@ -34,12 +34,11 @@
                             </td>
                         </tr>
                     </table>
-                    <p>  
-                        <h:commandButton value="#{lang_auth.ChangePass}" action="#{userBean.changePassword()}"/>
-                        <h:commandButton value="#{lang_auth.Back}" action="index"/>
-                    </p>
-
+                <h:commandButton value="#{lang_auth.ChangePass}" action="#{userBean.changePassword()}"/>
                 </h:form>
+                <h:form>
+                    <h:commandButton value="#{lang_auth.Back}" action="index"/>
+                </h:form> 
             </ui:define>
         </ui:composition>
     </h:body>
