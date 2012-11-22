@@ -5,30 +5,19 @@
     margin: 0px 0px 10px 0px;
 }
 
-#bottom {
-    position: relative;
-    background-color: whitesmoke;
-    color: black;
-    padding: 5px;
-    margin: 10px 0px 0px 0px;
-}
-
-#left {
-    float: left;
-    background-color: blueviolet;
-    padding: 5px;
-    width: 150px;
-}
-
 #right {
-    background-color: yellowgreen;
+    position:absolute;
     padding: 5px;
-    right: 5px;
+    top:150px;
+    background-color: yellowgreen;
+    right: 200px;
+    z-index: 0;
 }
 
 .center_content {
     background-color: yellowgreen;
     padding: 5px;
+    z-index: -1;
 }
 
 .left_content {
@@ -37,8 +26,12 @@
 }
 
 .right_content {
-    position: fixed;
-    background-color: black;
+    position:absolute;
+    padding: 5px;
+    top:150px;
+    background-color: yellowgreen;
+    right: 300px;
+    z-index: 0;
 }
 
 #top a:link, #top a:visited {
@@ -76,5 +69,4 @@ table.people tr.even td {
 table.people tfoot td{
     border-bottom: 1px solid #000;
 }
-
 

@@ -27,9 +27,6 @@ public class Database {
         }
     }
 
-    public String getUser() {
-        return user;
-    }
 
     public boolean logIn(User user) {
         PreparedStatement sqlLogIn = null;

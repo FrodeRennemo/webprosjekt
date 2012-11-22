@@ -9,7 +9,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-import workout.MonthStatus;
 import workout.Workout;
 import workout.WorkoutStatus;
 import workout.Workouts;

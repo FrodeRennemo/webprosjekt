@@ -15,12 +15,7 @@ public class Workouts implements Serializable {
     public Workouts() {
         this.list = database.readIn();
     }
-
-    public Database getDatabase() {
-        return database;
-    }
     
-
     public void readIn() {
         database.readIn();
     }
@@ -51,8 +46,6 @@ public class Workouts implements Serializable {
         return Month;
     }
     
-    
-
     public boolean deleteWorkout(Workout delWorkout) {
         if (database.deleteWorkout(delWorkout)) {
             list.remove(delWorkout);
@@ -73,17 +66,12 @@ public class Workouts implements Serializable {
     }
 
     public void changeData(Workout workout) {
-        
         for(int i = 0;i<list.size();i++){
             if(workout.getNumber() == list.get(i).getNumber() && database.changeData(workout)){
                 System.out.println(workout.getText());
                 list.set(i, workout);
             }
         }
-    }
-
-    public String getUser() {
-        return database.getUser();
     }
 
     @Override
@@ -94,5 +82,4 @@ public class Workouts implements Serializable {
         }
         return utskrift;
     }
-
 }

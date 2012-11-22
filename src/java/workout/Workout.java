@@ -3,7 +3,7 @@ package workout;
 import java.util.Date;
 
 public class Workout {
-    
+
     private int number = 0;
     private static int totNumber = 0;
     private Date date = new Date();
@@ -22,12 +22,12 @@ public class Workout {
         this.category = category;
         updateTotNumber();
     }
-    
-    public void setNumber(int number){
+
+    public void setNumber(int number) {
         this.number = number;
     }
-    
-    public synchronized int getNumber(){
+
+    public synchronized int getNumber() {
         return number;
     }
 
@@ -40,11 +40,7 @@ public class Workout {
     }
 
     public synchronized void setCategory(String category) {
-        try {
-            this.category = category;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Illegal value!");
-        }
+        this.category = category;
     }
 
     public synchronized String getCategory() {
@@ -54,8 +50,8 @@ public class Workout {
     public synchronized Date getDate() {
         return date;
     }
-    public synchronized void setDate(Date date) {
 
+    public synchronized void setDate(Date date) {
         this.date = date;
     }
 
@@ -64,24 +60,15 @@ public class Workout {
     }
 
     public synchronized void setText(String text) {
-        try {
-            this.text = text;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ugyldig verdi!");
-        }
+        this.text = text;
     }
 
     public synchronized int getDuration() {
         return duration;
     }
 
-
     public synchronized void setDuration(int duration) {
-        try {
-            this.duration = duration;
-        } catch (NumberFormatException e) {
-            System.out.println("Må skrive inn heltall!");
-        }
+        this.duration = duration;
     }
 
     public synchronized void reset() {

@@ -28,7 +28,7 @@
                         </tr>
                         <tr>
                             <td><h:outputText value ="#{lang_auth.RepeatPass}"/></td>
-                            
+
                             <td>
                                 <h:inputSecret value ="#{userBean.repeatPassword}" validator="checkvalidpassword" />
                             </td>
@@ -36,9 +36,10 @@
                     </table>
                     <p>  
                         <h:commandButton value="#{lang_auth.ChangePass}" action="#{userBean.changePassword()}"/>
+                        <h:commandButton value="#{lang_auth.Back}" action="index"/>
                     </p>
 
-                   </h:form>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>

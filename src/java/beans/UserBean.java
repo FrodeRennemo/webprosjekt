@@ -15,7 +15,6 @@ public class UserBean implements Serializable {
     private User user = new User();
     private String newPassword;
     private String repeatPassword;
-    private String specialLetter = "-_,.";
     private Database database = new Database();
     private boolean passwordOk = false;
     private boolean userOk = false;
@@ -110,7 +109,7 @@ public class UserBean implements Serializable {
                 }
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage("fail",new FacesMessage("Brukernavnet er i bruk"));
+            FacesContext.getCurrentInstance().addMessage("fail", new FacesMessage("Brukernavnet er i bruk"));
         }
         return null;
 
