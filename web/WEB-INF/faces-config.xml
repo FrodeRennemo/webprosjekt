@@ -16,17 +16,17 @@
         <locale-config>
             <default-locale>en</default-locale>      
             <supported-locale>no</supported-locale> 
+            <message-bundle>language.workout</message-bundle>
         </locale-config>
         <resource-bundle>
             <base-name>language.workout</base-name>   
             <var>lang</var> 
         </resource-bundle>
-          <resource-bundle>
+        <resource-bundle>
             <base-name>language.auth</base-name>   
             <var>lang_auth</var> 
         </resource-bundle>
     </application>
-    
     <validator>
         <validator-id>checkvalidpassword</validator-id>
         <validator-class>validators.Password</validator-class>

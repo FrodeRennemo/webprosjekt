@@ -24,13 +24,13 @@
                         </tr>
                         <tr>
                             <td><h:outputText value ="#{lang_auth.NewPass}"/></td>
-                            <td><h:inputSecret value ="#{userBean.newPassword}" validator="checkvalidpassword" id="password" label="#{auth_txt.password}" required="true"/> </td>
+                            <td><h:inputSecret value ="#{userBean.newPassword}" validator="checkvalidpassword" id="password" label="#{auth_txt.password}"/> </td>
                         </tr>
                         <tr>
                             <td><h:outputText value ="#{lang_auth.RepeatPass}"/></td>
                             
                             <td>
-                                <h:inputSecret value ="#{userBean.repeatPassword}" validator="checkvalidpassword" required="true" />
+                                <h:inputSecret value ="#{userBean.repeatPassword}" validator="checkvalidpassword" />
                             </td>
                         </tr>
                     </table>

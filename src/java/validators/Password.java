@@ -11,7 +11,7 @@ public class Password implements Validator{
     @Override
     public void validate(FacesContext fc, UIComponent uic, Object o) throws ValidatorException {
         String passord = o.toString();
-        
+
         boolean size = false;
         boolean spesialtegn = false;
         boolean tall = false;
@@ -44,7 +44,6 @@ public class Password implements Validator{
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
-        
     }
     
 }

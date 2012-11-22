@@ -3,6 +3,8 @@ package beans;
 import database.Database;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import user.User;
 
@@ -80,52 +82,35 @@ public class UserBean implements Serializable {
     }
 
     private void checkPassword() {
-        int special = 0;
-        int number = 0;
-        int letter = 0;
-        int symbol = 0;
-   
-
-        for (int i = 0; i < newPassword.length(); i++) {
-            char tegn = newPassword.charAt(i);
-
-            /* isLetterOrDigit() user tegnsettet som maskinen er satt opp med */
-            if (!(Character.isLetterOrDigit(tegn)) && !(specialLetter.indexOf(tegn) >= 0)) {
-                return;
-            }
-            if (Character.isLetter(tegn)) {
-                letter++;
-            }
-            if (Character.isDigit(tegn)) {
-                number++;
-            }
-            if (specialLetter.indexOf(tegn) >= 0) {
-                special++;
-            }
-            symbol++;
-        }
-        if (special > 0 && number > 0 && special > 0 && symbol >= 6) {
+        if (newPassword.equals(repeatPassword)) {
             passwordOk = true;
-
+        } else {
+            passwordOk = false;
         }
     }
 
-    private void checkUser() {
+    private boolean checkUser() {
         if (!(database.userExist(user))) {
             userOk = true;
+            return true;
+        } else {
+            return false;
         }
     }
 
     public String newUser() {
-        checkUser();
-        if (userOk) {
-            checkPassword();
-            if (passwordOk) {
-                user.setPassword(newPassword);
-                if (database.newUser(user)) {
-                    return "userValid";
+        if (checkUser()) {
+            if (userOk) {
+                checkPassword();
+                if (passwordOk) {
+                    user.setPassword(newPassword);
+                    if (database.newUser(user)) {
+                        return "userValid";
+                    }
                 }
-            } 
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage("fail",new FacesMessage("Brukernavnet er i bruk"));
         }
         return null;
 
