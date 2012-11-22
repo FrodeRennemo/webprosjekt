@@ -72,7 +72,8 @@
                                 </h:commandLink>
                             </f:facet>
                             <h:inputText value="#{oneWorkout.workout.duration}" 
-                                         rendered="#{oneWorkout.change}">
+                                         rendered="#{oneWorkout.change}"
+                                         required="true">
                             </h:inputText>
                             <h:outputText value="#{oneWorkout.workout.duration}" rendered="#{not oneWorkout.change}" />
                             <f:facet name="footer">  
@@ -86,6 +87,9 @@
                                 <h:outputText value="#{lang.Delete}"/>
                             </f:facet>
                             <h:selectBooleanCheckbox value="#{oneWorkout.delete}"/>
+                            <f:facet name="footer">  
+                                <h:commandButton value="#{lang.Delete}" action="#{workoutBean.delete()}"/>
+                            </f:facet>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -93,6 +97,9 @@
                                 <h:outputText value="#{lang.Change}"/>
                             </f:facet>
                             <h:commandButton value="#{lang.Change}" action="#{oneWorkout.change()}" rendered="#{not oneWorkout.change}"/>
+                            <f:facet name="footer">  
+                                <h:commandButton value="#{lang.Update}" action="#{workoutBean.change()}"/>
+                            </f:facet>
                         </h:column>
                     </h:dataTable>
                     <br></br>
@@ -109,6 +116,7 @@
                         <f:selectItem  itemValue ="10" itemLabel="#{lang.October}"/>
                         <f:selectItem  itemValue ="11" itemLabel="#{lang.November}"/>
                         <f:selectItem  itemValue ="12" itemLabel="#{lang.December}"/>
+                        <f:selectItem  itemValue ="13" itemLabel="#{lang.All}"/>
                     </h:selectOneMenu>
 
                     <h:selectOneMenu value ="#{workoutBean.year}">
@@ -141,14 +149,6 @@
                         <h:commandButton value="#{lang.Month}" 
                                          action="#{workoutBean.workoutsMonth()}"/>
 
-                        <h:commandButton value="#{lang.Reset}" 
-                                         action="#{workoutBean.everyWorkout()}"/>
-
-                        <h:commandButton value="#{lang.Update}" 
-                                         action="#{workoutBean.change()}"/>
-
-                        <h:commandButton value="#{lang.Delete}" 
-                                         action="#{workoutBean.delete()}"/>
                     </p>
                     <!-- Registrere ny transaksjon  -->
                     <br></br>
@@ -193,7 +193,7 @@
                                 <h:outputText value="#{lang.Duration}:  "/>
                             </td>
                             <td>
-                                <h:inputText value="#{workoutBean.tempWorkout.duration}">
+                                <h:inputText value="#{workoutBean.tempWorkout.duration}" required="true">
                                 </h:inputText>
                             </td>
                         </tr>
