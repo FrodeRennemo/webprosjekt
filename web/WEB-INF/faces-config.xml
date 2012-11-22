@@ -14,16 +14,21 @@
     </managed-bean>
     <application>
         <locale-config>
-            <default-locale>en</default-locale>       STANDARD SPRÅK
-            <supported-locale>no</supported-locale> EKSTRA SPRÅK
+            <default-locale>en</default-locale>      
+            <supported-locale>no</supported-locale> 
         </locale-config>
         <resource-bundle>
-            <base-name>language.workout</base-name>   MAPPE- OG FILNAVN
-            <var>lang</var> NAVN BRUKT I JSF-KODEN
+            <base-name>language.workout</base-name>   
+            <var>lang</var> 
+        </resource-bundle>
+          <resource-bundle>
+            <base-name>language.auth</base-name>   
+            <var>lang_auth</var> 
         </resource-bundle>
     </application>
+    
     <validator>
         <validator-id>checkvalidpassword</validator-id>
-        <validator-class>Message.validation</validator-class>
+        <validator-class>validators.Password</validator-class>
     </validator>
 </faces-config>

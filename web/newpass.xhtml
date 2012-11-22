@@ -15,27 +15,27 @@
                 <h:form>
                     <table>
                         <tr>
-                            <td><h:outputText value="#{lang.Username}"/></td>
+                            <td><h:outputText value="#{lang_auth.Username}"/></td>
                             <td><h:inputText value ="#{userBean.username}" /></td>
                         </tr>
                         <tr>
-                            <td><h:outputText value="#{lang.Password}"/></td>
+                            <td><h:outputText value="#{lang_auth.Password}"/></td>
                             <td><h:inputSecret value ="#{userBean.password}" /></td>
                         </tr>
                         <tr>
-                            <td><h:outputText value ="#{lang.NewPass}"/></td>
-                            <td><h:inputSecret value ="#{userBean.newPassword}" /></td>
+                            <td><h:outputText value ="#{lang_auth.NewPass}"/></td>
+                            <td><h:inputSecret value ="#{userBean.newPassword}" validator="checkvalidpassword" id="password" label="#{auth_txt.password}" required="true"/> </td>
                         </tr>
                         <tr>
-                            <td><h:outputText value ="#{lang.RepeatPass}"/></td>
-                            <td><h:inputSecret value ="#{userBean.repeatPassword}" /></td>
+                            <td><h:outputText value ="#{lang_auth.RepeatPass}"/></td>
+                            
+                            <td>
+                                <h:inputSecret value ="#{userBean.repeatPassword}" validator="checkvalidpassword" required="true" />
+                            </td>
                         </tr>
                     </table>
-                    <p>
-                        <h:outputText value ="#{userBean.resultPass}" rendered="#{not userBean.passwordOk}" />
-                    </p>
                     <p>  
-                        <h:commandButton value="#{lang.ChangePass}" action="#{userBean.changePassword()}"/>
+                        <h:commandButton value="#{lang_auth.ChangePass}" action="#{userBean.changePassword()}"/>
                     </p>
 
                    </h:form>

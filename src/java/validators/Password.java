@@ -20,23 +20,27 @@ public class Password implements Validator{
             size = true;
             int i = 0;
             while((!tall || !spesialtegn) && i < passord.length()){
-                if(!tall && Character.isDigit(passord.charAt(i))) tall = true;
-                if(!spesialtegn && !Character.isLetterOrDigit(passord.charAt(i))) spesialtegn = true;
+                if(!tall && Character.isDigit(passord.charAt(i))) {
+                    tall = true;
+                }
+                if(!spesialtegn && !Character.isLetterOrDigit(passord.charAt(i))) {
+                    spesialtegn = true;
+                }
                 i++;
             }
         }
         if(!size){
-            FacesMessage message = language.Message.getMessage("language.auth", "password_short");
+            FacesMessage message = language.Message.getMessage("language.auth", "Password_short");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
         if(!spesialtegn){
-            FacesMessage message = language.Message.getMessage("language.auth", "password_special");
+            FacesMessage message = language.Message.getMessage("language.auth", "Password_special");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
         if(!tall){
-            FacesMessage message = language.Message.getMessage("language.auth", "password_number");
+            FacesMessage message = language.Message.getMessage("language.auth", "Password_number");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }

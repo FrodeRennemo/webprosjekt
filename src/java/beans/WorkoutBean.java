@@ -155,121 +155,87 @@ public class WorkoutBean implements java.io.Serializable {
         session.invalidate();
         return "../index.xhtml?faces-redirect=true";
     }
-    public String sortByDate(){
-        if(sortDateAsc){
-			
-			//ascending order
-			Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
 
-				@Override
-				public int compare(WorkoutStatus w1, WorkoutStatus w2) {
-					
-					return w1.getDate().compareTo(w2.getDate());
-					
-				}
+    public String sortByDate() {
+        if (sortDateAsc) {
+            //ascending order
+            Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+                @Override
+                public int compare(WorkoutStatus w1, WorkoutStatus w2) {
 
-			});
-			sortDateAsc = false;
-			
-		}else{
+                    return w1.getDate().compareTo(w2.getDate());
+                }
+            });
+            sortDateAsc = false;
 
-			//descending order
-			Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
-
-				@Override
-				public int compare(WorkoutStatus w1, WorkoutStatus w2) {
-					
-					return w2.getDate().compareTo(w1.getDate());
-					
-				}
-
-			});
-			sortDateAsc = true;
-		}
-
-		return null;
+        } else {
+            //descending order
+            Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+                @Override
+                public int compare(WorkoutStatus w1, WorkoutStatus w2) {
+                    return w2.getDate().compareTo(w1.getDate());
+                }
+            });
+            sortDateAsc = true;
+        }
+        return null;
     }
-    public String sortByDuration(){
-         if(sortDurationAsc){
-			
-			//ascending order
-			Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
 
-				@Override
-				public int compare(WorkoutStatus w1, WorkoutStatus w2) {
-					
-                                    if(w1.getDuration() == w2.getDuration()){
-                                        return 0;
-                                    }else if(w1.getDuration()>w2.getDuration()){
-                                        return 1;
-                                    }else{
-                                        return -1;
-                                    }
-					
-				}
-
-			});
-			sortDurationAsc = false;
-			
-		}else{
-
-			//descending order
-			Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
-
-				@Override
-				public int compare(WorkoutStatus w1, WorkoutStatus w2) {
-					
-                                    if(w2.getDuration() == w1.getDuration()){
-                                        return 0;
-                                    }else if(w2.getDuration()>w1.getDuration()){
-                                        return 1;
-                                    }else{
-                                        return -1;
-                                    }
-					
-				}
-
-			});
-			sortDurationAsc = true;
-		}
-
-		return null;
+    public String sortByDuration() {
+        if (sortDurationAsc) {
+            //ascending order
+            Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+                @Override
+                public int compare(WorkoutStatus w1, WorkoutStatus w2) {
+                    if (w1.getDuration() == w2.getDuration()) {
+                        return 0;
+                    } else if (w1.getDuration() > w2.getDuration()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            });
+            sortDurationAsc = false;
+        } else {
+            //descending order
+            Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+                @Override
+                public int compare(WorkoutStatus w1, WorkoutStatus w2) {
+                    if (w2.getDuration() == w1.getDuration()) {
+                        return 0;
+                    } else if (w2.getDuration() > w1.getDuration()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            });
+            sortDurationAsc = true;
+        }
+        return null;
     }
-    public String sortByCategory(){
-         if(sortCategoryAsc){
-			
-			//ascending order
-			Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
 
-				@Override
-				public int compare(WorkoutStatus w1, WorkoutStatus w2) {
-					
-					return w1.getCategory().compareTo(w2.getCategory());
-					
-				}
-
-			});
-			sortCategoryAsc = false;
-			
-		}else{
-
-			//descending order
-			Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
-
-				@Override
-				public int compare(WorkoutStatus w1, WorkoutStatus w2) {
-					
-					return w2.getCategory().compareTo(w1.getCategory());
-					
-				}
-
-			});
-			sortCategoryAsc = true;
-		}
-
-		return null;
+    public String sortByCategory() {
+        if (sortCategoryAsc) {
+            //ascending order
+            Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+                @Override
+                public int compare(WorkoutStatus w1, WorkoutStatus w2) {
+                    return w1.getCategory().compareTo(w2.getCategory());
+                }
+            });
+            sortCategoryAsc = false;
+        } else {
+            //descending order
+            Collections.sort(tabledata, new Comparator<WorkoutStatus>() {
+                @Override
+                public int compare(WorkoutStatus w1, WorkoutStatus w2) {
+                    return w2.getCategory().compareTo(w1.getCategory());
+                }
+            });
+            sortCategoryAsc = true;
+        }
+        return null;
     }
-    
-    
-    
 }
